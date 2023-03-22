@@ -1,10 +1,6 @@
-"use client";
-
-import { createContext } from "react";
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { EChartsOption } from "echarts";
-
 const ReactECharts = dynamic(() => import("echarts-for-react"), { ssr: false });
 
 interface PriceData {
@@ -13,21 +9,6 @@ interface PriceData {
 }
 
 const AssetPriceVisualizer = () => {
-  fetch("/api/crypto")
-    .then((response) => response.json())
-    .then((data) => console.log(data));
-  const [prices, setPrices] = useState<PriceData[]>([]);
-
-  useEffect(() => {
-    async function fetchPrices() {
-      //const response = await fetch("/api/prices");
-
-      const data = generateDummyData(); //await response.json();
-      setPrices(data);
-    }
-    fetchPrices();
-  }, []);
-
   const generateDummyData = (): PriceData[] => {
     const data: PriceData[] = [];
     const startDate = new Date("2022-01-01");
@@ -46,6 +27,16 @@ const AssetPriceVisualizer = () => {
 
     return data;
   };
+  const [prices, setPrices] = useState<PriceData[]>([]);
+
+  useEffect(() => {
+    async function fetchPrices() {
+      //const response = await fetch("/api/prices");
+      const data = generateDummyData(); //   [] await response.json();
+      setPrices(data);
+    }
+    fetchPrices();
+  }, []);
 
   const options: EChartsOption = {
     title: {
