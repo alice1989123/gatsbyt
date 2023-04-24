@@ -74,7 +74,7 @@ const AssetPriceVisualizer = () => {
           color: "green",
         },
       },
-      prices.length > 20 &&{
+      prices.length > 20 ? {
         data: Array(prices.length - 20)
         .fill(null)
         .concat(prices.slice(-20).map(({ price }) => price)),
@@ -86,7 +86,7 @@ const AssetPriceVisualizer = () => {
         itemStyle: {
           color: "red",
         },
-      },
+      } : {},
     ]
     
     
