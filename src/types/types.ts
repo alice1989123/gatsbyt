@@ -7,3 +7,5 @@ export interface PriceData {
     name: string;
     symbol: string;
   }
+
+  
