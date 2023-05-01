@@ -5,8 +5,7 @@ import AssetPriceVisualizer from "./AssetPriceVisualizer"; // Import AssetPriceV
 import coins from "./coins";
 import { useState } from "react";
 import { Coin } from "@/types/types";
-
-
+import Header from "./Header"; // Import Header
 
 
 
@@ -30,17 +29,20 @@ const App = () => {
             fontWeight: coin.symbol === coin_.symbol ? "bold" : "normal", width: "100px",
 
           }}
-            onClick={() => setCoin( coin_)}>{coin_.name}</button>
+            onClick={() => setCoin( coin_)} key={coin_.symbol} >{coin_.name}</button>
         ))}
       </div>
     );
   };
 
   return (
-    <div className="container">
-      <SidebarMenu /> 
-      <div className="main">
-        {<AssetPriceVisualizer coin={coin} />}    </div>
+    <div>
+      <Header />
+      <div className="container">
+        <SidebarMenu />
+        <div className="main">
+          {<AssetPriceVisualizer coin={coin} />}    </div>
+      </div>
     </div>
   );
 };

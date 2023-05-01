@@ -55,6 +55,15 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
   
 
   const options: EChartsOption = {
+
+    legend: {
+      borderRadius: 5, // Rounded corners
+      borderWidth: 1,
+      borderColor: '#ccc',
+      padding: 10,
+      backgroundColor: '#f9f9f9',
+      data: ['Historical Data', 'Predicted Data'],
+    },
     title: {
       text: `${props.coin.name} Price - Prediction`,
     },

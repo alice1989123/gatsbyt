@@ -1,0 +1,27 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #1A237E;
+  }
+  
+  .header-logo {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .header-contact {
+    background-color: #131341;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 20px;
+  }
+  
