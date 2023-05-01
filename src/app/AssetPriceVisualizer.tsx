@@ -3,7 +3,6 @@ import "./styles.css";
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { EChartsOption } from "echarts";
-
 import { PriceData , Coin } from "@/types/types";
 
 
@@ -39,10 +38,12 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
   const [loading, setLoading] = useState(true); // Add loading state
   const [metadata , setMetadata] = useState<Object[]>([]);
   const [history , setHistory] = useState<History>(dummy_history);
-  interface Metadata { 
-    history: History
+
+  function parseToLocalTime(dateString :string) {
+    const dateObject = new Date(dateString + "Z"); // Add "Z" to indicate UTC time
+    const localDateObject = new Date(dateObject.getTime() );
+    return localDateObject.toLocaleString();
   }
- 
 
   function get_value_from_history( list :number[]) {
     try { return list[list.length - 1].toFixed(4
@@ -118,7 +119,7 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
     },
     xAxis: {
       type: "category",
-      data: prices.map(({ date }) => new Date(date).toLocaleString()),
+      data: prices.map(({ date }) =>  parseToLocalTime(date) ),
     },
     yAxis: {
       type: "value",
@@ -127,7 +128,7 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
     },
     series: [
       {         name: "Historical Price",
-        data: prices.slice(0, -20).map(({ price }) => Number(price.toFixed(4))),
+        data: prices.slice(0, -12).map(({ price }) => Number(price.toFixed(4))),
         type: "line",
         smooth: true,
         lineStyle: {
@@ -139,9 +140,9 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
       },
       prices.length > 20
         ? { name: "Predicted Price",
-            data: Array(prices.length - 20)
+            data: Array(prices.length - 12)
               .fill(null)
-              .concat(prices.slice(-20).map(({ price }) => Number(price.toFixed(4)) )),
+              .concat(prices.slice(-13).map(({ price }) => Number(price.toFixed(4)) )),
             type: "line",
             smooth: true,
             lineStyle: {
