@@ -3,7 +3,10 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #1A237E;
+    background-color: #13195c;
+    
+    margin-bottom: 1rem;
+
   }
   
   .header-logo {
@@ -13,7 +16,7 @@
   }
   
   .header-contact {
-    background-color: #131341;
+    background-image: linear-gradient(to bottom, #000000, #2c2c5d);
     border: none;
     color: white;
     text-align: center;

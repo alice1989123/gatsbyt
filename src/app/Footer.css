@@ -1,0 +1,36 @@
+.footer {
+    display: flex;
+    flex-direction: column; /* Change to column for centering */
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #13195c;
+    margin-top: 1rem;
+  }
+  
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .footer-legend {  
+    margin-bottom: 2rem;
+
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .footer-disclaimer {
+    margin-bottom: 1rem;
+    color: white;
+    font-size: 10px; /* Reduce font size for the disclaimer */
+    text-align: justify;
+    margin-top: 10px; /* Add some margin to separate it from the legend */
+    max-width: 90%; /* Limit the width of the disclaimer */
+    text-align: center;
+    margin-top: 2rem;
+
+  }

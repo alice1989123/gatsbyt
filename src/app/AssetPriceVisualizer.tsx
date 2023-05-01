@@ -25,6 +25,9 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
   const [loading, setLoading] = useState(true); // Add loading state
   const [metadata , setMetadata] = useState<Object[]>([]);
 
+  function get_metrics (metadata: Object[]) {}
+  
+
   useEffect(() => {
     setPrices([]);
     async function fetchPrices() {
@@ -37,8 +40,8 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
           }
         }).then((response) => response.json())
         
-          .then((data) => { setPrices(data.predictions)  , setMetadata(data.metadata), setLoading(false) })
-          
+          .then((data) => { setPrices(data.predictions)  , setMetadata(data.metadata), setLoading(false)  ; console.log (data.metadata.history)})
+
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -49,23 +52,40 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
 
 
 
-  const minPrice = Math.min(...prices.map(({ price }) => price));
-  const maxPrice = Math.max(...prices.map(({ price }) => price));
+  const minPrice = Math.min(...prices.map(({ price }) => Number(price.toFixed(4))));
+  const maxPrice = Math.max(...prices.map(({ price }) => Number(price.toFixed(4))));
 
   
 
   const options: EChartsOption = {
+    textStyle: {
+      color: "lightgray", 
+    },
+
 
     legend: {
+      right: 10, // Move legend to the right
       borderRadius: 5, // Rounded corners
       borderWidth: 1,
       borderColor: '#ccc',
       padding: 10,
-      backgroundColor: '#f9f9f9',
-      data: ['Historical Data', 'Predicted Data'],
+      backgroundColor: "#13195c", // Set background color to dark blue
+      data: ['Historical Price', 'Predicted Price'],
+      textStyle: {
+        color: "white", // Set title text color to white
+      },
+  
     },
     title: {
+      
       text: `${props.coin.name} Price - Prediction`,
+      textStyle: {
+        color: "lightgray", 
+        
+      },
+      subtext: `Mean Squared Error: ${1.0.toFixed(4)} ( the lower the better)` ,
+      
+
     },
     tooltip: {
       trigger: "axis",
@@ -80,7 +100,7 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
       max: maxPrice,
     },
     series: [
-      {
+      {         name: "Historical Price",
         data: prices.slice(0, -20).map(({ price }) => price),
         type: "line",
         smooth: true,
@@ -92,7 +112,7 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
         },
       },
       prices.length > 20
-        ? {
+        ? { name: "Predicted Price",
             data: Array(prices.length - 20)
               .fill(null)
               .concat(prices.slice(-20).map(({ price }) => price)),
@@ -111,12 +131,13 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
   
 
   return (
-    <><div style={{ width: "90%", height: "1000px" }}>
-       <ReactECharts
+    <><div style={{ width: "90%", height: "600px" , marginTop:"1rem" }}>
+       <ReactECharts style={{ height: "100%" }}
         option={loading ? {} : options}
         notMerge={true}
         /> 
-    </div></>
+    </div>
+    </>
   );
 };
 

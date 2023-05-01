@@ -1,13 +1,12 @@
 "use client";
 import "./styles.css";
 import React from "react";
-import AssetPriceVisualizer from "./AssetPriceVisualizer"; // Import AssetPriceVisualizer
+import AssetPriceVisualizer from "./AssetPriceVisualizer"; 
 import coins from "./coins";
 import { useState } from "react";
 import { Coin } from "@/types/types";
-import Header from "./Header"; // Import Header
-
-
+import Header from "./Header"; 
+import Footer from "./Footer"; 
 
 const App = () => {
 
@@ -19,8 +18,8 @@ const App = () => {
         style={{
           height: "auto",
           minHeight: "100px",
-          maxHeight: "100vh",
-          overflowY: "auto",
+/*           maxHeight: "100vh",
+ */          overflowY: "auto",
         }}
       >
         {coins.map((coin_) => (
@@ -38,11 +37,25 @@ const App = () => {
   return (
     <div>
       <Header />
+      <h1 className="section-title"> AI-Powered Price Predictions </h1>
       <div className="container">
         <SidebarMenu />
         <div className="main">
-          {<AssetPriceVisualizer coin={coin} />}    </div>
+          <div className="visualizer-container">
+            {<AssetPriceVisualizer coin={coin} />}
+          </div>
+          <div className="explanation-container">
+            <h4>How the Calculations are Built </h4>
+            <p>
+            The calculations are based on a deep learning model that is trained on the closing price from June 2018 to the present date for each coin, provided that data is available. Since many of the coins are relatively new. The Mean Average Error for this particular model is {1}.  </p>
+          <p>
+          Since the price depends on many other factors, such as political or sentiment analysis, the predicted price may differ from the actual ones. Therefore, these predictions should not be used for investment purposes.
+          </p>
+          </div>
+
+        </div>
       </div>
+      <Footer />
     </div>
   );
 };

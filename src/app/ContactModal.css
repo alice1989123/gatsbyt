@@ -1,0 +1,55 @@
+.modal-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background: linear-gradient(to bottom, #000000, #1c1c3d);
+    padding: 14px;
+    border-radius: 4px;
+    max-width: 400px;
+    width: 90%;
+    position: relative;
+  }
+  
+  .modal-content p {
+    color: white;
+    font-size: 1.2rem;
+    margin: 1rem;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background-color: transparent;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  
+  .close-button:focus {
+    outline: none;
+  }
+  
+  /* Add the following styles */
+  .fa-linkedin,
+  .fa-envelope {
+    margin-right: 8px;
+    font-size: 1.2rem;
+    vertical-align: middle;
+  }
+  
+  a {
+    color: white;
+    text-decoration: none;
+  }
+  
