@@ -37,7 +37,7 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
   function get_metrics (metadata: Metadata) {
 
     const loss = metadata.history.val_loss [ metadata.history.val_loss.length -1]
-    const mae = metadata.history.val_mean_absolute_error [ metadata.history.mean_absolute_error.length -1]
+    const mae = metadata.history.val_mean_absolute_error [ metadata.history.val_mean_absolute_error.length -1]
   }
   
 
