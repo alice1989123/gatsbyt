@@ -9,26 +9,36 @@ interface ContactModalProps {
 const ContactModal = (props: ContactModalProps) => {
   return (
     <div className="modal-background" onClick={props.onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="close-button" onClick={props.onClose}>
-          X
-        </button>
-        <h2>Contact Information</h2>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+             
+          <button className="close-button" onClick={props.onClose}>
+              X
+            </button>
+     <div className='modal-header'>
+
+            
+            <h2>Contact Information</h2>
+      </div>
         <p>
-          Feel free to contact me if you are interested in promoting
+          Feel free to contact us if you are interested in promoting
           decentralized finance and open artificial intelligence.
         </p>
-        <div className="facontainer">
-          <a
-            href="https://www.linkedin.com/in/jazm%C3%ADn-alicia-basilio-vel%C3%A1zquez-aa9804205/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <FaLinkedin />
+        <div className="modal-icons">
+          <div>
+              <a
+                href="https://www.linkedin.com/in/jazm%C3%ADn-alicia-basilio-vel%C3%A1zquez-aa9804205/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+            <FaLinkedin size={32} className="envelope-icon" />
           </a>
-          <a href="mailto:aliciabasilo.ab@gmail.com">
-            <FaEnvelope />
-          </a>
+          </div>
+
+          <div >
+              <a href="mailto:aliciabasilo.ab@gmail.com">
+                <FaEnvelope size={32}  className="envelope-icon" />
+              </a>
+          </div>
         </div>
       </div>
     </div>
