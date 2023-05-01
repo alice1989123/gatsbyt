@@ -89,7 +89,8 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
 
 
     legend: {
-      right: 10, // Move legend to the right
+
+      right: 70, // Move legend to the right
       borderRadius: 5, // Rounded corners
       borderWidth: 1,
       borderColor: '#ccc',
@@ -102,7 +103,8 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
   
     },
     title: {
-      text: `${props.coin.name} Price - Prediction`,
+      top: 10,
+      text: `${props.coin.name}`,
       textStyle: {
         color: "lightgray", 
         
