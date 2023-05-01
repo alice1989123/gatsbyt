@@ -6,7 +6,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1rem;
+    padding: 0.5rem;
     background-image: linear-gradient(to bottom, #000000, #1c1c3d);
     height: 100%;
   }
@@ -24,13 +24,9 @@
     border-radius: 4px;
     padding: 8px 16px;
     width: 100%;
-
     transition: transform 0.5s ease-out;
 
   }
-
-
-
 
   .sidebar button:hover {
     transform: scale(1.1) translateY(-2px);

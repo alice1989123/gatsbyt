@@ -1,6 +1,6 @@
 import React from 'react';
 import './ContactModal.css';
-import { FaTwitter, FaLinkedin, FaEnvelope } from 'react-icons/fa'; // Import Font Awesome icons
+import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa'; // Import Font Awesome icons
 
 interface ContactModalProps {
   onClose: () => void;
@@ -37,6 +37,11 @@ const ContactModal = (props: ContactModalProps) => {
           <div >
               <a href="mailto:aliciabasilo.ab@gmail.com">
                 <FaEnvelope size={32}  className="envelope-icon" />
+              </a>
+          </div>
+          <div >
+              <a href="https://github.com/alice1989123">
+                <FaGithub size={32}  className="envelope-icon" />
               </a>
           </div>
         </div>

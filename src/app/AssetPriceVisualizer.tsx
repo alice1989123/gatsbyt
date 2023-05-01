@@ -19,25 +19,37 @@ interface AssetPriceVisualizerProps {
   coin: Coin;
 }
 
+interface History{
+  val_loss: number[]
+  val_mean_absolute_error: number[]
+  mean_absolute_error: number[]
+  loss: number[]  }
+
+
+const dummy_history = {
+  val_loss: [],
+  val_mean_absolute_error: [],
+  mean_absolute_error: [],
+  loss: [],
+}
+
 const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
 
   const [prices, setPrices] = useState<PriceData[]>([]);
   const [loading, setLoading] = useState(true); // Add loading state
   const [metadata , setMetadata] = useState<Object[]>([]);
-
+  const [history , setHistory] = useState<History>(dummy_history);
   interface Metadata { 
     history: History
   }
-  interface History{
-    val_loss: number[]
-    val_mean_absolute_error: number[]
-  }
+ 
 
-
-  function get_metrics (metadata: Metadata) {
-
-    const loss = metadata.history.val_loss [ metadata.history.val_loss.length -1]
-    const mae = metadata.history.val_mean_absolute_error [ metadata.history.val_mean_absolute_error.length -1]
+  function get_value_from_history( list :number[]) {
+    try { return list[list.length - 1].toFixed(4
+    )
+    } catch (error) {
+      return 0
+    }
   }
   
 
@@ -53,7 +65,7 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
           }
         }).then((response) => response.json())
         
-          .then((data) => { setPrices(data.predictions)  , setMetadata(data.metadata), setLoading(false)  ; console.log (data.metadata.history.loss) ;/* console.log( get_metrics(data.metadata.history) )*/})
+          .then((data) => { setPrices(data.predictions)  ; setMetadata(data.metadata);  setHistory(JSON.parse( (data.metadata.history  ))) ; setLoading(false)  }) 
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -95,7 +107,7 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
         color: "lightgray", 
         
       },
-      subtext: `Mean Squared Error: ${1.0.toFixed(4)} ( the lower the better)` ,
+      subtext: `Mean Squared Error: ${ get_value_from_history( history.mean_absolute_error) }  Val Mean Squared Error: ${ get_value_from_history( history.val_mean_absolute_error) }  Loss: ${ get_value_from_history( history.loss) }  Val Loss: ${ get_value_from_history( history.val_loss) } ` ,
       
 
     },
@@ -113,7 +125,7 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
     },
     series: [
       {         name: "Historical Price",
-        data: prices.slice(0, -20).map(({ price }) => price),
+        data: prices.slice(0, -20).map(({ price }) => Number(price.toFixed(4))),
         type: "line",
         smooth: true,
         lineStyle: {
@@ -127,7 +139,7 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
         ? { name: "Predicted Price",
             data: Array(prices.length - 20)
               .fill(null)
-              .concat(prices.slice(-20).map(({ price }) => price)),
+              .concat(prices.slice(-20).map(({ price }) => Number(price.toFixed(4)) )),
             type: "line",
             smooth: true,
             lineStyle: {
