@@ -8,9 +8,10 @@ import { Coin } from "@/types/types";
 import Header from "./Header"; 
 import Footer from "./Footer"; 
 
+
 const App = () => {
 
-  const [coin, setCoin] = useState<Coin>({ name: "Bitcoin", symbol: "btc" });
+  const [coin, setCoin] = useState<Coin>(coins[0]);
   const SidebarMenu = () => {
     return (
       <div
@@ -47,7 +48,7 @@ const App = () => {
           <div className="explanation-container">
             <h4>How the Calculations are Built </h4>
             <p>
-            The calculations are based on a deep learning model that is trained on the closing price from June 2018 to the present date for each coin, provided that data is available. Since many of the coins are relatively new. The Mean Average Error for this particular model is {1}.  </p>
+            The calculations are based on a deep learning model that is trained on the closing price from June 2018 to the present date for each coin, provided that data is available. Since many of the coins are relatively new.  </p>
           <p>
           Since the price depends on many other factors, such as political or sentiment analysis, the predicted price may differ from the actual ones. Therefore, these predictions should not be used for investment purposes.
           </p>

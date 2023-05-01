@@ -25,7 +25,20 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
   const [loading, setLoading] = useState(true); // Add loading state
   const [metadata , setMetadata] = useState<Object[]>([]);
 
-  function get_metrics (metadata: Object[]) {}
+  interface Metadata { 
+    history: History
+  }
+  interface History{
+    val_loss: number[]
+    val_mean_absolute_error: number[]
+  }
+
+
+  function get_metrics (metadata: Metadata) {
+
+    const loss = metadata.history.val_loss [ metadata.history.val_loss.length -1]
+    const mae = metadata.history.val_mean_absolute_error [ metadata.history.mean_absolute_error.length -1]
+  }
   
 
   useEffect(() => {
@@ -40,7 +53,7 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
           }
         }).then((response) => response.json())
         
-          .then((data) => { setPrices(data.predictions)  , setMetadata(data.metadata), setLoading(false)  ; console.log (data.metadata.history)})
+          .then((data) => { setPrices(data.predictions)  , setMetadata(data.metadata), setLoading(false)  ; console.log (data.metadata.history.loss) ;/* console.log( get_metrics(data.metadata.history) )*/})
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -77,7 +90,6 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
   
     },
     title: {
-      
       text: `${props.coin.name} Price - Prediction`,
       textStyle: {
         color: "lightgray", 

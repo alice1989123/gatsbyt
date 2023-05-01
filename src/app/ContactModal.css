@@ -13,6 +13,7 @@
   
   .modal-content {
     background: linear-gradient(to bottom, #000000, #1c1c3d);
+    size: 12px;
     padding: 14px;
     border-radius: 4px;
     max-width: 400px;
@@ -24,6 +25,7 @@
     color: white;
     font-size: 1.2rem;
     margin: 1rem;
+    font-size: 12px;
   }
   
   .close-button {
@@ -40,16 +42,29 @@
     outline: none;
   }
   
-  /* Add the following styles */
   .fa-linkedin,
   .fa-envelope {
-    margin-right: 8px;
+    margin-right: 14px;
     font-size: 1.2rem;
     vertical-align: middle;
   }
   
+
+  
+  facontainer {
+    margin-right: 14px;
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: aliceblue;
+  }
+
+
+
   a {
     color: white;
     text-decoration: none;
   }
-  
