@@ -1,0 +1,45 @@
+.page {
+  background-color: #1b263b;
+  padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.title {
+  color: #f0f0f0;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.newsItem {
+  display: flex;
+  background-color: #293d5a;
+  border-radius: 10px;
+  padding: 10px;
+  width: 80%; 
+  margin: auto; 
+}
+
+.wordCloud {
+  flex: 1;
+  background-color: #d2d9e6;
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 10px;
+}
+
+.jsonObject {
+  flex: 2;
+  color: #f0f0f0;
+}
+
+.sentiment {
+  font-size: 1.2em;
+}
