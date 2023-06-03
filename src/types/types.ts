@@ -8,4 +8,16 @@ export interface PriceData {
     symbol: string;
   }
 
-  
+  export interface News{
+    name: string;
+    symbol: string;
+  }
+
+  export type NewsItem = {
+    summary: string;
+    source: string;
+    sentiment: string;
+    entities: string;
+    tweets_number: number;
+  };
+
