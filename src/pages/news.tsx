@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Header from '@/app/Header';
 import Footer from '@/app/Footer';
-import NewsComponent from './components/newsComponent';
+import NewsComponent from '../app/components/newsComponent';
 import styles from './news.module.css'; // import your styles
-import SentimentVisualizer from './components/SentimentVisualizer';
+import SentimentVisualizer from '../app/components/SentimentVisualizer';
 
 
 const api = 'https://5ng8c5b4e2.execute-api.eu-central-1.amazonaws.com/default/cryptoNews'
@@ -67,7 +67,7 @@ type NewsItem = {
                         </div>
                       </div>
                       <Footer />
-                      <SentimentVisualizer />
+                      {/* <SentimentVisualizer /> */}
 
 
               </div>
