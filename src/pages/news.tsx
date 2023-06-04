@@ -50,27 +50,30 @@ type NewsItem = {
 
   return (
     
-    <div >
-            <Header />
-              <div className={styles.page}>
-                
-              <h1 className={styles.title}>Sentiment analysis</h1>
+    <div style={{position :"fixed" , height:"100%" ,width:"100%" ,top:"-1px" , left:"-1px" , backgroundColor : "#13195c"} }>
+      <Header />
+      <div className={styles.page }>
+               
+               <h1 className={styles.title}>Sentiment analysis</h1>
+ 
+                         <div className={styles.container}>
+                           {loading ? (
+                             <p>Loading...</p>
+                           ) : error ? (
+                             <p>Error: {error.message}</p>
+                           ) : (
+                             <><NewsComponent news={news} /></>
+                           )}
+                         </div>
+ 
+         </div>
+        <Footer />
+ 
+ 
+                       {/* <SentimentVisualizer /> */}
 
-                        <div className={styles.container}>
-                          {loading ? (
-                            <p>Loading...</p>
-                          ) : error ? (
-                            <p>Error: {error.message}</p>
-                          ) : (
-                            <><NewsComponent news={news} /></>
-                          )}
-                        </div>
-                      </div>
-                      <Footer />
-                      {/* <SentimentVisualizer /> */}
 
-
-              </div>
+    </div>
   );
 }
 

@@ -31,8 +31,8 @@ const NewsComponent: FC<NewsComponentProps> = ({ news }) => (
     <div className={styles.container}>
       {news.map((item, index) => (
         <div key={index} className={styles.newsItem}>
-          <div className={styles.wordCloud}>
-            {/* <WordCloud 
+          {/* <div className={styles.wordCloud}>
+           <WordCloud 
               options={{
                 colors: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'], // array of colors
                 fontFamily: 'arial',
@@ -42,8 +42,8 @@ const NewsComponent: FC<NewsComponentProps> = ({ news }) => (
                 item.summary.split(' ').map(word => ({ text: word, value: 50 })) :
                 item.entities.split(', ').map(entity => ({ text: entity, value: 50 }))
               }
-            /> */}
-          </div>
+            /> 
+          </div> */}
           <div className={styles.jsonObject}>
             <p><b>Summary:</b> {item.summary}</p>
             <p><b>Source:</b> {item.source}</p>
