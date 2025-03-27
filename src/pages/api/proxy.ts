@@ -8,6 +8,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.query.debug === 'creds') {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
     return res.status(200).json({
       ACCESS_KEY_ID: process.env.ACCESS_KEY_ID,
       SECRET_ACCESS_KEY: process.env.SECRET_ACCESS_KEY,
