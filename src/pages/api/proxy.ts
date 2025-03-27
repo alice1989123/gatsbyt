@@ -52,6 +52,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(500).json({ error: err.message });
     });
 
+    console.log("Signed headers:", opts.headers);
+    console.log("Signed request:", opts);
+
     request.end();
   } catch (err: any) {
     console.error('Signing error:', err);
