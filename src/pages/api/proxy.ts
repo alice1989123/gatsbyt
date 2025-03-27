@@ -4,6 +4,8 @@ import aws4 from 'aws4';
 import https from 'https';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { collection_name } = req.query;
 
