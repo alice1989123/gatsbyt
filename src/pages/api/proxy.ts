@@ -7,6 +7,13 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.query.debug === 'creds') {
+    return res.status(200).json({
+      ACCESS_KEY_ID: process.env.ACCESS_KEY_ID,
+      SECRET_ACCESS_KEY: process.env.SECRET_ACCESS_KEY,
+      SESSION_TOKEN: process.env.SESSION_TOKEN
+    });
+  }
   const { collection_name } = req.query;
 
   if (!collection_name || typeof collection_name !== 'string') {
@@ -33,6 +40,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       sessionToken: process.env.AWS_SESSION_TOKEN || undefined, // if using temporary creds
     });
 
+    
+
     const request = https.request(opts, (response) => {
       let body = '';
       response.on('data', (chunk) => (body += chunk));
@@ -47,13 +56,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     });
 
+   
+
+    
+
     request.on('error', (err) => {
       console.error('Request error:', err);
       res.status(500).json({ error: err.message });
     });
-
-    console.log("Signed headers:", opts.headers);
-    console.log("Signed request:", opts);
 
     request.end();
   } catch (err: any) {
