@@ -9,10 +9,12 @@ import { PriceData , Coin } from "@/types/types";
 
 
 
+
 const ReactECharts = dynamic(() => import("echarts-for-react"), { ssr: false });
 
 
-const  api = process.env.API ? process.env.API : "http://localhost:3000/api/crypto";
+//const  api = process.env.API ? process.env.API : "http://localhost:3000/api/crypto";
+const api = "/api/proxy";
 
 interface AssetPriceVisualizerProps {
   coin: Coin;
