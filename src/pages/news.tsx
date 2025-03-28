@@ -6,7 +6,7 @@ import styles from './news.module.css'; // import your styles
 import SentimentVisualizer from '../app/components/SentimentVisualizer';
 
 
-const api = 'https://5ng8c5b4e2.execute-api.eu-central-1.amazonaws.com/default/cryptoNews'
+const api = '/api/proxy?collection_name=news'; //'https://5ng8c5b4e2.execute-api.eu-central-1.amazonaws.com/default/cryptoNews'
 
 const About = () => {
 
@@ -26,7 +26,7 @@ type NewsItem = {
   
 
   useEffect(() => {
-    async function fetchPrices() {
+    async function fetchNews() {
       try {
         const response_ = await fetch(api, {
           method: 'GET',
@@ -45,7 +45,7 @@ type NewsItem = {
         console.error('Error fetching data:', error);
       }
     }
-    fetchPrices();
+    fetchNews();
   }, []);
 
   return (
