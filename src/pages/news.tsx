@@ -2,21 +2,15 @@ import React, { useState, useEffect } from 'react';
 import Header from '@/app/Header';
 import Footer from '@/app/Footer';
 import NewsComponent from '../app/components/newsComponent';
-import styles from './news.module.css'; // import your styles
+import styles from './news.module.css'; 
 import SentimentVisualizer from '../app/components/SentimentVisualizer';
+import { NewsItem } from '../types/types';
 
-
-const api = '/api/proxy?collection_name=news'; //'https://5ng8c5b4e2.execute-api.eu-central-1.amazonaws.com/default/cryptoNews'
+const api = '/api/proxy?collection_name=news'; 
 
 const About = () => {
 
-type NewsItem = {
-        summary: string;
-        source: string;
-        sentiment: string;
-        entities: string;
-        tweets_number: number;
-      };
+
     
   const [news, setNews] = useState<NewsItem[]>([]);
   const [sentiment, setSentiment] = useState([]);
@@ -36,8 +30,8 @@ type NewsItem = {
         })
         .then((response) => response.json())
         .then((data) => { 
-          console.log(data); 
-          setNews(data.news.news); 
+          //console.log(data); 
+          setNews(data.news); 
           setSentiment(data.sentiment); 
           setLoading(false);
         }); 

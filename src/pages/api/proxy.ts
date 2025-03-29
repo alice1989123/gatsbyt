@@ -42,6 +42,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     headers: opts.headers,
   };
 
+  //console.log( reqOptions)
+
   const proxyReq = https.request(reqOptions, (proxyRes) => {
     let data = '';
 

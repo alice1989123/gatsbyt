@@ -14,10 +14,8 @@ export interface PriceData {
   }
 
   export type NewsItem = {
+    headline: string;
     summary: string;
-    source: string;
-    sentiment: string;
-    entities: string;
-    tweets_number: number;
-  };
-
+    url: string;
+    date: string;
+  }
