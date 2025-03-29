@@ -9,7 +9,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Missing or invalid collection_name' });
   }
 
-  const  host = '19uc349uc1.execute-api.eu-central-1.amazonaws.com' ;
   let path: string;
 
   if (collection_name === 'news') {
@@ -19,13 +18,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const opts: aws4.Request = {
-    host,
+    host : process.env.CRYPTO_API!,
     path,
     method: 'GET',
     service: 'execute-api',
     region: 'eu-central-1',
     headers: {
-      Host: host,
+      Host: process.env.CRYPTO_API!,
     },
   };
 
@@ -35,10 +34,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     sessionToken: process.env.AWS_SESSION_TOKEN || undefined,
   });
 
-  console.log('[DEBUG] Signed request options:', opts);
 
   const reqOptions = {
-    hostname: host,
+    hostname: process.env.CRYPTO_API!,
     path: path,
     method: opts.method,
     headers: opts.headers,
