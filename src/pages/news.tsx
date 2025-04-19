@@ -6,7 +6,7 @@ import styles from './news.module.css';
 import SentimentVisualizer from '../app/components/SentimentVisualizer';
 import { NewsItem } from '../types/types';
 
-const api = '/api/proxy?collection_name=news'; 
+const api = '/api/proxy'; 
 
 const About = () => {
 
@@ -22,7 +22,7 @@ const About = () => {
   useEffect(() => {
     async function fetchNews() {
       try {
-        const response_ = await fetch(api, {
+        const response_ = await fetch(api+"?resource=news", {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

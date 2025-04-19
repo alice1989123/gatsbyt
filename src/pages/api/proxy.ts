@@ -2,20 +2,40 @@ import aws4 from 'aws4';
 import https from 'https';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { collection_name } = req.query;
 
-  if (!collection_name || typeof collection_name !== 'string') {
-    return res.status(400).json({ error: 'Missing or invalid collection_name' });
-  }
+export default async function handler(req: NextApiRequest, res: NextApiResponse ) {
+
+  const { resource  , metric_name , coin} = req.query;
 
   let path: string;
 
-  if (collection_name === 'news') {
+  console.log("Query:", req.query);
+  console.log("Resource:", resource);
+
+  if (resource === 'news') {
     path = '/default/news';
-  } else {
-    path = `/default/predictions?collection_name=${collection_name}`;
+  } 
+  else if (resource === 'on_chain_metrics') {
+    if (!metric_name || typeof metric_name !== 'string') {
+      return res.status(400).json({ error: 'Missing or invalid metric_name' });
+    }
+
+    const encodedMetric = encodeURIComponent(metric_name);
+    path = `/default/on_chain_metrics?metric=${encodedMetric}`;
+  } 
+  else if (resource === 'predictions') {
+    if (!coin || typeof coin !== 'string') {
+      return res.status(400).json({ error: 'Missing or invalid coin' });
+    }
+
+    const encodedCoin= encodeURIComponent(coin as string);
+    path = `/default/predictions?coin=${encodedCoin}`;
+    console.log(path)
   }
+  else {
+    return res.status(400).json({ error: 'Missing or invalid resource' });
+  }
+
 
   const opts: aws4.Request = {
     host : process.env.CRYPTO_API!,

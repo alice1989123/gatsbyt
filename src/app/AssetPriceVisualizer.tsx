@@ -61,7 +61,7 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
     async function fetchPrices() {
       try {
         //const res = await fetchData();
-         const response_ = await fetch( api + `?collection_name=${props.coin.symbol}`, {
+         const response_ = await fetch( api + `?resource=predictions&coin=${props.coin.symbol}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

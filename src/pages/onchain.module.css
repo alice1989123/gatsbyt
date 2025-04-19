@@ -1,0 +1,84 @@
+.page {
+  
+
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(44, 44, 93, 0.5)), url("/background.png");
+  background-repeat: repeat;
+  background-size: normal;
+  background-blend-mode: normal;
+  margin: 0;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: "100%";
+
+}
+
+.container {
+width: 90%;
+max-width: 800px;
+height: 70vh;
+background: rgba(255, 255, 255, 0.1);
+border-radius: 15px;
+padding: 2rem;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+overflow-y: scroll;
+overflow-x: hidden;
+}
+
+.title {
+text-align: center;
+margin-bottom: 2rem;
+font-size: 2.5rem;
+color: white;
+}
+
+/* modify these styles for the scrollbar */
+.container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1); /* make the track transparent like the container */
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 139, 0.5); /* dark blue color with some transparency */
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 56, 139, 0.8); /* darker blue color when hovering */
+}
+
+.tooltipWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.infoIcon {
+  cursor: pointer;
+  color: #00bfff;
+  font-size: 18px;
+}
+
+.tooltipContent {
+  display: none;
+  position: absolute;
+  top: 120%;
+  left: 0;
+  background-color: #222;
+  color: white;
+  padding: 8px;
+  font-size: 12px;
+  width: 250px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  z-index: 10;
+  line-height: 1.4;
+}
+
+/* ✨ This is the magic line */
+.tooltipWrapper:hover .tooltipContent {
+  display: block;
+}
