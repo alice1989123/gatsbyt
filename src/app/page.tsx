@@ -5,8 +5,8 @@ import AssetPriceVisualizer from "./AssetPriceVisualizer";
 import coins from "./coins";
 import { useState } from "react";
 import { Coin } from "@/types/types";
-import Header from "./Header"; 
-import Footer from "./Footer"; 
+import Header from "./components/Header"; 
+import Footer from "./components/Footer"; 
 
 
 const App = () => {

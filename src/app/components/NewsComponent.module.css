@@ -1,46 +1,17 @@
-.page {
-  background-color: #1b263b;
-  padding: 20px;
-display: flex;
-flex-direction: column;
-align-items: center;
-
-}
-
-.title {
-  color: #f0f0f0;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
 .container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 1rem;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1rem;
 }
 
 .newsItem {
-  display: flex;
   background-color: #293d5a;
   border-radius: 10px;
-  padding: 10px;
-  width: 80%; 
-  margin: auto; 
-}
-
-.wordCloud {
-  flex: 1;
-  background-color: #d2d9e6;
-  padding: 10px;
-  margin-right: 10px;
-  border-radius: 10px;
-}
-
-.jsonObject {
-  flex: 2;
+  padding: 1rem;
   color: #f0f0f0;
-}
-
-.sentiment {
-  font-size: 1.2em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }

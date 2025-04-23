@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import Header from '@/app/Header';
-import Footer from '@/app/Footer';
+import Header from '@/app/components/Header';
+import Footer from '@/app/components/Footer';
 import NewsComponent from '../app/components/newsComponent';
 import styles from './news.module.css'; 
-import SentimentVisualizer from '../app/components/SentimentVisualizer';
+//import SentimentVisualizer from '../app/components/SentimentVisualizer';
 import { NewsItem } from '../types/types';
 
 const api = '/api/proxy'; 
@@ -44,7 +44,7 @@ const About = () => {
 
   return (
     
-    <div style={{position :"fixed" , height:"100%" ,width:"100%" ,top:"-1px" , left:"-1px" , backgroundColor : "#13195c"} }>
+    <div className={styles.wrapper}>
       <Header />
       <div className={styles.page }>
                

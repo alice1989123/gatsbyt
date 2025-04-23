@@ -1,4 +1,4 @@
-"use client";
+
 import styles from "./visualizer.module.css";
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
