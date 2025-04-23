@@ -8,10 +8,17 @@
   padding: 1rem;
 }
 
+
 .newsItem {
-  background-color: #293d5a;
-  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.07);
   padding: 1rem;
-  color: #f0f0f0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.newsItem:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }

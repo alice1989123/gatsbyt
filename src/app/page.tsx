@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Coin } from "@/types/types";
 import Header from "./components/Header"; 
 import Footer from "./components/Footer"; 
-
+import './globals.css';
 
 const App = () => {
 
@@ -36,7 +36,7 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className="layout-wrapper">
       <Header />
       <h1 className="section-title"> AI-Powered Price Predictions </h1>
       <div className="container">

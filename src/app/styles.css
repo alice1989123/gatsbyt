@@ -55,6 +55,8 @@
     display: flex;
     flex-direction: column; 
     align-items: center;
+    min-height: 70vh;
+
   }
 
   body {
@@ -84,3 +86,13 @@
     line-height: 1.5;
   }
 
+  .layout-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    
+    background-size: cover;
+    background-repeat: repeat;
+    background-blend-mode: overlay;
+    color: white;
+  }

@@ -269,3 +269,15 @@
     transform: rotate(0deg);
   }
 }
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  color: white;
+}
+
+.container {
+  display: flex;
+  flex: 1; /* Pushes footer to the bottom */
+}
+

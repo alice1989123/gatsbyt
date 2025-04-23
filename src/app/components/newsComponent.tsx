@@ -18,7 +18,7 @@ const NewsComponent: FC<NewsComponentProps> = ({ news }) => (
           <div className={styles.jsonObject}>
             <p><b>Headline:</b> <a href={item.url} target="_blank" rel="noopener noreferrer">{item.headline}</a></p>
             <p><b>Summary:</b> {item.summary}</p>
-            <p><b>Date:</b> {new Date(item.date).toLocaleString()}</p>
+            <p><b>Date:</b> {new Date(item.date).toLocaleDateString()}</p>
           </div>
         </div>
       ))
