@@ -78,7 +78,34 @@ const OnChain = () => {
     "total_value_transferred_usd_per_day": {
       label: "Total USD Transferred Per Day",
       description: "The total value of Bitcoin transferred per day, converted to USD using historical BTC prices."
-    }
+    },
+    
+      "avg_shrimp_per_day": {
+        label: "Average Shrimp Transactions Per Day",
+        description: "The average number of transactions per day where the largest output is less than 1 BTC. Represents small-value movements, typically from retail participants."
+      },
+      "avg_fish_per_day": {
+        label: "Average Fish Transactions Per Day",
+        description: "The average number of transactions per day where the largest output is between 1 and 10 BTC. Represents moderate-sized Bitcoin transfers."
+      },
+      "avg_dolphin_per_day": {
+        label: "Average Dolphin Transactions Per Day",
+        description: "The average number of transactions per day where the largest output is between 10 and 50 BTC. Indicates larger movements often by serious investors or wealthy individuals."
+      },
+      "avg_shark_per_day": {
+        label: "Average Shark Transactions Per Day",
+        description: "The average number of transactions per day where the largest output is between 50 and 100 BTC. Represents significant Bitcoin movements, possibly from funds or high-net-worth individuals."
+      },
+      "avg_whale_per_day": {
+        label: "Average Whale Transactions Per Day",
+        description: "The average number of transactions per day where the largest output is between 100 and 1000 BTC. Typically represents movements by large institutional players or early adopters."
+      },
+      "avg_humpback_per_day": {
+        label: "Average Humpback Transactions Per Day",
+        description: "The average number of transactions per day where the largest output exceeds 1000 BTC. These are extremely large Bitcoin movements, characteristic of massive holders or exchanges."
+      }
+    
+    
   };
   const chartOptions = {
     title: {

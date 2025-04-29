@@ -9,8 +9,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
 
   let path: string;
 
-  console.log("Query:", req.query);
-  console.log("Resource:", resource);
+  //console.log("Query:", req.query);
+  //console.log("Resource:", resource);
 
   if (resource === 'news') {
     path = '/default/news';
@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
 
     const encodedCoin= encodeURIComponent(coin as string);
     path = `/default/predictions?coin=${encodedCoin}`;
-    console.log(path)
+    //console.log(path)
   }
   else {
     return res.status(400).json({ error: 'Missing or invalid resource' });
