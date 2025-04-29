@@ -80,4 +80,9 @@
   box-shadow: 0 0 8px rgba(0, 224, 255, 0.5);
 }
 
-
+.header-logo {
+  position: relative;
+  z-index: 1;
+  mix-blend-mode: normal; /* 🔥 Important line */
+  color: white;
+}

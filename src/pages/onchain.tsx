@@ -14,19 +14,7 @@ const api = '/api/proxy';
 
 const OnChain = () => {
 
-  const metricOptions = [
-    "Number of blocks mined",
-    "avg_block_size_per_day",
-    "avg_tx_per_block_per_day",
-    "avg_block_weight",
-    "difficulty_over_time",
-    "total_value_transferred_per_day",
-    "avg_fee_per_day",
-    "total_value_transferred_usd_per_day"
-  ];
-
  
-  
   const [selectedMetric, setSelectedMetric] = useState("total_value_transferred_usd_per_day");
   const [seriesData, setSeriesData] = useState([]);
 
