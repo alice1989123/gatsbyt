@@ -86,14 +86,17 @@ html, body {
   min-height: 100vh;
   overflow-x: hidden;
   
-  background-color: #13195c;
-  background-image: url('/background.png'); /* use your real grid */
+  background: url('/background.png') no-repeat center center fixed;
   background-size: cover;
-  background-position: center;
-  background-repeat: repeat;
+  background-blend-mode: overlay;
+  background-color: #13195c;
+  backdrop-filter: blur(4px);
+  
   color: rgb(var(--foreground-rgb));
-  font-family: sans-serif;
+  font-family: 'Poppins', sans-serif; /* after you import it */
 }
+
+
 
 
 a {

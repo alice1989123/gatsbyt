@@ -42,14 +42,42 @@
   box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
 }
 
+/* New */
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px; /* Optional to limit width */
+  margin: 0 auto; /* Center horizontally */
+  width: 100%;
+}
 
 .header-link.active {
   border-bottom: 2px solid #00e0ff;
   font-weight: bold;
 }
 
-.header-link:hover,
-.header-contact:hover {
-  background-color: rgba(0, 255, 255, 0.1);
-  box-shadow: 0 0 5px rgba(0, 255, 255, 0.4);
+.header-contact {
+  color: white;
+  background: transparent;
+  border: 2px solid #00e0ff;
+  padding: 6px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
+
+.header-contact:hover {
+  background-color: rgba(0, 224, 255, 0.1);
+  box-shadow: 0 0 8px rgba(0, 224, 255, 0.5);
+}
+
+
+.header-contact:hover {
+  background-color: rgba(0, 224, 255, 0.1);
+  box-shadow: 0 0 8px rgba(0, 224, 255, 0.5);
+}
+
+

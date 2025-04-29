@@ -24,27 +24,18 @@ const ContactModal = (props: ContactModalProps) => {
           decentralized finance and open artificial intelligence.
         </p>
         <div className="modal-icons">
-          <div>
-              <a
-                href="https://www.linkedin.com/in/jazm%C3%ADn-alicia-basilio-vel%C3%A1zquez-aa9804205/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+          <a href="https://www.linkedin.com/in/jazm%C3%ADn-alicia-basilio-vel%C3%A1zquez-aa9804205/" target="_blank" rel="noopener noreferrer">
             <FaLinkedin size={32} className="envelope-icon" />
           </a>
-          </div>
-
-          <div >
-              <a href="mailto:aliciabasilo.ab@gmail.com">
-                <FaEnvelope size={32}  className="envelope-icon" />
-              </a>
-          </div>
-          <div >
-              <a href="https://github.com/alice1989123">
-                <FaGithub size={32}  className="envelope-icon" />
-              </a>
-          </div>
-        </div>
+          
+          <a href="mailto:aliciabasilo.ab@gmail.com">
+            <FaEnvelope size={32} className="envelope-icon" />
+          </a>
+          
+          <a href="https://github.com/alice1989123">
+            <FaGithub size={32} className="envelope-icon" />
+          </a>
+      </div>
       </div>
     </div>
   );
