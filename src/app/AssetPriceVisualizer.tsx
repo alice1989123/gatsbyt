@@ -57,6 +57,31 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
 useEffect(() => {
   setIsMobile(window.innerWidth < 768);
 }, []);
+useEffect(() => {
+  setLoading(true); // ✅ Reset loading whenever coin changes
+  setPrices([]);
+  async function fetchPrices() {
+    try {
+      const response_ = await fetch(api + `?resource=predictions&coin=${props.coin.symbol}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      const data = await response_.json();
+      setPrices(data.predictions);
+      setMetadata(data.metadata);
+      setHistory(JSON.parse(data.metadata.history));
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false); // ✅ Ensure it's set to false even on failure
+    }
+  }
+
+  fetchPrices();
+}, [props.coin]);
 
   useEffect(() => {
     setPrices([]);
@@ -156,7 +181,7 @@ useEffect(() => {
           fontSize: isMobile ? 10 : 12,
           margin: 10,
           formatter: (value: number) =>
-            value >= 1000 ? `${(value / 1000).toFixed(0)}k` : `${value}`,
+            value >= 1000 ? `${(value / 1000).toFixed(0)}k` : `${value.toFixed(2)}`,
         },
       },
       dataZoom: [
@@ -209,10 +234,10 @@ useEffect(() => {
       <h2>{props.coin.name} - USDT</h2>
       <div className={styles.legendBar}>
         <span className={styles.legendItem}>
-          <span className={styles.dot} style={{ backgroundColor: "gray" }}></span> Historical Price
+          <span className={styles.dotLegend} style={{ backgroundColor: "gray" }}></span> Historical Price
         </span>
         <span className={styles.legendItem}>
-          <span className={styles.dot} style={{ backgroundColor: "limegreen" }}></span> Predicted Price
+          <span className={styles.dotLegend} style={{ backgroundColor: "limegreen" }}></span> Predicted Price
         </span>
       </div>
       <p className={styles.metrics}>
@@ -221,17 +246,19 @@ useEffect(() => {
     </div>
   
     <div className={styles.visualizerChart}>
-      {loading ? (
-       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: 300 }}>
-       <PulseLoader color="#5c6bc0" size={12} margin={6} />
-     </div>
+    {loading ? (
+        <div className={styles.loaderWrapper}>
+          <span className={styles.dot}></span>
+          <span className={styles.dot}></span>
+          <span className={styles.dot}></span>
+        </div>
       ) : (
         <ReactECharts
           option={options}
-          style={{ width: '100%', height: '100%' }} // now fills .visualizerChart's size
+          style={{ width: '100%', height: '100%' }}
           notMerge={true}
         />
-      )}
+    )}
     </div>
   </div>
   

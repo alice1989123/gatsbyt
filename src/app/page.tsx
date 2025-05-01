@@ -18,6 +18,7 @@ const App = () => {
   const SidebarMenu = () => {
     const [isMobile, setIsMobile] = useState(false);
     const [hydrated, setHydrated] = useState(false); // ← new
+    
     useEffect(() => {
       const handleResize = () => setIsMobile(window.innerWidth < 768);
       handleResize();
@@ -31,10 +32,7 @@ const App = () => {
       value: coin_.symbol,
       label: coin_.name
     }));
-    const handleChange = (selectedOption: any) => {
-      const selected = coins.find(c => c.symbol === selectedOption.value);
-      if (selected) setCoin(selected);
-    };
+    
   
     
   if (isMobile) {

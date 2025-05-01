@@ -8,6 +8,7 @@
 }
 
 .sidebar {
+  margin: 1rem , auto;
   width: 15%;
   display: flex;
   flex-direction: column;
@@ -19,8 +20,7 @@
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 
   /* New part */
-  max-height: 85vh; /* Sidebar won't be taller than 85% of the viewport */
-  overflow-y: auto; /* Scroll if it overflows */
+  max-height: 1000px;   overflow-y: auto; /* Scroll if it overflows */
   scrollbar-width: thin; /* Firefox nice scrollbar */
   scrollbar-color: #5c6bc0 transparent;
 }
