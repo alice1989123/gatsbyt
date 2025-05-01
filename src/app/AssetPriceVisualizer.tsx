@@ -1,9 +1,8 @@
 "use client";
 import styles from './AssetVisualizer.module.css';import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { EChartsOption } from "echarts";
 import { PriceData , Coin } from "@/types/types";
-
+import type { EChartsOption, SeriesOption } from 'echarts';
 
 
 
@@ -83,80 +82,125 @@ useEffect(() => {
 
 
 
-  const minPrice = Math.min(...prices.map(({ price }) => Number(price.toFixed(4))));
-  const maxPrice = Math.max(...prices.map(({ price }) => Number(price.toFixed(4))));
+  const minPrice = Math.min(...prices.map(p => p.price)) * .99;
+  // Adding a small buffer to the max price to ensure the line fits within the chart
+  const maxPrice = Math.max(...prices.map(p => p.price)) * 1.01;
+  // Adding a small buffer to the min price to ensure the line fits within the chart
 
   
 
-  const options: EChartsOption = {
-    textStyle: {
-      color: "lightgray", 
-    },
-
-    title: {
-      show: false
-    },
-
-    xAxis: {
-      type: "category",
-      data: prices.length > 0 ? prices.map(({ date }) => parseToLocalTime(date)) : [],
-      axisLine: { lineStyle: { color: "#ccc" } },
-      axisLabel: { color: "#ccc" }
-    },
-    yAxis: {
-      type: "value",
-      min: prices.length > 0 ? minPrice : 0,
-      max: prices.length > 0 ? maxPrice : 100,
-      axisLine: { lineStyle: { color: "#ccc" } },
-      axisLabel: { color: "#ccc" }
-    },
-    dataZoom: [
-      {
-        type: 'slider',
-        show: true,
-        xAxisIndex: 0,
-        start: 70,   // Adjust as needed
-        end: 100,
-        bottom: 10
-      },
-      {
-        type: 'inside',
-        xAxisIndex: 0,
-        start: 70,
-        end: 100
-      }
-    ],
-    series: [
-      {         name: "Historical Price",
-        data: prices.slice(0, -12).map(({ price }) => Number(price.toFixed(4))),
-        type: "line",
-        smooth: true,
-        lineStyle: {
-          color: "gray",
-        },
-        itemStyle: {
-          color: "gray",
+  const options: EChartsOption = prices.length === 0
+  ? {
+      title: {
+        text: "No data available",
+        left: "center",
+        top: "middle",
+        textStyle: {
+          color: "lightgray",
+          fontSize: 16,
         },
       },
-      prices.length > 20
-        ? { name: "Predicted Price",
-            data: Array(prices.length - 12)
-              .fill(null)
-              .concat(prices.slice(-13).map(({ price }) => Number(price.toFixed(4)) )),
-            type: "line",
-            smooth: true,
-            lineStyle: {
-              color: "green",
-            },
-            itemStyle: {
-              color: "green",
-            },
-          }
-        : {},
-    ],
-    
-  };
-  
+    }
+  : { 
+      textStyle: {
+        color: "lightgray",
+      },
+      title: {
+        show: false,
+      },
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: '#222',
+        borderColor: '#555',
+        textStyle: {
+          color: '#fff',
+          fontSize: 12,
+        },
+        formatter: (params: any) => {
+          const [point] = params;
+          return `
+            <strong>${point.seriesName}</strong><br/>
+            ${point.axisValue}<br/>
+            Price: $${point.data?.toFixed(2)}
+          `;
+        },
+      },
+      grid: {
+        left: isMobile ? 50 : 60,
+        right: 10,
+        bottom: isMobile ? 50 : 40,
+        top: 30,
+        containLabel: true,
+      },
+      xAxis: {
+        type: "category",
+        data: prices.map(({ date }) => parseToLocalTime(date)),
+        axisLine: { lineStyle: { color: "#ccc" } },
+        axisLabel: {
+          color: "#ccc",
+          fontSize: isMobile ? 9 : 12,
+          rotate: isMobile ? 45 : 0,
+          formatter: (value: string, index: number) => {
+            const parts = value.split(", ");
+            return isMobile ? parts[1]?.replace(/:\d+$/, "") ?? value : value;
+          },
+        },
+      },
+      yAxis: {
+        type: "value",
+        min: minPrice,
+        max: maxPrice,
+        axisLine: { lineStyle: { color: "#ccc" } },
+        axisLabel: {
+          color: "#ccc",
+          fontSize: isMobile ? 10 : 12,
+          margin: 10,
+          formatter: (value: number) =>
+            value >= 1000 ? `${(value / 1000).toFixed(0)}k` : `${value}`,
+        },
+      },
+      dataZoom: [
+        {
+          type: 'slider',
+          show: true,
+          xAxisIndex: 0,
+          start: 70,
+          end: 100,
+          bottom: 10,
+        },
+        {
+          type: 'inside',
+          xAxisIndex: 0,
+          start: 85,
+          end: 100,
+        },
+      ],
+      series: [
+        {
+          name: "Historical Price",
+          data: prices.slice(0, -12).map(({ price }) => Number(price.toFixed(4))),
+          type: "line" as const,
+          smooth: true,
+          lineStyle: { color: "gray" },
+          itemStyle: { color: "gray" },
+        },
+        ...(prices.length > 20
+          ? [{
+              name: "Predicted Price",
+              data: prices.map((_, index) =>
+                index < prices.length - 13
+                  ? null
+                  : Number(prices[index].price.toFixed(4))
+              ),
+              type: "line" as const,
+              smooth: true,
+              lineStyle: { color: "green" },
+              itemStyle: { color: "green" },
+            }]
+          : []),
+      ] as SeriesOption[],
+    };
+
 
   return (
 

@@ -31,6 +31,16 @@
   padding-bottom: 0.3rem;
 }
 
+.subtitle{
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  margin-top: 0;
+  color: white;
+  display: inline-block;
+  padding-bottom: 0.3rem;
+}
+
 .container {
   width: 90%;
   max-width: 800px;
