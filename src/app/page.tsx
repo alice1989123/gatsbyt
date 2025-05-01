@@ -9,48 +9,9 @@ import Header from "./components/Header";
 import Footer from "./components/Footer"; 
 import './globals.css';
 import { useEffect } from "react";
-import Select from 'react-select';
-import { GroupBase, StylesConfig, ThemeConfig } from 'react-select';
+import CustomSelect from "./components/CustomSelect";
 
-const customStyles: StylesConfig<any, false, GroupBase<any>> = {
-  control: (base) => ({
-    ...base,
-    backgroundColor: '#1a237e',
-    borderColor: '#3949ab',
-    color: 'white',
-    borderRadius: '8px',
-    padding: '2px',
-  }),
-  singleValue: (base) => ({
-    ...base,
-    color: 'white',
-  }),
-  menu: (base) => ({
-    ...base,
-    backgroundColor: '#1a237e',
-    borderRadius: '8px',
-  }),
-  option: (base, { isFocused }) => ({
-    ...base,
-    backgroundColor: isFocused ? '#5c6bc0' : '#1a237e',
-    color: 'white',
-    cursor: 'pointer',
-  }),
-  input: (base) => ({
-    ...base,
-    color: 'white', // ← ensures typed letters are visible
-  }),
-};
 
-const customTheme: ThemeConfig = (theme) => ({
-  ...theme,
-  borderRadius: 0,
-  colors: {
-    ...theme.colors,
-    primary25: '#5c6bc0',
-    primary: '#3949ab',
-  },
-});
 const App = () => {
 
   const [coin, setCoin] = useState<Coin>(coins[0]);
@@ -79,13 +40,14 @@ const App = () => {
   if (isMobile) {
     return (
       <div style={{ padding: '1rem', width: '100%' }}>
-        <Select
-        options={options}
-        value={{ value: coin.symbol, label: coin.name }}
-        onChange={handleChange}
-        styles={customStyles}
-        theme={customTheme}
-      />
+       <CustomSelect
+  options={coins.map((coin) => ({ label: coin.name, value: coin.symbol }))}
+  value={{ label: coin.name, value: coin.symbol }}
+  onChange={(option) => {
+    const selected = coins.find(c => c.symbol === option.value);
+    if (selected) setCoin(selected);
+  }}
+/>
       </div>
     );
   }

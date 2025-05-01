@@ -1,6 +1,5 @@
 "use client";
-import "./styles.css";
-import React, { useEffect, useState } from "react";
+import styles from './AssetVisualizer.module.css';import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { EChartsOption } from "echarts";
 import { PriceData , Coin } from "@/types/types";
@@ -54,7 +53,11 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
       return 0
     }
   }
-  
+  const [isMobile, setIsMobile] = useState(false);
+
+useEffect(() => {
+  setIsMobile(window.innerWidth < 768);
+}, []);
 
   useEffect(() => {
     setPrices([]);
@@ -90,44 +93,39 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
       color: "lightgray", 
     },
 
-
-    legend: {
-
-      right: 70, // Move legend to the right
-      borderRadius: 5, // Rounded corners
-      borderWidth: 1,
-      borderColor: '#ccc',
-      padding: 10,
-      backgroundColor: "#13195c", // Set background color to dark blue
-      data: ['Historical Price', 'Predicted Price'],
-      textStyle: {
-        color: "white", // Set title text color to white
-      },
-  
-    },
     title: {
-      top: 10,
-      text: `${props.coin.name}`,
-      textStyle: {
-        color: "lightgray", 
-        
-      },
-      subtext: `Mean Squared Error: ${ get_value_from_history( history.mean_absolute_error) }  Val Mean Squared Error: ${ get_value_from_history( history.val_mean_absolute_error) }  Loss: ${ get_value_from_history( history.loss) }  Val Loss: ${ get_value_from_history( history.val_loss) } ` ,
-      
+      show: false
+    },
 
-    },
-    tooltip: {
-      trigger: "axis",
-    },
     xAxis: {
       type: "category",
-      data: prices.map(({ date }) =>  parseToLocalTime(date) ),
+      data: prices.length > 0 ? prices.map(({ date }) => parseToLocalTime(date)) : [],
+      axisLine: { lineStyle: { color: "#ccc" } },
+      axisLabel: { color: "#ccc" }
     },
     yAxis: {
       type: "value",
-      min: minPrice,
-      max: maxPrice,
+      min: prices.length > 0 ? minPrice : 0,
+      max: prices.length > 0 ? maxPrice : 100,
+      axisLine: { lineStyle: { color: "#ccc" } },
+      axisLabel: { color: "#ccc" }
     },
+    dataZoom: [
+      {
+        type: 'slider',
+        show: true,
+        xAxisIndex: 0,
+        start: 70,   // Adjust as needed
+        end: 100,
+        bottom: 10
+      },
+      {
+        type: 'inside',
+        xAxisIndex: 0,
+        start: 70,
+        end: 100
+      }
+    ],
     series: [
       {         name: "Historical Price",
         data: prices.slice(0, -12).map(({ price }) => Number(price.toFixed(4))),
@@ -156,17 +154,42 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
           }
         : {},
     ],
+    
   };
   
 
   return (
-    <><div style={{ width: "90%", height: "600px" , marginTop:"1rem" }}>
-       <ReactECharts style={{ height: "100%" }}
-        option={loading ? {} : options}
-        notMerge={true}
-        /> 
+
+    <div className={styles.visualizerWrapper}>
+    <div className={styles.visualizerHeader}>
+      <h2>{props.coin.name} - USDT</h2>
+      <div className={styles.legendBar}>
+        <span className={styles.legendItem}>
+          <span className={styles.dot} style={{ backgroundColor: "gray" }}></span> Historical Price
+        </span>
+        <span className={styles.legendItem}>
+          <span className={styles.dot} style={{ backgroundColor: "limegreen" }}></span> Predicted Price
+        </span>
+      </div>
+      <p className={styles.metrics}>
+        MSE: {get_value_from_history(history.mean_absolute_error)} | Val MSE: {get_value_from_history(history.val_mean_absolute_error)} | Loss: {get_value_from_history(history.loss)}
+      </p>
     </div>
-    </>
+  
+    <div className={styles.visualizerChart}>
+      {loading ? (
+        <div style={{ color: 'white' }}>Loading chart...</div>
+      ) : (
+        <ReactECharts
+          option={options}
+          style={{ width: '100%', height: '100%' }} // now fills .visualizerChart's size
+          notMerge={true}
+        />
+      )}
+    </div>
+  </div>
+  
+
   );
 };
 

@@ -11,6 +11,7 @@ import { NewsItem } from '../types/types';
 import EChartsReact from "echarts-for-react";
 import '../app/globals.css';
 const api = '/api/proxy'; 
+import CustomSelect from "@/app/components/CustomSelect";
 
 const OnChain = () => {
 
@@ -178,15 +179,23 @@ const OnChain = () => {
           </p>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "center", marginBottom: "10px" }}>
-  <select
-    value={selectedMetric}
-    onChange={(e) => setSelectedMetric(e.target.value)}
-    style={{ padding: "8px", fontSize: "16px" }}
-  >
-    {Object.keys(metricMap).map((key) => (
-      <option key={key} value={key}>{metricMap[key].label}</option>
-    ))}
-  </select>
+  
+
+<CustomSelect
+  options={Object.keys(metricMap).map((key) => ({
+    label: metricMap[key].label,
+    value: key,
+  }))}
+  value={{
+    label: metricMap[selectedMetric]?.label || selectedMetric,
+    value: selectedMetric,
+  }}
+  onChange={(option) => {
+    setSelectedMetric(option.value);
+  }}
+  placeholder="Select a metric..."
+  width="360px"
+/>
 
   {/* ℹ️ hover tooltip */}
   <div className={styles.tooltipWrapper}>
