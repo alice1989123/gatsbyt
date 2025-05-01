@@ -8,32 +8,108 @@ import { Coin } from "@/types/types";
 import Header from "./components/Header"; 
 import Footer from "./components/Footer"; 
 import './globals.css';
+import { useEffect } from "react";
+import Select from 'react-select';
+import { GroupBase, StylesConfig, ThemeConfig } from 'react-select';
 
+const customStyles: StylesConfig<any, false, GroupBase<any>> = {
+  control: (base) => ({
+    ...base,
+    backgroundColor: '#1a237e',
+    borderColor: '#3949ab',
+    color: 'white',
+    borderRadius: '8px',
+    padding: '2px',
+  }),
+  singleValue: (base) => ({
+    ...base,
+    color: 'white',
+  }),
+  menu: (base) => ({
+    ...base,
+    backgroundColor: '#1a237e',
+    borderRadius: '8px',
+  }),
+  option: (base, { isFocused }) => ({
+    ...base,
+    backgroundColor: isFocused ? '#5c6bc0' : '#1a237e',
+    color: 'white',
+    cursor: 'pointer',
+  }),
+  input: (base) => ({
+    ...base,
+    color: 'white', // ← ensures typed letters are visible
+  }),
+};
+
+const customTheme: ThemeConfig = (theme) => ({
+  ...theme,
+  borderRadius: 0,
+  colors: {
+    ...theme.colors,
+    primary25: '#5c6bc0',
+    primary: '#3949ab',
+  },
+});
 const App = () => {
 
   const [coin, setCoin] = useState<Coin>(coins[0]);
   const SidebarMenu = () => {
+    const [isMobile, setIsMobile] = useState(false);
+    const [hydrated, setHydrated] = useState(false); // ← new
+    useEffect(() => {
+      const handleResize = () => setIsMobile(window.innerWidth < 768);
+      handleResize();
+      window.addEventListener("resize", handleResize);
+      setHydrated(true); // ← set only after first render
+  
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+    if (!hydrated) return null;
+    const options = coins.map((coin_) => ({
+      value: coin_.symbol,
+      label: coin_.name
+    }));
+    const handleChange = (selectedOption: any) => {
+      const selected = coins.find(c => c.symbol === selectedOption.value);
+      if (selected) setCoin(selected);
+    };
+  
+    
+  if (isMobile) {
     return (
-      <div
-        className="sidebar"
-        style={{
-          height: "auto",
-          minHeight: "100px",
-/*           maxHeight: "100vh",
- */          overflowY: "auto",
-        }}
-      >
-        {coins.map((coin_) => (
-          <button style={{
-            backgroundColor: coin.symbol === coin_.symbol ? "#000000" : "#1A237E",
-            fontWeight: coin.symbol === coin_.symbol ? "bold" : "normal", width: "100px",
+      <div style={{ padding: '1rem', width: '100%' }}>
+        <Select
+        options={options}
+        value={{ value: coin.symbol, label: coin.name }}
+        onChange={handleChange}
+        styles={customStyles}
+        theme={customTheme}
+      />
+      </div>
+    );
+  }
 
-          }}
-            onClick={() => setCoin( coin_)} key={coin_.symbol} >{coin_.name}</button>
+    // Desktop: keep buttons
+    return (
+      <div className="sidebar">
+        {coins.map((coin_) => (
+          <button
+            key={coin_.symbol}
+            onClick={() => setCoin(coin_)}
+            style={{
+              backgroundColor: coin.symbol === coin_.symbol ? "#000000" : "#1A237E",
+              fontWeight: coin.symbol === coin_.symbol ? "bold" : "normal",
+              width: "100px",
+            }}
+          >
+            {coin_.name}
+          </button>
         ))}
       </div>
     );
-  };
+  
+  }
 
   return (
     <div className="layout-wrapper">
