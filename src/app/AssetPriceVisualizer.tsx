@@ -3,7 +3,7 @@ import styles from './AssetVisualizer.module.css';import React, { useEffect, use
 import dynamic from "next/dynamic";
 import { PriceData , Coin } from "@/types/types";
 import type { EChartsOption, SeriesOption } from 'echarts';
-
+import { PulseLoader } from "react-spinners";
 
 
 
@@ -135,7 +135,7 @@ useEffect(() => {
       xAxis: {
         type: "category",
         data: prices.map(({ date }) => parseToLocalTime(date)),
-        axisLine: { lineStyle: { color: "#ccc" } },
+        axisLine: { lineStyle: { color: "#ccc"  } },
         axisLabel: {
           color: "#ccc",
           fontSize: isMobile ? 9 : 12,
@@ -181,7 +181,7 @@ useEffect(() => {
           data: prices.slice(0, -12).map(({ price }) => Number(price.toFixed(4))),
           type: "line" as const,
           smooth: true,
-          lineStyle: { color: "gray" },
+          lineStyle: { color: "white" },
           itemStyle: { color: "gray" },
         },
         ...(prices.length > 20
@@ -222,7 +222,9 @@ useEffect(() => {
   
     <div className={styles.visualizerChart}>
       {loading ? (
-        <div style={{ color: 'white' }}>Loading chart...</div>
+       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: 300 }}>
+       <PulseLoader color="#5c6bc0" size={12} margin={6} />
+     </div>
       ) : (
         <ReactECharts
           option={options}

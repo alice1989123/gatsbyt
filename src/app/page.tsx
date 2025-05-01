@@ -56,17 +56,13 @@ const App = () => {
     return (
       <div className="sidebar">
         {coins.map((coin_) => (
-          <button
-            key={coin_.symbol}
-            onClick={() => setCoin(coin_)}
-            style={{
-              backgroundColor: coin.symbol === coin_.symbol ? "#000000" : "#1A237E",
-              fontWeight: coin.symbol === coin_.symbol ? "bold" : "normal",
-              width: "100px",
-            }}
-          >
-            {coin_.name}
-          </button>
+        <button
+        key={coin_.symbol}
+        onClick={() => setCoin(coin_)}
+        className={coin.symbol === coin_.symbol ? "selected" : ""}
+      >
+        {coin_.name}
+      </button>
         ))}
       </div>
     );
