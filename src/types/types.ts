@@ -6,6 +6,7 @@ export interface PriceData {
   export interface Coin{
     name: string;
     symbol: string;
+    coinpng: string;
   }
 
   export interface News{

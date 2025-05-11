@@ -1,88 +1,35 @@
-import {Coin} from '../types/types';
+import { Coin } from '../types/types';
 
 const coins: Coin[] = [
-    { name: "Bitcoin - USDT", symbol: "BTCUSDT" },
-    {
-      name: "Tezos - USDT",
-      symbol: "XTZUSDT",
-    },
-    {
-      name: "XRP - USDT",
-      symbol: "XRPUSDT",
-    },
-    {
-      name: "Monero - USDT",
-      symbol: "XMRUSDT",
-    },
-    {
-      name: "Stellar - USDT",
-      symbol: "XLMUSDT",
-    },
-    {
-      name: "VeChain - USDT",
-      symbol: "VETUSDT",
-    },
-    {
-      name: "Uniswap - USDT",
-      symbol: "UNIUSDT",
-    },
-    {
-      name: "TRON - USDT",
-      symbol: "TRXUSDT",
-    },
-    {
-      name: "Theta - USDT",
-      symbol: "THETAUSDT",
-    },
-    {
-      name: "NEO - USDT",
-      symbol: "NEOUSDT",
-    },
-    {
-      name: "Maker - USDT",
-      symbol: "MKRUSDT",
-    },
-    {
-      name: "Litecoin - USDT",
-      symbol: "LTCUSDT",
-    },
-    {
-      name: "Chainlink - USDT",
-      symbol: "LINKUSDT",
-    },
-    {
-      name: "Filecoin - USDT",
-      symbol: "FILUSDT",
-    },
-    {
-      name: "Ethereum Classic - USDT",
-      symbol: "ETCUSDT",
-    },
-    {
-      name: "EOS - USDT",
-      symbol: "EOSUSDT",
-    },
-    {
-      name: "Polkadot - USDT",
-      symbol: "DOTUSDT",
-    },
-    {
-      name: "Bitcoin Cash - USDT",
-      symbol: "BCHUSDT",
-    },
-    {
-      name: "Cosmos - USDT",
-      symbol: "ATOMUSDT",
-    },
-    {
-      name: "Cardano - USDT",
-      symbol: "ADAUSDT",
-    },
-    {
-      name: "Aave - USDT",
-      symbol: "AAVEUSDT",
-    },
-  ];
-  
-  
-  export default coins;
+  { name: "BTC - USDT", symbol: "BTCUSDT", coinpng: "/icons/btc.png" },
+  { name: "ETH - USDT", symbol: "ETHUSDT", coinpng: "/icons/eth.png" },
+  { name: "BNB - USDT", symbol: "BNBUSDT", coinpng: "/icons/bnb.png" },
+  { name: "SOL - USDT", symbol: "SOLUSDT", coinpng: "/icons/sol.png" },
+  { name: "XRP - USDT", symbol: "XRPUSDT", coinpng: "/icons/xrp.png" },
+  { name: "DOGE - USDT", symbol: "DOGEUSDT", coinpng: "/icons/doge.png" },
+  { name: "ADA - USDT", symbol: "ADAUSDT", coinpng: "/icons/ada.png" },
+  { name: "TRX - USDT", symbol: "TRXUSDT", coinpng: "/icons/trx.png" },
+  { name: "SUI - USDT", symbol: "SUIUSDT", coinpng: "/icons/sui.png" },
+  { name: "LINK - USDT", symbol: "LINKUSDT", coinpng: "/icons/link.png" },
+  { name: "AVAX - USDT", symbol: "AVAXUSDT", coinpng: "/icons/avax.png" },
+  { name: "XLM - USDT", symbol: "XLMUSDT", coinpng: "/icons/xlm.png" },
+  { name: "SHIB - USDT", symbol: "SHIBUSDT", coinpng: "/icons/shib.png" },
+  { name: "HBAR - USDT", symbol: "HBARUSDT", coinpng: "/icons/hbar.png" },
+  { name: "TON - USDT", symbol: "TONUSDT", coinpng: "/icons/ton.png" },
+  { name: "BCH - USDT", symbol: "BCHUSDT", coinpng: "/icons/bch.png" },
+  { name: "DOT - USDT", symbol: "DOTUSDT", coinpng: "/icons/dot.png" },
+  { name: "LTC - USDT", symbol: "LTCUSDT", coinpng: "/icons/ltc.png" },
+  { name: "UNI - USDT", symbol: "UNIUSDT", coinpng: "/icons/uni.png" },
+  { name: "ATOM - USDT", symbol: "ATOMUSDT", coinpng: "/icons/atom.png" },
+  { name: "ETC - USDT", symbol: "ETCUSDT", coinpng: "/icons/etc.png" },
+  { name: "VET - USDT", symbol: "VETUSDT", coinpng: "/icons/vet.png" },
+  { name: "FIL - USDT", symbol: "FILUSDT", coinpng: "/icons/fil.png" },
+  { name: "EOS - USDT", symbol: "EOSUSDT", coinpng: "/icons/eos.png" },
+  { name: "XTZ - USDT", symbol: "XTZUSDT", coinpng: "/icons/xtz.png" },
+  { name: "NEO - USDT", symbol: "NEOUSDT", coinpng: "/icons/neo.png" },
+  { name: "MKR - USDT", symbol: "MKRUSDT", coinpng: "/icons/mkr.png" },
+  { name: "AAVE - USDT", symbol: "AAVEUSDT", coinpng: "/icons/aave.png" },
+  { name: "THETA - USDT", symbol: "THETAUSDT", coinpng: "/icons/theta.png" },
+];
+
+export default coins;

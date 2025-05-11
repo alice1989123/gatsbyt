@@ -231,7 +231,18 @@ useEffect(() => {
 
     <div className={styles.visualizerWrapper}>
     <div className={styles.visualizerHeader}>
-      <h2>{props.coin.name} - USDT</h2>
+    <h2 className={styles.headerTitle}>
+        <img
+          src={props.coin.coinpng}
+          alt={`${props.coin.name} icon`}
+          className={styles.headerIcon}
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = "/icons/default.png";
+          }}
+        />
+        {props.coin.name} - USDT
+      </h2>
       <div className={styles.legendBar}>
         <span className={styles.legendItem}>
           <span className={styles.dotLegend} style={{ backgroundColor: "gray" }}></span> Historical Price

@@ -93,6 +93,16 @@
 
   }
 
+  .icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;   /* keep aspect ratio */
+    display: inline-block;
+    margin-right: 8px;
+    border-radius: 50%;    /* optional: makes them round */
+    background-color: #111; /* optional: visual frame for transparent PNGs */
+  }
+
  
   .explanation-container {
     background: linear-gradient(145deg, #1a1d51, #282c6e);
@@ -161,6 +171,12 @@
       font-size: 12px;
       padding: 8px 12px;
       width: auto;
+    }
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.5rem;
     }
 
     .header-content {

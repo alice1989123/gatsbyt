@@ -11,7 +11,6 @@ import './globals.css';
 import { useEffect } from "react";
 import CustomSelect from "./components/CustomSelect";
 
-
 const App = () => {
 
   const [coin, setCoin] = useState<Coin>(coins[0]);
@@ -28,24 +27,30 @@ const App = () => {
       return () => window.removeEventListener("resize", handleResize);
     }, []);
     if (!hydrated) return null;
-    const options = coins.map((coin_) => ({
-      value: coin_.symbol,
-      label: coin_.name
-    }));
+    
     
   
     
   if (isMobile) {
     return (
       <div style={{ padding: '1rem', width: '100%' }}>
-       <CustomSelect
-  options={coins.map((coin) => ({ label: coin.name, value: coin.symbol }))}
-  value={{ label: coin.name, value: coin.symbol }}
+      <CustomSelect withIcons={true}
+  options={coins.map((coin) => ({
+    label: coin.name,
+    value: coin.symbol,
+    icon: coin.coinpng,
+  }))}
+  value={{
+    label: coin.name,
+    value: coin.symbol,
+    icon: coin.coinpng,
+  }}
   onChange={(option) => {
-    const selected = coins.find(c => c.symbol === option.value);
+    const selected = coins.find((c) => c.symbol === option.value);
     if (selected) setCoin(selected);
   }}
 />
+
       </div>
     );
   }
@@ -54,12 +59,25 @@ const App = () => {
     return (
       <div className="sidebar">
         {coins.map((coin_) => (
+          console.log(coin_.symbol),
         <button
         key={coin_.symbol}
         onClick={() => setCoin(coin_)}
         className={coin.symbol === coin_.symbol ? "selected" : ""}
       >
-        {coin_.name}
+        <div className="sidebar-item">
+        <img
+          src={coin_.coinpng}
+          alt={`${coin_.name} icon`}
+          className="icon"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = "/icons/default.png";
+            e.currentTarget.style.objectFit = "contain";
+          }}
+        />
+          <span>{coin_.name} – USDT</span>
+        </div>
       </button>
         ))}
       </div>
