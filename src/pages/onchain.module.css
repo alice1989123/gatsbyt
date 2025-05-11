@@ -57,12 +57,23 @@ color: white;
 .tooltipWrapper {
   position: relative;
   display: inline-block;
+
 }
 
 .infoIcon {
   cursor: pointer;
   color: #00bfff;
   font-size: 18px;
+}
+
+.selectorWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  width: 100%;
+  padding: 0 1rem;
 }
 
 .tooltipContent {

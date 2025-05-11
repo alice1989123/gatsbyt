@@ -180,31 +180,31 @@ const OnChain = () => {
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "center", marginBottom: "10px" }}>
   
+      <div className={styles.selectorWrapper} >
+        <CustomSelect
+          options={Object.keys(metricMap).map((key) => ({
+            label: metricMap[key].label,
+            value: key,
+          }))}
+          value={{
+            label: metricMap[selectedMetric]?.label || selectedMetric,
+            value: selectedMetric,
+          }}
+          onChange={(option) => {
+            setSelectedMetric(option.value);
+          }}
+          placeholder="Select a metric..."
+          width="360px"
+        />
 
-<CustomSelect
-  options={Object.keys(metricMap).map((key) => ({
-    label: metricMap[key].label,
-    value: key,
-  }))}
-  value={{
-    label: metricMap[selectedMetric]?.label || selectedMetric,
-    value: selectedMetric,
-  }}
-  onChange={(option) => {
-    setSelectedMetric(option.value);
-  }}
-  placeholder="Select a metric..."
-  width="360px"
-/>
-
-  {/* ℹ️ hover tooltip */}
-  <div className={styles.tooltipWrapper}>
-  <span className={styles.infoIcon}>ℹ️</span>
-  <div className={styles.tooltipContent}>
-    {metricMap[selectedMetric].description}
-  </div>
-</div>
-
+          {/* ℹ️ hover tooltip */}
+          <div className={styles.tooltipWrapper}>
+          <span className={styles.infoIcon}>ℹ️</span>
+          <div className={styles.tooltipContent}>
+            {metricMap[selectedMetric].description}
+          </div>
+        </div>
+      </div>
 </div>
   
        
