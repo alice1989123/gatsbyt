@@ -20,3 +20,13 @@ export interface PriceData {
     url: string;
     date: string;
   }
+
+  export interface PredictionMetadata {
+    symbol: string;
+    model_name: string;
+    val_loss: number;
+    config_label_width?: number;
+    config_input_width?: number;
+    config_variables_used?: string[];
+    history?: string | History; // optional
+  }

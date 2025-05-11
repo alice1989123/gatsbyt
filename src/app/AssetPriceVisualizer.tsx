@@ -3,8 +3,7 @@ import styles from './AssetVisualizer.module.css';import React, { useEffect, use
 import dynamic from "next/dynamic";
 import { PriceData , Coin } from "@/types/types";
 import type { EChartsOption, SeriesOption } from 'echarts';
-import { PulseLoader } from "react-spinners";
-
+import { PredictionMetadata } from '@/types/types';
 
 
 
@@ -36,8 +35,7 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
 
   const [prices, setPrices] = useState<PriceData[]>([]);
   const [loading, setLoading] = useState(true); // Add loading state
-  const [metadata , setMetadata] = useState<Object[]>([]);
-  const [history , setHistory] = useState<History>(dummy_history);
+  const [metadata, setMetadata] = useState<PredictionMetadata | null>(null);
 
   function parseToLocalTime(dateString :string) {
     const dateObject = new Date(dateString + "Z"); // Add "Z" to indicate UTC time
@@ -70,13 +68,12 @@ useEffect(() => {
       });
   
       const text = await res.text();  // Get raw text
-      console.log("🧾 Raw response text:", text);
   
       // Try parsing after confirming it's valid
       const data = JSON.parse(text);  // This is where it usually fails
-      console.log("✅ Parsed JSON:", data);
   
       setPrices(data.predictions);
+      console.log( data.metadata)
       setMetadata(data.metadata);
   
     } catch (error) {
@@ -259,8 +256,7 @@ useEffect(() => {
         </span>
       </div>
       <p className={styles.metrics}>
-        Val loss MSE : {get_value_from_history(metadata.val_loss) }
-      </p>
+      Val loss MSE: {metadata?.val_loss !== undefined ? get_value_from_history(metadata.val_loss) : "N/A"}      </p>
     </div>
   
     <div className={styles.visualizerChart}>
