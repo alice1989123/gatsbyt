@@ -59,7 +59,6 @@ const App = () => {
     return (
       <div className="sidebar">
         {coins.map((coin_) => (
-          console.log(coin_.symbol),
         <button
         key={coin_.symbol}
         onClick={() => setCoin(coin_)}

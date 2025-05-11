@@ -45,8 +45,8 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
     return localDateObject.toLocaleString();
   }
 
-  function get_value_from_history( list :number[]) {
-    try { return list[list.length - 1].toFixed(4
+  function get_value_from_history( number : number ) {
+    try { return number.toFixed(4
     )
     } catch (error) {
       return 0
@@ -62,23 +62,30 @@ useEffect(() => {
   setPrices([]);
   async function fetchPrices() {
     try {
-      const response_ = await fetch(api + `?resource=predictions&coin=${props.coin.symbol}`, {
+      const res = await fetch(api + `?resource=predictions&coin=${props.coin.symbol}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         }
       });
-
-      const data = await response_.json();
+  
+      const text = await res.text();  // Get raw text
+      console.log("🧾 Raw response text:", text);
+  
+      // Try parsing after confirming it's valid
+      const data = JSON.parse(text);  // This is where it usually fails
+      console.log("✅ Parsed JSON:", data);
+  
       setPrices(data.predictions);
       setMetadata(data.metadata);
-      setHistory(JSON.parse(data.metadata.history));
+  
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('❌ Error fetching data:', error);
     } finally {
-      setLoading(false); // ✅ Ensure it's set to false even on failure
+      setLoading(false);
     }
   }
+  
 
   fetchPrices();
 }, [props.coin]);
@@ -95,7 +102,7 @@ useEffect(() => {
           }
         }).then((response) => response.json())
         
-          .then((data) => { setPrices(data.predictions)  ; setMetadata(data.metadata);  setHistory(JSON.parse( (data.metadata.history  ))) ; setLoading(false)  }) 
+          .then((data) => { setPrices(data.predictions)  ; setMetadata(data.metadata) ; setLoading(false)  }) 
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -252,7 +259,7 @@ useEffect(() => {
         </span>
       </div>
       <p className={styles.metrics}>
-        MSE: {get_value_from_history(history.mean_absolute_error)} | Val MSE: {get_value_from_history(history.val_mean_absolute_error)} | Loss: {get_value_from_history(history.loss)}
+        Val loss MSE : {get_value_from_history(metadata.val_loss) }
       </p>
     </div>
   

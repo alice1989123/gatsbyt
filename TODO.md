@@ -1,0 +1,1 @@
+## Fix metada loader on mobile in predictions page
