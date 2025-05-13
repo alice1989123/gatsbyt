@@ -138,6 +138,44 @@
     background-blend-mode: overlay;
     color: white;
   }
+
+  .telegram-join-desktop-only {
+    margin: 1.5rem auto 1rem auto;
+    padding: 0 1rem;
+    text-align: center;
+    max-width: 700px;
+  }
+  
+  .telegram-text {
+    color: white;
+    font-size: 14px;
+    margin-bottom: 0.75rem;
+  }
+  
+  .telegram-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color:  #0088cc ;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .telegram-button:hover {
+    background-color: #54a1c5;
+  }
+
+  .telegram-floating {
+    display: none;
+  }
+  
+  
   @media (max-width: 768px) {
     .sidebar {
       display: flex;
@@ -222,5 +260,64 @@
       flex-direction: column;
       align-items: stretch;
     }
+
+    .telegram-join-desktop-only {
+      display: none;
+    }
+
+    .telegram-text {
+      display: none;
+    }
+    
+    .telegram-button {
+      display: none;
+    }
+
+   
+  
+    .telegram-floating svg {
+      width: 24px;
+      height: 24px;
+    }
+    .telegram-floating {
+      display: flex;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #0088cc;
+      color: white;
+      padding: 14px;
+      border-radius: 50%;
+      font-size: 24px;
+      z-index: 1000;
+      transition: background-color 0.3s;
+      text-align: center;
+    }
+    
+    .telegram-floating:hover {
+      background-color: #006699;
+    }
+    
+    .telegram-floating::after {
+      content: "Join our Telegram channel";
+      position: absolute;
+      right: 120%; /* Show tooltip to the left */
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.75);
+      color: white;
+      padding: 6px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      font-size: 13px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease-in-out;
+    }
+    
+    .telegram-floating:hover::after {
+      opacity: 1;
+    }
+    
   }
 

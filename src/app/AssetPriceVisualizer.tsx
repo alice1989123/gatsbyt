@@ -73,7 +73,6 @@ useEffect(() => {
       const data = JSON.parse(text);  // This is where it usually fails
   
       setPrices(data.predictions);
-      console.log( data.metadata)
       setMetadata(data.metadata);
   
     } catch (error) {
