@@ -13,6 +13,8 @@ const ReactECharts = dynamic(() => import("echarts-for-react"), { ssr: false });
 //const  api = process.env.API ? process.env.API : "http://localhost:3000/api/crypto";
 const api = "/api/proxy";
 
+const pricesLength = 120;
+
 interface AssetPriceVisualizerProps {
   coin: Coin;
 }
@@ -44,8 +46,7 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
   }
 
   function get_value_from_history( number : number ) {
-    try { return number.toFixed(4
-    )
+    try { return number.toFixed(8)
     } catch (error) {
       return 0
     }
@@ -72,7 +73,7 @@ useEffect(() => {
       // Try parsing after confirming it's valid
       const data = JSON.parse(text);  // This is where it usually fails
   
-      setPrices(data.predictions);
+      setPrices(data.predictions.slice(0, pricesLength));
       setMetadata(data.metadata);
   
     } catch (error) {
@@ -146,12 +147,27 @@ useEffect(() => {
         },
         formatter: (params: any) => {
           const [point] = params;
+          const value = point.data;
+        
+          const formatPrice = (val: number | undefined): string => {
+            if (val === undefined) return '-';
+        
+            if (val >= 1) {
+              return val.toFixed(4).replace(/0+$/, ''); // e.g. 1.05233434 → 1.05
+            } else if (val >= 0.01) {
+              return val.toFixed(4).replace(/0+$/, ''); // e.g. 0.123456 → 0.1234
+            } else {
+              return val.toFixed(8).replace(/0+$/, ''); // trim trailing zeroes
+            }
+          };
+        
           return `
             <strong>${point.seriesName}</strong><br/>
             ${point.axisValue}<br/>
-            Price: $${point.data?.toFixed(2)}
+            Price: $${formatPrice(value)}
           `;
         },
+        
       },
       grid: {
         left: isMobile ? 50 : 60,
@@ -183,8 +199,17 @@ useEffect(() => {
           color: "#ccc",
           fontSize: isMobile ? 10 : 12,
           margin: 10,
-          formatter: (value: number) =>
-            value >= 1000 ? `${(value / 1000).toFixed(0)}k` : `${value.toFixed(2)}`,
+          formatter: (value: number) => {
+            if (value >= 1000) {
+              return `${(value / 1000).toFixed(0)}k`; // e.g. 1200 → 1k
+            } else if (value >= 1) {
+              return value.toFixed(2).replace(/0+$/, '');               // e.g. 1.052 → 1.05
+            } else if (value >= 0.01) {
+              return value.toFixed(4).replace(/0+$/, '');               // e.g. 0.04567 → 0.0456
+            } else {
+              return value.toFixed(8).replace(/0+$/, ''); // e.g. 0.00056750 → 0.0005675
+            }
+          },
         },
       },
       dataZoom: [
@@ -206,7 +231,7 @@ useEffect(() => {
       series: [
         {
           name: "Historical Price",
-          data: prices.slice(0, -12).map(({ price }) => Number(price.toFixed(4))),
+          data: prices.slice(0, -12).map(({ price }) => Number(price.toFixed(8))),
           type: "line" as const,
           smooth: true,
           lineStyle: { color: "white" },
@@ -218,7 +243,7 @@ useEffect(() => {
               data: prices.map((_, index) =>
                 index < prices.length - 13
                   ? null
-                  : Number(prices[index].price.toFixed(4))
+                  : Number(prices[index].price.toFixed(8))
               ),
               type: "line" as const,
               smooth: true,
@@ -244,7 +269,7 @@ useEffect(() => {
             e.currentTarget.src = "/icons/default.png";
           }}
         />
-        {props.coin.name} - USDT
+        {props.coin.name} 
       </h2>
       <div className={styles.legendBar}>
         <span className={styles.legendItem}>

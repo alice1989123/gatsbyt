@@ -70,7 +70,7 @@ const App = () => {
                   e.currentTarget.style.objectFit = "contain";
                 }}
               />
-              <span>{coin_.name} – USDT</span>
+              <span>{coin_.name}</span>
             </div>
           </button>
         ))}
