@@ -1,0 +1,267 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: url('/background.png') no-repeat center center fixed;
+  background-size: cover;
+  background-blend-mode: overlay;
+  background-color: #13195c;
+  backdrop-filter: blur(4px);
+}
+
+.contentWrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.container {
+  width: 90%;
+  max-width: 1000px;
+  min-height: 100vh;
+
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  overflow-y: visible;
+  overflow-x: hidden;
+  backdrop-filter: blur(4px);
+}
+
+
+
+/* Scrollbar styling */
+.container::-webkit-scrollbar {
+  width: 10px;
+}
+.container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+.container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 139, 0.5);
+}
+.container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 56, 139, 0.8);
+}
+
+/* Content layout */
+.resultsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+  color: white;
+}
+
+.resultsHeader {
+  text-align: center;
+}
+
+.resultsTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.resultsSubtitle {
+  font-size: 1.1rem;
+  color: #ccc;
+}
+
+.resultsContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  padding: 2rem;
+}
+
+.placeholderBox {
+  text-align: center;
+  color: #aaaaaa;
+  font-style: italic;
+  font-size: 1.1rem;
+}
+
+/* Optional: Tooltip (still usable anywhere in the app) */
+.tooltipWrapper {
+  position: relative;
+  display: inline-block;
+}
+.infoIcon {
+  cursor: pointer;
+  color: #00bfff;
+  font-size: 18px;
+}
+.tooltipContent {
+  display: none;
+  position: absolute;
+  top: 120%;
+  left: 0;
+  background-color: #222;
+  color: white;
+  padding: 8px;
+  font-size: 12px;
+  width: 250px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  line-height: 1.4;
+}
+.tooltipWrapper:hover .tooltipContent {
+  display: block;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card h4 {
+  font-size: 1rem;
+  color: #ffffff;
+  margin-bottom: 0.3rem;
+}
+
+.card p {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #00ffcc;
+}
+
+.coinWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.coinIcon {
+  
+  width: 40px;
+  height: 40px;
+  object-fit: contain;   /* keep aspect ratio */
+  display: inline-block;
+  margin-right: 8px;
+  border-radius: 50%;    /* optional: makes them round */
+  background-color: #111; /* optional: visual frame for transparent PNGs */
+}
+
+/* ===================== NEW STYLES FOR DATA SECTIONS ===================== */
+
+.additionalData {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  color: white;
+}
+
+.additionalData h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 0.5rem;
+}
+
+/* ===================== TABLE STYLES ===================== */
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  color: white;
+  font-size: 0.95rem;
+}
+
+.dataTable thead {
+  background-color: rgba(0, 0, 50, 0.4);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.dataTable th, .dataTable td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dataTable th {
+  background: rgba(255, 255, 255, 0.1);
+  font-weight: 600;
+}
+
+
+.dataTable td {
+  font-size: 0.92rem;
+}
+
+/* ===================== SCROLLABLE TABLE ===================== */
+
+.scrollableTable {
+  max-height: 100vh;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 0.5rem;
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.scrollableTable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollableTable::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 139, 0.5);
+  border-radius: 10px;
+}
+
+/* ===================== OPTIONAL ROI COLOR ===================== */
+
+.positive {
+  color: #00e676;
+  font-weight: bold;
+}
+
+.negative {
+  color: #ff5252;
+  font-weight: bold;
+}
+
+.statsSection {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 900px;
+}

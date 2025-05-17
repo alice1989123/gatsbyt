@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import ContactModal from '../ContactModal';
+import ContactModal from '../app/ContactModal';
 import './Header.css';
 
 const Header = () => {
@@ -21,9 +21,12 @@ const Header = () => {
             <div className="header-logo">Gatsbyt</div>
 
             <nav className="header-nav desktop-only">
-              <Link href="/" className={`header-link ${pathname === '/' ? 'active' : ''}`}>Home</Link>
+              <Link href="/" className={`header-link ${pathname === '/' ? 'active' : ''}`}>Forecast</Link>
+              <Link href="/signals" className={`header-link ${pathname === '/signals' ? 'active' : ''}`}>Signals</Link>
+              <Link href="/performance" className={`header-link ${pathname === '/performance' ? 'active' : ''}`}>Performance</Link>        
               <Link href="/onchain" className={`header-link ${pathname === '/onchain' ? 'active' : ''}`}>On-Chain</Link>
               <Link href="/news" className={`header-link ${pathname === '/news' ? 'active' : ''}`}>News</Link>
+
             </nav>
           </div>
 
@@ -43,9 +46,12 @@ const Header = () => {
         {/* Mobile Nav Overlay */}
         <div className={`header-nav-wrapper ${mobileMenuOpen ? 'open' : ''}`}>
           <nav className="header-nav">
-            <Link href="/" className="header-link" onClick={closeMobileMenu}>Home</Link>
+            <Link href="/" className="header-link" onClick={closeMobileMenu}>Forecast</Link>
+            <Link href="/signals" className="header-link" onClick={closeMobileMenu}>Signals</Link>
+            <Link href="/performance" className="header-link" onClick={closeMobileMenu}>Performance</Link>         
             <Link href="/onchain" className="header-link" onClick={closeMobileMenu}>On-Chain</Link>
             <Link href="/news" className="header-link" onClick={closeMobileMenu}>News</Link>
+
             <button onClick={() => { setIsContactModalOpen(true); closeMobileMenu(); }} className="header-contact">Contact</button>
           </nav>
         </div>

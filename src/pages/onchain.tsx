@@ -3,15 +3,15 @@ import dynamic from "next/dynamic";
 import { EChartsOption } from "echarts";
 import { ECharts } from "echarts";
 import React, { useState, useEffect } from 'react';
-import Header from '@/app/components/Header';
-import Footer from '@/app/components/Footer';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import styles from './onchain.module.css'; 
-import SentimentVisualizer from '../app/components/SentimentVisualizer';
+import SentimentVisualizer from '../components/SentimentVisualizer';
 import { NewsItem } from '../types/types';
 import EChartsReact from "echarts-for-react";
 import '../app/globals.css';
 const api = '/api/proxy'; 
-import CustomSelect from "@/app/components/CustomSelect";
+import CustomSelect from "@/components/CustomSelect";
 
 const OnChain = () => {
 

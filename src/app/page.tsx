@@ -4,10 +4,10 @@ import React, { useState, useEffect } from "react";
 import AssetPriceVisualizer from "./AssetPriceVisualizer"; 
 import coins from "./coins";
 import { Coin } from "@/types/types";
-import Header from "./components/Header"; 
-import Footer from "./components/Footer"; 
+import Header from "../components/Header"; 
+import Footer from "../components/Footer"; 
 import './globals.css';
-import CustomSelect from "./components/CustomSelect";
+import CustomSelect from "../components/CustomSelect";
 import { FaTelegramPlane } from "react-icons/fa";
 
 const App = () => {

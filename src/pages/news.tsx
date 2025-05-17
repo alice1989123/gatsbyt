@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import Header from '@/app/components/Header';
-import Footer from '@/app/components/Footer';
-import NewsComponent from '../app/components/newsComponent';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import NewsComponent from '../components/newsComponent';
 import styles from './news.module.css';
 import { NewsItem } from '../types/types';
 import '../app/globals.css';

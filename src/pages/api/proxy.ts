@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse ) {
 
-  const { resource  , metric_name , coin} = req.query;
+  const { resource  , metric_name , coin ,query} = req.query;
 
   let path: string;
 
@@ -27,11 +27,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
     if (!coin || typeof coin !== 'string') {
       return res.status(400).json({ error: 'Missing or invalid coin' });
     }
+    const encodedCoin= encodeURIComponent(coin as string);
+    path = `/default/predictions?coin=${encodedCoin}`;
+    console.log(path)
+  }
+
+  else if (resource === 'predictions_results') {
+    if (!query || typeof query !== 'string') {
+      return res.status(400).json({ error: 'Missing or invalid query' });
+    }
+    console.log(query)
+    const encodedQuery= encodeURIComponent(query as string);
+    path = `/default/${resource}?query=${encodedQuery}`;
+    console.log(path)
+  }
+
+  else if (resource === 'predictions') {
+    if (!coin || typeof coin !== 'string') {
+      return res.status(400).json({ error: 'Missing or invalid coin' });
+    }
     console.log(coin)
     const encodedCoin= encodeURIComponent(coin as string);
     path = `/default/predictions?coin=${encodedCoin}`;
     console.log(path)
   }
+
   else {
     return res.status(400).json({ error: 'Missing or invalid resource' });
   }
