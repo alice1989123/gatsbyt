@@ -26,12 +26,36 @@ interface History{
   loss: number[]  }
 
 
-const dummy_history = {
-  val_loss: [],
-  val_mean_absolute_error: [],
-  mean_absolute_error: [],
-  loss: [],
-}
+
+  function formatUsdAdaptive(
+    x: number | null | undefined,
+    opts: Intl.NumberFormatOptions = {}
+  ): string {
+    if (x == null || !isFinite(x)) return "—";
+  
+    const ax = Math.abs(x);
+    // Decide decimals by scale
+    let maxFrac: number;
+    if (ax >= 1000)       maxFrac = 0;
+    else if (ax >= 1)     maxFrac = 2;
+    else if (ax >= 0.01)  maxFrac = 4;
+    else if (ax >= 1e-4)  maxFrac = 6;
+    else if (ax >= 1e-6)  maxFrac = 8;
+    else                  maxFrac = 10; // very small, still readable
+  
+    // If it's *extremely* small, show scientific to avoid a screen full of zeros
+    if (ax > 0 && ax < 1e-10) {
+      return `$${x.toExponential(2)}`; // e.g., $1.23e-10
+    }
+  
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: maxFrac,
+      ...opts,
+    }).format(x);
+  }
 
 const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
 
@@ -48,6 +72,7 @@ const AssetPriceVisualizer = (props: AssetPriceVisualizerProps) => {
   function get_value_from_history( number : number ) {
     try { return number.toFixed(8)
     } catch (error) {
+      console.error("Error parsing history:", error);
       return 0
     }
   }
@@ -74,7 +99,7 @@ useEffect(() => {
       const data = JSON.parse(text);  // This is where it usually fails
   
       setPrices(data.predictions.slice(0, pricesLength));
-      setMetadata(data.metadata);
+      setMetadata(data.metadata );
   
     } catch (error) {
       console.error('❌ Error fetching data:', error);
@@ -280,8 +305,13 @@ useEffect(() => {
         </span>
       </div>
       <p className={styles.metrics}>
-      Val loss MSE: {metadata?.val_loss !== undefined ? get_value_from_history(metadata.val_loss) : "N/A"}      </p>
+        <abbr title="Mean Absolute Error — average absolute difference between predicted and actual price">
+          MAE
+        </abbr>{" "}
+        per step (USD): {metadata?.mae !== undefined ? formatUsdAdaptive(metadata?.mae) : "N/A"}
+      </p>
     </div>
+   
   
     <div className={styles.visualizerChart}>
     {loading ? (

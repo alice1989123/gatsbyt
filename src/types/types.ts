@@ -25,8 +25,10 @@ export interface PriceData {
     symbol: string;
     model_name: string;
     val_loss: number;
+    mae: number;
     config_label_width?: number;
     config_input_width?: number;
     config_variables_used?: string[];
     history?: string | History; // optional
+
   }
