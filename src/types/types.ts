@@ -29,6 +29,6 @@ export interface PriceData {
     config_label_width?: number;
     config_input_width?: number;
     config_variables_used?: string[];
-    history?: string | History; // optional
+    history?: string | History; 
 
   }
