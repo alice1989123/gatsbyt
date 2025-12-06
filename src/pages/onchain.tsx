@@ -16,7 +16,7 @@ import CustomSelect from "@/components/CustomSelect";
 const OnChain = () => {
 
  
-  const [selectedMetric, setSelectedMetric] = useState("total_value_transferred_usd_per_day");
+  const [selectedMetric, setSelectedMetric] = useState("total_value_transferred_usd");
   const [seriesData, setSeriesData] = useState([]);
 
   useEffect(() => {
@@ -36,66 +36,57 @@ const OnChain = () => {
   const metricMap: {
     [key: string]: { label: string; description: string }
   } = {
-    "Number of blocks mined": {
-      label: "Number of Blocks Mined",
-      description: "The total number of Bitcoin blocks mined on each day. Indicates network activity and block production rate."
-    },
-    "avg_block_size_per_day": {
-      label: "Average Block Size Per Day",
-      description: "The average size (in bytes) of all blocks mined on a given day. Reflects how full blocks are with transaction data."
-    },
-    "avg_tx_per_block_per_day": {
-      label: "Average Transactions Per Block Per Day",
-      description: "The average number of transactions included in each block per day. Shows how densely packed the blocks are."
-    },
-    "avg_block_weight": {
-      label: "Average Block Weight",
-      description: "The average weight units of blocks per day (up to 4 million units per block). This includes SegWit discounts and witness data."
-    },
-    "difficulty_over_time": {
-      label: "Difficulty Over Time",
-      description: "The mining difficulty adjustment value over time. A higher value indicates more competition and hash power on the network."
-    },
-    "total_value_transferred_per_day": {
-      label: "Total BTC Transferred Per Day",
-      description: "The sum of all Bitcoin moved on-chain on each day, measured in BTC. Useful for gauging overall transaction volume."
-    },
-    "avg_fee_per_day": {
-      label: "Average Fee Per Day",
-      description: "The average transaction fee paid per day, measured in satoshis. Reflects network congestion and fee market dynamics."
-    },
-    "total_value_transferred_usd_per_day": {
-      label: "Total USD Transferred Per Day",
-      description: "The total value of Bitcoin transferred per day, converted to USD using historical BTC prices."
-    },
-    
-      "avg_shrimp_per_day": {
-        label: "Average Shrimp Transactions Per Day",
-        description: "The average number of transactions per day where the largest output is less than 1 BTC. Represents small-value movements, typically from retail participants."
-      },
-      "avg_fish_per_day": {
-        label: "Average Fish Transactions Per Day",
-        description: "The average number of transactions per day where the largest output is between 1 and 10 BTC. Represents moderate-sized Bitcoin transfers."
-      },
-      "avg_dolphin_per_day": {
-        label: "Average Dolphin Transactions Per Day",
-        description: "The average number of transactions per day where the largest output is between 10 and 50 BTC. Indicates larger movements often by serious investors or wealthy individuals."
-      },
-      "avg_shark_per_day": {
-        label: "Average Shark Transactions Per Day",
-        description: "The average number of transactions per day where the largest output is between 50 and 100 BTC. Represents significant Bitcoin movements, possibly from funds or high-net-worth individuals."
-      },
-      "avg_whale_per_day": {
-        label: "Average Whale Transactions Per Day",
-        description: "The average number of transactions per day where the largest output is between 100 and 1000 BTC. Typically represents movements by large institutional players or early adopters."
-      },
-      "avg_humpback_per_day": {
-        label: "Average Humpback Transactions Per Day",
-        description: "The average number of transactions per day where the largest output exceeds 1000 BTC. These are extremely large Bitcoin movements, characteristic of massive holders or exchanges."
-      }
-    
-    
-  };
+  blocks_mined: {
+    label: "Blocks Mined Per Day",
+    description:
+      "Total number of Bitcoin blocks mined each day. Indicates block production rate and overall network activity.",
+  },
+  avg_block_size_bytes: {
+    label: "Average Block Size (Bytes)",
+    description:
+      "Average size in bytes of blocks mined each day. Reflects how full blocks are with transaction data.",
+  },
+  avg_tx_per_block: {
+    label: "Average Transactions Per Block",
+    description:
+      "Average number of transactions included in each block per day. Shows how densely packed blocks are.",
+  },
+  avg_block_weight: {
+    label: "Average Block Weight",
+    description:
+      "Average block weight units per day (up to 4M units per block). Includes SegWit discounts and witness data.",
+  },
+  avg_difficulty: {
+    label: "Mining Difficulty",
+    description:
+      "Average mining difficulty per day. Higher values indicate more hash power and competition on the network.",
+  },
+  total_value_transferred_btc: {
+    label: "Total BTC Transferred Per Day",
+    description:
+      "Total amount of BTC moved on-chain each day. Useful for gauging on-chain economic activity.",
+  },
+  avg_fee_btc: {
+    label: "Average Fee (BTC)",
+    description:
+      "Average transaction fee per day, measured in BTC. Reflects fee market pressure and congestion.",
+  },
+  btc_usd_rate: {
+    label: "BTC/USD Rate",
+    description:
+      "Daily BTC/USD price used for converting on-chain metrics to USD.",
+  },
+  total_value_transferred_usd: {
+    label: "Total USD Transferred Per Day",
+    description:
+      "Total value of BTC moved on-chain per day, converted to USD using the daily BTC price.",
+  },
+  avg_fee_usd: {
+    label: "Average Fee (USD)",
+    description:
+      "Average transaction fee per day, converted to USD. Combines fee pressure with BTC price.",
+  },
+};
   const chartOptions = {
     title: {
       text: metricMap[selectedMetric]?.label || selectedMetric,      textStyle: {
