@@ -62,7 +62,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
     path,
     method: 'GET',
     service: 'execute-api',
-    region: process.env.AWS_REGION!,
+    region: process.env.DEFAULT_REGION!,
     headers: {
       Host: process.env.CRYPTO_API!,
     },
@@ -82,7 +82,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
     headers: opts.headers,
   };
 
-  //console.log( reqOptions)
+  console.log( reqOptions)
 
   const proxyReq = https.request(reqOptions, (proxyRes) => {
     let data = '';
