@@ -1,22 +1,23 @@
 // src/pages/auth/callback.tsx
-"use client";
-
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export default function AuthCallbackPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Hasta que router.query esté listo
     if (!router.isReady) return;
 
     const code = router.query.code;
     const codeStr =
       typeof code === "string" ? code : Array.isArray(code) ? code[0] : null;
 
-    console.log("[callback] query:", router.query);
+    const state = router.query.state;
+    const next =
+      typeof state === "string" ? state : Array.isArray(state) ? state[0] : "/";
 
     if (!codeStr) {
       setError("Missing ?code in URL");
@@ -25,43 +26,43 @@ export default function AuthCallbackPage() {
 
     (async () => {
       try {
-        console.log("[callback] calling /api/auth/exchange-code with", codeStr);
         const res = await fetch(
           `/api/auth/exchange-code?code=${encodeURIComponent(codeStr)}`,
-          { method: "GET", credentials: "include" },
+          { method: "GET", credentials: "include" }
         );
-
-        console.log("[callback] response:", res.status, res.statusText);
 
         if (!res.ok) {
           const data = await res.json().catch(() => ({}));
-          console.log("[callback] body error:", data);
           setError(data.error || "Token exchange failed");
           return;
         }
 
-        // cookies ya están → mandamos al home o dashboard
-        router.replace("/");
+        router.replace(next);
       } catch (e) {
-        console.error("[callback] unexpected error:", e);
         setError("Unexpected error while finishing sign-in");
       }
     })();
-  }, [router]);
+  }, [router.isReady]);
 
   if (error) {
     return (
-      <main style={{ padding: "2rem" }}>
-        <h1>Auth error</h1>
-        <p>{error}</p>
+      <main style={{ minHeight: "100vh", display: "grid", placeItems: "center", padding: 24 }}>
+        <div style={{ maxWidth: 520 }}>
+          <h1>Auth error</h1>
+          <p>{error}</p>
+          <a href="/login">Go back to login</a>
+        </div>
       </main>
     );
   }
 
   return (
-    <main style={{ padding: "2rem" }}>
-      <h1>Signing you in…</h1>
-      <p>You will be redirected in a moment.</p>
+  <div className="layout-wrapper">
+    <Header />
+    <main style={{ minHeight: "70vh", display: "grid", placeItems: "center", padding: 24 }}>
+      {/* spinner / message */}
     </main>
-  );
+    <Footer />
+  </div>
+);
 }

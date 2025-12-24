@@ -62,7 +62,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
     path,
     method: 'GET',
     service: 'execute-api',
-    region: 'eu-central-1',
+    region: process.env.AWS_REGION!,
     headers: {
       Host: process.env.CRYPTO_API!,
     },
