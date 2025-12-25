@@ -5,8 +5,8 @@ const nextConfig = {
   },
   env: {
     // Make these available in the built server bundle (pages/api)
-    NEXT_CRYPTO_API: process.env.CRYPTO_API,
-    NEXT_DEFAULT_REGION: process.env.DEFAULT_REGION,
+    NEXT_CRYPTO_API: process.env.NEXT_CRYPTO_API,
+    NEXT_DEFAULT_REGION: process.env.NEXT_DEFAULT_REGION,
 
     NEXT_ACCESS_KEY_ID: process.env.ACCESS_KEY_ID,
     NEXT_SECRET_ACCESS_KEY: process.env.SECRET_ACCESS_KEY,
