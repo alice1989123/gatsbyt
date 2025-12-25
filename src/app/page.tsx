@@ -80,54 +80,89 @@ const App = () => {
 
   return (
     <div className="layout-wrapper">
-      <Header />
-      <h1 className="section-title"> AI-Powered Price Predictions </h1>
-      <div className="container">
-        <SidebarMenu />
-        <div className="main">
+  <Header />
 
-          {/* Mobile-only Telegram CTA above chart */}
-          <div className="telegram-join-desktop-only">
-            <p className="telegram-text">
-              📡 Join our Telegram Group to get real-time trading signals and model alerts.
-            </p>
-            <a
-              href="https://t.me/crypto_gatsbyt"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="telegram-button"
-            >
-              <FaTelegramPlane style={{ marginRight: "8px" }} />
-              Join our Telegram Group
-            </a>
+  {/* Page header (professional) */}
+  <div className="page-hero">
+    <div className="page-hero-inner">
+      <div className="page-title-row">
+        <h1 className="page-title">Price Forecasts</h1>
+        <span className="page-pill">Beta</span>
+      </div>
+
+      <p className="page-subtitle">
+        Interactive forecasts powered by our time-series models. Select an asset to view the projected path and confidence.
+      </p>
+
+      {/* Product CTA row */}
+      <div className="page-actions">
+        <a
+          href="https://t.me/crypto_gatsbyt"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="cta-primary"
+        >
+          <FaTelegramPlane style={{ marginRight: 8 }} />
+          Get alerts on Telegram
+        </a>
+
+        <span className="cta-note">
+          Signals are informational only. Not financial advice.
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div className="container">
+    <SidebarMenu />
+
+    <div className="main">
+      <div className="visualizer-container">
+        <AssetPriceVisualizer coin={coin} />
+      </div>
+
+      {/* Professional “About” card */}
+      <div className="explanation-container">
+        <h4>About this forecast</h4>
+
+        <div className="info-grid">
+          <div className="info-card">
+            <div className="info-label">Training window</div>
+            <div className="info-value">June 2018 → Present (if available)</div>
           </div>
 
-          <div className="visualizer-container">
-            <AssetPriceVisualizer coin={coin} />
+          <div className="info-card">
+            <div className="info-label">Inputs</div>
+            <div className="info-value">Closing price (and internal features)</div>
           </div>
 
-          <div className="explanation-container">
-            <h4>How the Calculations are Built </h4>
-            <p>
-              The calculations are based on a deep learning model that is trained on the closing price from June 2018 to the present date for each coin, provided that data is available. Since many of the coins are relatively new.
-            </p>
-            <p>
-              Since the price depends on many other factors, such as political or sentiment analysis, the predicted price may differ from the actual ones. Therefore, these predictions should not be used for investment purposes.
-            </p>
+          <div className="info-card">
+            <div className="info-label">Use</div>
+            <div className="info-value">Research & monitoring</div>
           </div>
         </div>
+
+        <p className="fineprint">
+          Forecasts are probabilistic estimates and may differ materially from real market prices due to volatility,
+          news, and liquidity conditions. This tool does not provide investment advice.
+        </p>
       </div>
-      <a
-        href="https://t.me/crypto_gatsbyt"
-        className="telegram-floating"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Join our Telegram Group"
-      >
-        <FaTelegramPlane />
-      </a>
-      <Footer />
     </div>
+  </div>
+
+  <a
+    href="https://t.me/crypto_gatsbyt"
+    className="telegram-floating"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Get alerts on Telegram"
+  >
+    <FaTelegramPlane />
+  </a>
+
+  <Footer />
+</div>
+
   );
 };
 

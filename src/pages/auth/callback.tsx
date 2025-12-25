@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Link from "next/link";
 
 export default function AuthCallbackPage() {
   const router = useRouter();
@@ -50,7 +51,9 @@ export default function AuthCallbackPage() {
         <div style={{ maxWidth: 520 }}>
           <h1>Auth error</h1>
           <p>{error}</p>
-          <a href="/login">Go back to login</a>
+          <Link href="/login" className="btn btn-primary">
+          Go to login
+        </Link>
         </div>
       </main>
     );
