@@ -6,7 +6,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 export default async function handler(req: NextApiRequest, res: NextApiResponse ) {
 
   const { resource  , metric_name , coin ,query} = req.query;
-
+  const base = process.env.NEXT_PUBLIC_API_BASE!;
+  console.log("API_BASE:", base);
   let path: string;
 
   //console.log("Query:", req.query);
