@@ -69,23 +69,41 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   console.log("REQ", reqOptions);
 
-  const proxyReq = https.request(reqOptions, (proxyRes) => {
-    let data = "";
-    proxyRes.on("data", (chunk) => (data += chunk));
-    proxyRes.on("end", () => {
-      try {
-        res.status(proxyRes.statusCode || 200).json(JSON.parse(data));
-      } catch (e) {
-        console.error("[ERROR] JSON parse failed:", e);
-        res.status(500).json({ error: "Invalid JSON response", raw: data });
-      }
-    });
+const proxyReq = https.request(reqOptions, (proxyRes) => {
+  let data = "";
+
+  // ✅ log upstream status + headers
+  console.log("UPSTREAM_STATUS", proxyRes.statusCode, proxyRes.headers);
+
+  proxyRes.on("data", (chunk) => {
+    data += chunk;
   });
 
-  proxyReq.on("error", (error) => {
-    console.error("[ERROR] Request failed:", error);
-    if (!res.headersSent) res.status(500).json({ error: error.message });
-  });
+  proxyRes.on("end", () => {
+    // ✅ log raw body (truncate so logs don’t explode)
+    console.log("UPSTREAM_RAW", data.slice(0, 800));
 
-  proxyReq.end();
+    // If upstream is not JSON, return it as text so you can see the real error
+    const ct = String(proxyRes.headers["content-type"] || "");
+    const status = proxyRes.statusCode || 502;
+
+    if (!ct.includes("application/json")) {
+      return res.status(status).send(data);
+    }
+
+    try {
+      res.status(status).json(JSON.parse(data));
+    } catch (e) {
+      console.error("[ERROR] JSON parse failed:", e);
+      res.status(500).json({ error: "Invalid JSON response", raw: data.slice(0, 800) });
+    }
+  });
+});
+
+proxyReq.on("error", (error) => {
+  console.error("[ERROR] Request failed:", error);
+  if (!res.headersSent) res.status(500).json({ error: error.message });
+});
+
+proxyReq.end();
 }
