@@ -59,35 +59,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
 
 
   const opts: aws4.Request = {
-    host : process.env.CRYPTO_API!,
+    host : process.env.NEXT_CRYPTO_API!,
     path,
     method: 'GET',
     service: 'execute-api',
-    region: process.env.DEFAULT_REGION!,
+    region: process.env.NEXT_DEFAULT_REGION!,
     headers: {
       Host: process.env.CRYPTO_API!,
     },
   };
 
   aws4.sign(opts, {
-    accessKeyId: process.env.ACCESS_KEY_ID!,
-    secretAccessKey: process.env.SECRET_ACCESS_KEY!,
+    accessKeyId: process.env.NEXT_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.NEXT_SECRET_ACCESS_KEY!,
     sessionToken: process.env.AWS_SESSION_TOKEN || undefined,
   });
 
 
   const reqOptions = {
-    hostname: process.env.CRYPTO_API!,
+    hostname: process.env.NEXT_CRYPTO_API!,
     path: path,
     method: opts.method,
     headers: opts.headers,
   };
 
   console.log("ENV_PRESENT", {
-  CRYPTO_API: !!process.env.CRYPTO_API,
-  ACCESS_KEY_ID: !!process.env.ACCESS_KEY_ID,
-  SECRET_ACCESS_KEY: !!process.env.SECRET_ACCESS_KEY,
-  DEFAULT_REGION: !!process.env.DEFAULT_REGION,
+  CRYPTO_API: !!process.env.NEXT_CRYPTO_API,
+  ACCESS_KEY_ID: !!process.env.NEXT_ACCESS_KEY_ID,
+  SECRET_ACCESS_KEY: !!process.env.NEXT_SECRET_ACCESS_KEY,
+  DEFAULT_REGION: !!process.env.NEXDEFAULT_REGION,
 });
 
   console.log( reqOptions)
