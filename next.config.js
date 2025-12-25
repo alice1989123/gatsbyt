@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+   experimental: {
+    appDir: true,
+  },
   env: {
     // Make these available in the built server bundle (pages/api)
     NEXT_CRYPTO_API: process.env.CRYPTO_API,
