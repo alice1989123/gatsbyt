@@ -1,0 +1,144 @@
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background-color: #13195c;
+  overflow: auto;
+  color: white;
+  font-family: sans-serif;
+}
+
+.page {
+  background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.6),
+      rgba(44, 44, 93, 0.6)
+    ),
+    url("/background.png");
+  background-repeat: repeat;
+  background-size: cover;
+  background-blend-mode: overlay;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  color: white;
+
+  padding: 2.2rem 1rem 2.5rem;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
+  margin-top: 0;
+  color: white;
+  border-bottom: 2px solid;
+  border-image: linear-gradient(to right, #00f2fe, #4facfe) 1;
+  display: inline-block;
+  padding-bottom: 0.3rem;
+}
+
+.subtitle {
+  text-align: center;
+  margin-bottom: 1.8rem;
+  font-size: 1.2rem;
+  margin-top: 0;
+  color: white;
+  opacity: 0.92;
+}
+
+.container {
+  width: 90%;
+  max-width: 800px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  overflow-x: hidden;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.field {
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.label {
+  font-size: 12px;
+  opacity: 0.85;
+  margin-bottom: 8px;
+}
+
+.value {
+  font-size: 14px;
+  font-weight: 700;
+  word-break: break-word;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.dangerBtn {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 80, 80, 0.22);
+  color: white;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.dangerBtn:hover {
+  background: rgba(255, 80, 80, 0.32);
+}
+
+.errorBox {
+  border-radius: 12px;
+  padding: 14px;
+  border: 1px solid rgba(255, 80, 80, 0.35);
+  background: rgba(255, 80, 80, 0.12);
+}
+
+.errorTitle {
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+
+.errorText {
+  opacity: 0.95;
+  word-break: break-word;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .title {
+    font-size: 1.8rem;
+  }
+}

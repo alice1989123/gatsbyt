@@ -1,71 +1,43 @@
-// src/pages/auth/callback.tsx
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import Link from "next/link";
+"use client";
 
-export default function AuthCallbackPage() {
+import { useEffect, useRef } from "react";
+import { useRouter } from "next/router";
+
+export default function AuthCallback() {
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
+  const ran = useRef(false);
 
   useEffect(() => {
     if (!router.isReady) return;
+    if (ran.current) return;         // ✅ prevent double call in dev
+    ran.current = true;
 
     const code = router.query.code;
-    const codeStr =
-      typeof code === "string" ? code : Array.isArray(code) ? code[0] : null;
-
-    const state = router.query.state;
-    const next =
-      typeof state === "string" ? state : Array.isArray(state) ? state[0] : "/";
-
-    if (!codeStr) {
-      setError("Missing ?code in URL");
+    if (!code || typeof code !== "string") {
+      router.replace("/?auth=missing_code");
       return;
     }
 
     (async () => {
-      try {
-        const res = await fetch(
-          `/api/auth/exchange-code?code=${encodeURIComponent(codeStr)}`,
-          { method: "GET", credentials: "include" }
-        );
+      const res = await fetch(`/api/auth/exchange-code?code=${encodeURIComponent(code)}`, {
+        method: "GET",
+        credentials: "include",
+        cache: "no-store",
+      });
 
-        if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
-          setError(data.error || "Token exchange failed");
-          return;
-        }
+      const data = await res.json().catch(() => ({}));
 
-        router.replace(next);
-      } catch (e) {
-        setError("Unexpected error while finishing sign-in");
+      if (!res.ok) {
+        console.error("exchange failed", data);
+        router.replace(`/?auth=exchange_failed`);
+        return;
       }
+
+      // ✅ redirect to where user wanted to go (cookie you already set: post_login_redirect)
+      // If your server redirects after exchange, you can just router.replace("/")
+      router.replace("/account");
     })();
-  }, [router.isReady]);
+  }, [router.isReady, router.query.code, router]);
 
-  if (error) {
-    return (
-      <main style={{ minHeight: "100vh", display: "grid", placeItems: "center", padding: 24 }}>
-        <div style={{ maxWidth: 520 }}>
-          <h1>Auth error</h1>
-          <p>{error}</p>
-          <Link href="/login" className="btn btn-primary">
-          Go to login
-        </Link>
-        </div>
-      </main>
-    );
-  }
-
-  return (
-  <div className="layout-wrapper">
-    <Header />
-    <main style={{ minHeight: "70vh", display: "grid", placeItems: "center", padding: 24 }}>
-      {/* spinner / message */}
-    </main>
-    <Footer />
-  </div>
-);
+  return null;
 }
