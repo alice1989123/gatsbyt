@@ -16,9 +16,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const verifier = getCookie(req, "pkce_verifier");
   if (!verifier) return res.status(400).json({ error: "Missing PKCE verifier cookie" });
 
-  const domain = process.env.COGNITO_DOMAIN!;
-  const clientId = process.env.COGNITO_CLIENT_ID!;         // SPA client id (NO secret)
-  const redirectUri = process.env.COGNITO_REDIRECT_URI!;
+  const domain = process.env.NEXT_PUBLIC_COGNITO_DOMAIN!;
+  const clientId = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID!;         // SPA client id (NO secret)
+  const redirectUri = process.env.NEXT_PUBLIC_COGNITO_REDIRECT_URI!;
 
   const body = new URLSearchParams({
     grant_type: "authorization_code",
