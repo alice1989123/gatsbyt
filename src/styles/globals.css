@@ -28,7 +28,7 @@ body {
       rgba(var(--background-start-rgb), 0.9),
       rgba(var(--background-end-rgb), 0.9)
     ),
-    url('/background.png') no-repeat center center fixed;
+    url('/gatsbyt-bg-dark.png') no-repeat center center fixed;
   background-size: cover;
   background-blend-mode: overlay;
   color: rgb(var(--foreground-rgb));

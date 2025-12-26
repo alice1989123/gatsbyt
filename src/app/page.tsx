@@ -1,134 +1,161 @@
-"use client";
-import "./styles.css";
-import React, { useState, useEffect } from "react";
-import AssetPriceVisualizer from "./AssetPriceVisualizer"; 
-import coins from "./coins";
-import { Coin } from "@/types/types";
-import Header from "../components/Header"; 
-import Footer from "../components/Footer"; 
-import './globals.css';
-import CustomSelect from "../components/CustomSelect";
-import { FaTelegramPlane } from "react-icons/fa";
+import Link from "next/link";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import styles from "./page.module.css";
 
-const App = () => {
-  const [coin, setCoin] = useState<Coin>(coins[0]);
-
-  const SidebarMenu = () => {
-    const [isMobile, setIsMobile] = useState(false);
-    const [hydrated, setHydrated] = useState(false);
-
-    useEffect(() => {
-      const handleResize = () => setIsMobile(window.innerWidth < 768);
-      handleResize();
-      window.addEventListener("resize", handleResize);
-      setHydrated(true);
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-    if (!hydrated) return null;
-
-    if (isMobile) {
-      return (
-        <div style={{ padding: '1rem', width: '100%' }}>
-          <CustomSelect
-            withIcons={true}
-            options={coins.map((coin) => ({
-              label: coin.name,
-              value: coin.symbol,
-              icon: coin.coinpng,
-            }))}
-            value={{
-              label: coin.name,
-              value: coin.symbol,
-              icon: coin.coinpng,
-            }}
-            onChange={(option) => {
-              const selected = coins.find((c) => c.symbol === option.value);
-              if (selected) setCoin(selected);
-            }}
-          />
-        </div>
-      );
-    }
-
-    return (
-      <div className="sidebar">
-        {coins.map((coin_) => (
-          <button
-            key={coin_.symbol}
-            onClick={() => setCoin(coin_)}
-            className={coin.symbol === coin_.symbol ? "selected" : ""}
-          >
-            <div className="sidebar-item">
-              <img
-                src={coin_.coinpng}
-                alt={`${coin_.name} icon`}
-                className="icon"
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = "/icons/default.png";
-                  e.currentTarget.style.objectFit = "contain";
-                }}
-              />
-              <span>{coin_.name}</span>
-            </div>
-          </button>
-        ))}
-      </div>
-    );
-  };
-
+export default function HomePage() {
   return (
-    <div className="layout-wrapper">
+    <div className={styles.wrapper}>
       <Header />
-      <h1 className="section-title"> AI-Powered Price Predictions </h1>
-      <div className="container">
-        <SidebarMenu />
-        <div className="main">
 
-          {/* Mobile-only Telegram CTA above chart */}
-          <div className="telegram-join-desktop-only">
-            <p className="telegram-text">
-              📡 Join our Telegram Group to get real-time trading signals and model alerts.
-            </p>
-            <a
-              href="https://t.me/crypto_gatsbyt"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="telegram-button"
-            >
-              <FaTelegramPlane style={{ marginRight: "8px" }} />
-              Join our Telegram Group
-            </a>
-          </div>
+      <main className={styles.page}>
+        {/* Hero */}
+        <section className={styles.hero}>
+          <div className={styles.heroCard}>
+            <div className={styles.badge}>AI Crypto Intelligence</div>
 
-          <div className="visualizer-container">
-            <AssetPriceVisualizer coin={coin} />
-          </div>
+            <h1 className={styles.title}>
+              Forecasts, Signals, Performance, On-Chain Metrics, and News — in one place.
+            </h1>
 
-          <div className="explanation-container">
-            <h4>How the Calculations are Built </h4>
-            <p>
-              The calculations are based on a deep learning model that is trained on the closing price from June 2018 to the present date for each coin, provided that data is available. Since many of the coins are relatively new.
+            <p className={styles.subtitle}>
+              Gatsbyt helps you track crypto markets with AI-driven summaries, predictive models,
+              and performance analytics. Built for clarity, speed, and daily decision-making.
             </p>
-            <p>
-              Since the price depends on many other factors, such as political or sentiment analysis, the predicted price may differ from the actual ones. Therefore, these predictions should not be used for investment purposes.
-            </p>
+
+            <div className={styles.ctaRow}>
+              {/* ✅ middleware will redirect to Hosted UI login */}
+              <Link href="/signals" className={styles.primaryCta}>
+                Get started
+              </Link>
+
+              {/* ✅ also protected, but still a nice CTA */}
+              <Link href="/predictions" className={styles.secondaryCta}>
+                View forecasts
+              </Link>
+            </div>
+
+            <div className={styles.smallNote}>
+              Login required (Google via Cognito Hosted UI). Gatsbyt never stores your password.
+            </div>
           </div>
-        </div>
-      </div>
-      <a
-        href="https://t.me/crypto_gatsbyt"
-        className="telegram-floating"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Join our Telegram Group"
-      >
-        <FaTelegramPlane />
-      </a>
+        </section>
+
+        {/* Features */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>What you can do</h2>
+          <p className={styles.sectionSub}>
+            Everything is organized into focused dashboards so you can move fast.
+          </p>
+
+          <div className={styles.grid}>
+            <Feature
+              title="Forecast"
+              desc="Visualize model forecasts per coin and compare against recent price history."
+              href="/predictions"
+              tag="Login required"
+            />
+            <Feature
+              title="Signals"
+              desc="Trade signal feed with clear status and quick navigation to details."
+              href="/signals"
+              tag="Login required"
+            />
+            <Feature
+              title="Performance"
+              desc="Track strategy performance and summary analytics over time."
+              href="/performance"
+              tag="Login required"
+            />
+            <Feature
+              title="On-Chain"
+              desc="Explore on-chain indicators and how they evolve across market cycles."
+              href="/onchain"
+              tag="Login required"
+            />
+            <Feature
+              title="News Digest"
+              desc="Curated headlines summarized with AI, with sentiment to spot the mood."
+              href="/news"
+              tag="Login required"
+            />
+          </div>
+        </section>
+
+        {/* How it works */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>How it works</h2>
+
+          <div className={styles.steps}>
+            <div className={styles.step}>
+              <div className={styles.stepNum}>1</div>
+              <div>
+                <div className={styles.stepTitle}>Sign in</div>
+                <div className={styles.stepText}>
+                  Use Cognito Hosted UI with Google login (PKCE).
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.step}>
+              <div className={styles.stepNum}>2</div>
+              <div>
+                <div className={styles.stepTitle}>Browse dashboards</div>
+                <div className={styles.stepText}>
+                  Forecasts, signals, performance, on-chain, and AI news — consistent UI.
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.step}>
+              <div className={styles.stepNum}>3</div>
+              <div>
+                <div className={styles.stepTitle}>Act with context</div>
+                <div className={styles.stepText}>
+                  Use forecasts + sentiment + performance to reduce “guessing”.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Security / Trust */}
+        <section className={styles.section}>
+          <div className={styles.trustCard}>
+            <h2 className={styles.sectionTitle}>Security-first</h2>
+            <ul className={styles.trustList}>
+              <li>Secure Google login.</li>
+              <li>No password storage.</li>
+              <li>Access to dashboards is private to your account.</li>
+            </ul>
+          </div>
+        </section>
+      </main>
+
       <Footer />
     </div>
   );
-};
+}
 
-export default App;
+function Feature({
+  title,
+  desc,
+  href,
+  tag,
+}: {
+  title: string;
+  desc: string;
+  href: string;
+  tag: string;
+}) {
+  return (
+    <Link href={href} className={styles.card}>
+      <div className={styles.cardTop}>
+        <div className={styles.cardTitle}>{title}</div>
+        <div className={styles.tagProtected}>{tag}</div>
+      </div>
+      <div className={styles.cardDesc}>{desc}</div>
+      <div className={styles.cardHint}>Open →</div>
+    </Link>
+  );
+}
