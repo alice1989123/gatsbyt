@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -93,9 +93,16 @@ const Header = () => {
         <div className="header-content">
           {/* Left */}
           <div className="header-left">
-            <Link href="/" className="header-logo" aria-label="Go to landing page">
-              Gatsbyt
-            </Link>
+           <Link href="/" className="header-logo" aria-label="Go to home">
+            <Image
+              src="/gatsbyt_logo_header_transparent_tight.png"
+              alt="gatsbyt"
+              width={180}
+              height={58}
+              priority
+              style={{ height: 58, width: "auto" }}
+            />
+          </Link>
             <nav className="header-nav desktop-only">
               <Link href="/predictions" className={`header-link ${pathname === "/predictions" ? "active" : ""}`}>
                 Forecast

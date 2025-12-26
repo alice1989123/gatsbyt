@@ -10,17 +10,19 @@ function base64url(input: Buffer) {
 }
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const domain = process.env.COGNITO_DOMAIN!;          // https://login.gatsbyt.com
-  const clientId = process.env.COGNITO_CLIENT_ID!;     // SPA client id (NO secret)
-  const redirectUri = process.env.COGNITO_REDIRECT_URI!; // http://localhost:3000/auth/callback
+  const domain = process.env.NEXT_PUBLIC_COGNITO_DOMAIN!;          // https://login.gatsbyt.com
+  const clientId = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID!;     // SPA client id (NO secret)
+  const redirectUri = process.env.NEXT_PUBLIC_COGNITO_REDIRECT_URI!; // http://localhost:3000/auth/callback
   const next = (req.query.next as string) || "/";
 
+  console.log("[login] redirecting to Cognito Hosted UI");
+  console.log(domain, clientId, redirectUri);
   // PKCE
   const verifier = base64url(crypto.randomBytes(32));
   const challenge = base64url(crypto.createHash("sha256").update(verifier).digest());
 
   // store verifier + next in cookies (host-only, same site)
-  const isProd = process.env.NODE_ENV === "production";
+  const isProd = process.env.NEXT_PUBLIC_ENV === "prod";
   const cookieBase = [
     "Path=/",
     "HttpOnly",

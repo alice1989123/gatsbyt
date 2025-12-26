@@ -20,6 +20,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const clientId = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID!;         // SPA client id (NO secret)
   const redirectUri = process.env.NEXT_PUBLIC_COGNITO_REDIRECT_URI!;
 
+  console.log("[exchange-code] exchanging code for tokens");
+  console.log(domain, clientId, redirectUri);
   const body = new URLSearchParams({
     grant_type: "authorization_code",
     client_id: clientId,
@@ -42,7 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const tokens = JSON.parse(text);
 
   // store tokens (simple cookie session; improve later)
-  const isProd = process.env.NODE_ENV === "production";
+  const isProd = process.env.NEXT_ENV === "prod";
   const baseCookie = [
     "Path=/",
     "HttpOnly",

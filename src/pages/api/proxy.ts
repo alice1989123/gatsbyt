@@ -40,7 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const apiHost = getApiHost(process.env.NEXT_CRYPTO_API);
   const env = process.env.NEXT_PUBLIC_ENV || "dev"; // or prod
-  if (!apiHost) return res.status(500).json({ error: "Missing NEXT_CRYPTO_API" });
+  if (!apiHost) return res.status(500).json({ error: "Missing NEXT_NEXT_CRYPTO_API" });
 
   const { resource, metric_name, coin, query } = req.query;
 

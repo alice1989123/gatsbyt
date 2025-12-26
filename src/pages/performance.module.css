@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: url('/background.png') no-repeat center center fixed;
+  background: url('/gatsbyt-bg-dark.png') no-repeat center center fixed;
   background-size: cover;
   background-blend-mode: overlay;
   background-color: #13195c;
