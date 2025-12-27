@@ -5,22 +5,21 @@
   color: white;
   overflow-x: hidden;
 
-  background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.55),
-      rgba(44, 44, 93, 0.55)
-    ),
+  /* calmer backdrop: more dark overlay so charts pop */
+  background-image:
+    radial-gradient(1200px 600px at 15% 10%, rgba(79, 172, 254, 0.12), rgba(0, 0, 0, 0) 55%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.62), rgba(30, 32, 80, 0.62)),
     url("/gatsbyt-bg-dark.png");
   background-repeat: repeat;
   background-size: cover;
-  background-blend-mode: overlay;
+  background-blend-mode: screen, overlay, normal;
 }
 
 /* HERO */
 .pageHero {
   position: relative;
   width: 100%;
-  padding: 18px 0 16px;
+  padding: 16px 0 14px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(0, 0, 0, 0.18);
   backdrop-filter: blur(10px);
@@ -45,12 +44,12 @@
 .pageHeroWatermark {
   position: absolute;
   right: -80px;
-  top: -50px;
+  top: -60px;
   width: 520px;
   height: 220px;
   background: url("/gatsbyt_logo_header_transparent_tight.png") no-repeat;
   background-size: contain;
-  opacity: 0.08;
+  opacity: 0.06;
   filter: saturate(1.1);
   transform: rotate(-2deg);
   z-index: 1;
@@ -75,8 +74,9 @@
   font-weight: 800;
   padding: 4px 10px;
   border-radius: 999px;
-  border: 1px solid rgba(79, 172, 254, 0.35);
-  background: rgba(79, 172, 254, 0.14);
+  border: 1px solid rgba(79, 172, 254, 0.32);
+  background: rgba(79, 172, 254, 0.12);
+  opacity: 0.9;
 }
 
 .pageSubtitle {
@@ -103,12 +103,12 @@
   font-weight: 900;
   text-decoration: none;
   color: white;
-  border: 1px solid rgba(79, 172, 254, 0.28);
-  background: rgba(79, 172, 254, 0.18);
+  border: 1px solid rgba(79, 172, 254, 0.26);
+  background: rgba(79, 172, 254, 0.16);
 }
 
 .ctaPrimary:hover {
-  background: rgba(79, 172, 254, 0.28);
+  background: rgba(79, 172, 254, 0.26);
 }
 
 .telegramIcon {
@@ -135,14 +135,15 @@
 
 /* SIDEBAR */
 .sidebarWrap {
-  width: 240px;
+  width: 260px;
+  flex: 0 0 260px;
 }
 
 .mobileSelectWrap {
   padding: 1rem;
   width: 100%;
 
-  background: rgba(8, 12, 30, 0.55);
+  background: rgba(8, 12, 30, 0.65);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 16px;
   backdrop-filter: blur(10px);
@@ -150,17 +151,61 @@
 }
 
 .sidebar {
-  width: 240px;
+  width: 260px;
   border-radius: 16px;
   padding: 10px;
 
-  background: rgba(8, 12, 30, 0.55);
+  background: rgba(8, 12, 30, 0.65);
   border: 1px solid rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(10px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
 
   max-height: calc(100vh - 220px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebarHeader {
+  padding: 6px 6px 10px;
+}
+
+.sidebarTitle {
+  font-weight: 900;
+  letter-spacing: 0.3px;
+  font-size: 13px;
+}
+
+.sidebarHint {
+  opacity: 0.7;
+  font-size: 12px;
+  margin-top: 2px;
+  margin-bottom: 10px;
+}
+
+.sidebarSearch {
+  width: 100%;
+  border-radius: 12px;
+  padding: 10px 12px;
+  outline: none;
+  color: white;
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.sidebarSearch::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.sidebarSearch:focus {
+  border-color: rgba(79, 172, 254, 0.45);
+  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.12);
+}
+
+.sidebarList {
   overflow: auto;
+  padding: 0 4px 4px;
 }
 
 .sidebarBtn {
@@ -196,10 +241,45 @@
   object-fit: cover;
 }
 
+.coinText {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+  flex: 1;
+  min-width: 0;
+}
+
 .coinLabel {
-  font-weight: 800;
+  font-weight: 900;
   font-size: 13px;
   letter-spacing: 0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.coinSymbol {
+  font-size: 12px;
+  opacity: 0.68;
+  font-weight: 800;
+}
+
+.favoriteStar {
+  opacity: 0.35;
+  font-size: 14px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  user-select: none;
+}
+
+.favoriteStar:hover {
+  opacity: 0.9;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.favoriteStarOn {
+  opacity: 0.95;
+  color: rgba(79, 172, 254, 0.95);
 }
 
 /* MAIN */
@@ -216,10 +296,106 @@
   border-radius: 16px;
   padding: 12px;
 
-  background: rgba(8, 12, 30, 0.55);
+  background: rgba(8, 12, 30, 0.65);
   border: 1px solid rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(10px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* Chart header bar */
+.visualizerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 6px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 12px;
+}
+
+.visualizerHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.visualizerCoinIcon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.visualizerTitleBlock {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+  min-width: 0;
+}
+
+.visualizerTitle {
+  font-weight: 950;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.visualizerSub {
+  font-size: 12px;
+  opacity: 0.7;
+  font-weight: 800;
+}
+
+.visualizerHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.tfGroup {
+  display: inline-flex;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.tfBtn {
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-weight: 900;
+  font-size: 12px;
+  padding: 7px 10px;
+  border-radius: 12px;
+  background: transparent;
+  opacity: 0.8;
+}
+
+.tfBtn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  opacity: 1;
+}
+
+.tfBtnActive {
+  background: rgba(79, 172, 254, 0.16);
+  border: 1px solid rgba(79, 172, 254, 0.22);
+  opacity: 1;
+}
+
+.metaChip {
+  font-size: 12px;
+  font-weight: 900;
+  padding: 8px 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  opacity: 0.9;
 }
 
 .explanationContainer {
@@ -227,7 +403,7 @@
   border-radius: 16px;
   padding: 14px 14px 16px;
 
-  background: rgba(8, 12, 30, 0.55);
+  background: rgba(8, 12, 30, 0.65);
   border: 1px solid rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(10px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
@@ -302,6 +478,7 @@
 
   .sidebarWrap {
     width: 100%;
+    flex: 1 1 auto;
   }
 
   .sidebar {
@@ -315,6 +492,16 @@
 
   .pageHeroWatermark {
     width: 420px;
-    opacity: 0.08;
+    opacity: 0.06;
+  }
+
+  .visualizerHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .visualizerHeaderRight {
+    width: 100%;
+    justify-content: flex-start;
   }
 }
