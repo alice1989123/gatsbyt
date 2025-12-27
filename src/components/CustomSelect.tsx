@@ -182,7 +182,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       <Select<OptionType, false>
         options={options}
         value={value}
-        onChange={(selected) => {
+        onChange={(selected:any) => {
           // ✅ react-select can pass null
           if (selected) onChange(selected);
         }}
