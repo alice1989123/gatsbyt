@@ -4,8 +4,7 @@ import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import styles from "./account.module.css"; // ✅ create this file
-import "../app/globals.css"; // if you already do this elsewhere
+import styles from "./account.module.css";
 
 type SessionResponse = {
   authenticated: boolean;
@@ -21,6 +20,27 @@ export default function AccountPage() {
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState<SessionResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Google-only Hosted UI login
+  function loginWithGoogle() {
+    const domain = process.env.NEXT_PUBLIC_COGNITO_DOMAIN!;
+    const clientId = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID!;
+    const redirectUri =
+      process.env.NEXT_PUBLIC_COGNITO_REDIRECT_URI ?? `${window.location.origin}/`;
+
+    const scope = "openid email profile";
+
+    // identity_provider=Google forces Google IdP (no Cognito username/password)
+    const url =
+      `${domain}/oauth2/authorize` +
+      `?identity_provider=Google` +
+      `&client_id=${encodeURIComponent(clientId)}` +
+      `&response_type=code` +
+      `&scope=${encodeURIComponent(scope)}` +
+      `&redirect_uri=${encodeURIComponent(redirectUri)}`;
+
+    window.location.href = url;
+  }
 
   async function logout() {
     await fetch("/api/auth/logout", { method: "GET", credentials: "include" });
@@ -60,6 +80,8 @@ export default function AccountPage() {
     })();
   }, []);
 
+  const isAuthed = !!session?.authenticated;
+
   return (
     <div className={styles.wrapper}>
       <Head>
@@ -70,7 +92,9 @@ export default function AccountPage() {
 
       <main className={styles.page}>
         <h1 className={styles.title}>Account</h1>
-        <p className={styles.subtitle}>Your session and profile details.</p>
+        <p className={styles.subtitle}>
+          {isAuthed ? "Your profile details." : "Sign in with Google to continue."}
+        </p>
 
         <div className={styles.container}>
           {loading ? (
@@ -80,13 +104,11 @@ export default function AccountPage() {
               <div className={styles.errorTitle}>Couldn’t load session</div>
               <div className={styles.errorText}>{error}</div>
             </div>
-          ) : session?.authenticated ? (
+          ) : isAuthed ? (
             <>
               <div className={styles.grid}>
-                <Field label="Name" value={session.user?.name} />
-                <Field label="Email" value={session.user?.email} />
-                <Field label="Username" value={session.user?.username} />
-                <Field label="Sub" value={session.user?.sub} mono />
+                <Field label="Name" value={session?.user?.name} />
+                <Field label="Email" value={session?.user?.email} />
               </div>
 
               <div className={styles.actions}>
@@ -96,9 +118,17 @@ export default function AccountPage() {
               </div>
             </>
           ) : (
-            <p>
-              You’re not authenticated. Try opening a protected page to trigger Hosted UI login.
-            </p>
+            <>
+              <div className={styles.grid}>
+                <Field label="Status" value="Not signed in" />
+              </div>
+
+              <div className={styles.actions}>
+                <button className={styles.primaryBtn} onClick={loginWithGoogle}>
+                  Sign in with Google
+                </button>
+              </div>
+            </>
           )}
         </div>
       </main>
@@ -108,21 +138,11 @@ export default function AccountPage() {
   );
 }
 
-function Field({
-  label,
-  value,
-  mono,
-}: {
-  label: string;
-  value?: string;
-  mono?: boolean;
-}) {
+function Field({ label, value }: { label: string; value?: string }) {
   return (
     <div className={styles.field}>
       <div className={styles.label}>{label}</div>
-      <div className={`${styles.value} ${mono ? styles.mono : ""}`}>
-        {value || "—"}
-      </div>
+      <div className={styles.value}>{value || "—"}</div>
     </div>
   );
 }
