@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import AssetPriceVisualizer from "../components/AssetPriceVisualizer";
 import coins from "../app/coins";
-import { Coin } from "@/types/types";
+import { Coin, PredictionMetadata } from "@/types/types";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import CustomSelect from "../components/CustomSelect";
@@ -11,7 +11,6 @@ import { FaTelegramPlane } from "react-icons/fa";
 import styles from "./predictions.module.css";
 
 type Timeframe = "1H" | "4H" | "1D" | "1W";
-
 const FAV_KEY = "gatsbyt_favorite_coins_v1";
 
 export default function PredictionsPage() {
@@ -23,15 +22,23 @@ export default function PredictionsPage() {
   const [query, setQuery] = useState("");
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
 
-  // Chart header UX (even if it doesn't change the chart yet)
-  const [timeframe, setTimeframe] = useState<Timeframe>("4H");
+  // Controls (today: hourly only)
+  const supportedTimeframes = useMemo(() => new Set<Timeframe>(["1H"]), []);
+  const [timeframe, setTimeframe] = useState<Timeframe>("1H");
+
+  // MAE toggle
+  const [showMaeBand, setShowMaeBand] = useState(true);
+
+  // optional: read chart metadata to enable/disable MAE button
+  const [chartMeta, setChartMeta] = useState<PredictionMetadata | null>(null);
+  const canMae = !!(chartMeta?.mae != null && isFinite(Number(chartMeta.mae)));
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 980);
     handleResize();
     window.addEventListener("resize", handleResize);
 
-    // Load favorites safely
+    // Load favorites
     try {
       const raw = localStorage.getItem(FAV_KEY);
       if (raw) {
@@ -45,6 +52,11 @@ export default function PredictionsPage() {
     setHydrated(true);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // keep timeframe valid
+  useEffect(() => {
+    if (!supportedTimeframes.has(timeframe)) setTimeframe("1H");
+  }, [supportedTimeframes, timeframe]);
 
   const persistFavorites = (next: Set<string>) => {
     setFavorites(next);
@@ -77,7 +89,11 @@ export default function PredictionsPage() {
     const list =
       q.length === 0
         ? coins
-        : coins.filter((c) => (c.name || "").toLowerCase().includes(q) || (c.symbol || "").toLowerCase().includes(q));
+        : coins.filter(
+            (c) =>
+              (c.name || "").toLowerCase().includes(q) ||
+              (c.symbol || "").toLowerCase().includes(q)
+          );
 
     // Favorites first
     return [...list].sort((a, b) => {
@@ -95,7 +111,6 @@ export default function PredictionsPage() {
       {/* HERO */}
       <section className={styles.pageHero}>
         <div className={styles.pageHeroWatermark} />
-
         <div className={styles.pageHeroInner}>
           <div className={styles.heroGrid}>
             <div className={styles.heroContent}>
@@ -137,11 +152,7 @@ export default function PredictionsPage() {
               <CustomSelect
                 withIcons
                 options={options}
-                value={{
-                  label: coin.name,
-                  value: coin.symbol,
-                  icon: coin.coinpng,
-                }}
+                value={{ label: coin.name, value: coin.symbol, icon: coin.coinpng }}
                 onChange={(option) => {
                   const selected = coins.find((c) => c.symbol === option.value);
                   if (selected) setCoin(selected);
@@ -216,7 +227,7 @@ export default function PredictionsPage() {
         {/* Main */}
         <main className={styles.main}>
           <div className={styles.visualizerContainer}>
-            {/* Chart header bar (doesn't require changes to AssetPriceVisualizer) */}
+            {/* Chart header bar (THIS is the only place for controls) */}
             <div className={styles.visualizerHeader}>
               <div className={styles.visualizerHeaderLeft}>
                 <img
@@ -237,25 +248,44 @@ export default function PredictionsPage() {
 
               <div className={styles.visualizerHeaderRight}>
                 <div className={styles.tfGroup} aria-label="Timeframe">
-                  {(["1H", "4H", "1D", "1W"] as Timeframe[]).map((tf) => (
-                    <button
-                      key={tf}
-                      className={`${styles.tfBtn} ${timeframe === tf ? styles.tfBtnActive : ""}`}
-                      onClick={() => setTimeframe(tf)}
-                      type="button"
-                    >
-                      {tf}
-                    </button>
-                  ))}
+                  {(["1H", "4H", "1D", "1W"] as Timeframe[]).map((tf) => {
+                    const disabled = !supportedTimeframes.has(tf);
+                    return (
+                      <button
+                        key={tf}
+                        className={`${styles.tfBtn} ${timeframe === tf ? styles.tfBtnActive : ""} ${
+                          disabled ? styles.tfBtnDisabled : ""
+                        }`}
+                        onClick={() => !disabled && setTimeframe(tf)}
+                        type="button"
+                        disabled={disabled}
+                        title={disabled ? "Coming soon — models currently run on 1H candles" : ""}
+                      >
+                        {tf}
+                      </button>
+                    );
+                  })}
                 </div>
 
-                <div className={styles.metaChip} title="Model quality indicator (from chart)">
-                  MAE shown in chart
-                </div>
+                <button
+                  type="button"
+                  className={`${styles.metaChip} ${showMaeBand ? styles.metaChipOn : ""} ${
+                    !canMae ? styles.metaChipDisabled : ""
+                  }`}
+                  title={!canMae ? "MAE not available for this model output" : "Toggle ±MAE band"}
+                  onClick={() => canMae && setShowMaeBand((v) => !v)}
+                  disabled={!canMae}
+                >
+                  MAE {showMaeBand ? "shown in chart" : "hidden"}
+                </button>
               </div>
             </div>
 
-            <AssetPriceVisualizer coin={coin} />
+            <AssetPriceVisualizer
+              coin={coin}
+              showMaeBand={showMaeBand}
+              onMetadata={setChartMeta}
+            />
           </div>
 
           <div className={styles.explanationContainer}>
