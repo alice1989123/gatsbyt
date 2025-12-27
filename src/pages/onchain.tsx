@@ -161,7 +161,7 @@ const OnChain = () => {
         const formatted: Point[] = (json ?? [])
           .map((item: any) => [item.timestamp, Number(item.value)] as Point)
           .filter((p: Point) => Number.isFinite(p[1]))
-          .sort((a, b) => toMs(a[0]) - toMs(b[0]));
+          .sort((a: any, b: any) => toMs(a[0]) - toMs(b[0]));
 
         if (!cancelled) setRawSeries(formatted);
       } catch (err: any) {
