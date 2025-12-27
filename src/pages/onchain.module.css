@@ -1,98 +1,229 @@
-.page {
-  
+.root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #13195c;
+}
 
-  background: url('/gatsbyt-bg-dark.png') no-repeat center center fixed;
+/* Background stays on the page, but content is a clean column */
+.page {
+  flex: 1;
+  padding: 24px 16px;
+  background: url("/gatsbyt-bg-dark.png") no-repeat center center fixed;
   background-size: cover;
   background-blend-mode: overlay;
   background-color: #13195c;
-  backdrop-filter: blur(4px);
-  
-  
-  margin: 0;
-  font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: "100%";
-
 }
 
-.container {
-width: 90%;
-max-width: 800px;
-height: 70vh;
-background: rgba(255, 255, 255, 0.1);
-border-radius: 15px;
-padding: 2rem;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-overflow-y: scroll;
-overflow-x: hidden;
+.content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Hero / headings */
+.hero {
+  padding: 12px 8px 18px 8px;
 }
 
 .title {
-text-align: center;
-margin-bottom: 2rem;
-font-size: 2.5rem;
-color: white;
+  margin: 0;
+  font-size: 34px;
+  line-height: 1.15;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 0.2px;
 }
 
-/* modify these styles for the scrollbar */
-.container::-webkit-scrollbar {
-  width: 10px;
+.subtitle {
+  margin: 10px 0 0 0;
+  max-width: 780px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 15px;
 }
 
-.container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1); /* make the track transparent like the container */
+/* Cards */
+.controlsCard {
+  margin-top: 14px;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(8, 12, 28, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
 }
 
-.container::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 139, 0.5); /* dark blue color with some transparency */
+.chartCard {
+  margin-top: 14px;
+  padding: 10px 10px 6px 10px;
+  border-radius: 16px;
+  background: rgba(8, 12, 28, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
 }
 
-.container::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 56, 139, 0.8); /* darker blue color when hovering */
-}
-
-.tooltipWrapper {
-  position: relative;
-  display: inline-block;
-
-}
-
-.infoIcon {
-  cursor: pointer;
-  color: #00bfff;
-  font-size: 18px;
-}
-
-.selectorWrapper {
+/* Controls layout */
+.controlsRow {
   display: flex;
-  flex-direction: row;
+  gap: 18px;
+  align-items: flex-end;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  width: 100%;
-  padding: 0 1rem;
+  flex-wrap: wrap;
 }
 
-.tooltipContent {
-  display: none;
-  position: absolute;
-  top: 120%;
-  left: 0;
-  background-color: #222;
-  color: white;
-  padding: 8px;
+.metricSelect {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 320px;
+}
+
+.rightControls {
+  display: flex;
+  gap: 18px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.controlLabel {
   font-size: 12px;
-  width: 250px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  z-index: 10;
-  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.7);
+  margin-left: 2px;
 }
 
-/* ✨ This is the magic line */
-.tooltipWrapper:hover .tooltipContent {
-  display: block;
+.rangeGroup,
+.toggleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rangeButtons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.rangeBtn {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.82);
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 0.2px;
+}
+
+.rangeBtn:hover {
+  border-color: rgba(255, 255, 255, 0.26);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.rangeBtnActive {
+  border-color: rgba(0, 191, 255, 0.55);
+  background: rgba(0, 191, 255, 0.12);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.toggleBtn {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 0.2px;
+}
+
+.toggleOn {
+  border-color: rgba(0, 191, 255, 0.55);
+  background: rgba(0, 191, 255, 0.12);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.toggleOff {
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.metricDescription {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.metricName {
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.metricDescText {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+  line-height: 1.45;
+  max-width: 980px;
+}
+
+/* Stats row */
+.statsGrid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.statCard {
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.statLabel {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 12px;
+}
+
+.statValue {
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+/* Loading/Error boxes */
+.stateBox {
+  height: 520px;
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+.stateBoxError {
+  height: 520px;
+  display: grid;
+  place-items: center;
+  color: rgba(255, 220, 220, 0.92);
+  font-size: 14px;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .title {
+    font-size: 28px;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .metricSelect {
+    min-width: 100%;
+  }
 }
