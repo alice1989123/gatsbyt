@@ -45,6 +45,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       name: payload?.name,
       sub: payload?.sub,
       username: payload?.["cognito:username"],
-    },
+    },  
   });
 }

@@ -38,12 +38,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     iss: claims?.iss,
   });
 
-  const apiHost = getApiHost(process.env.NEXT_CRYPTO_API);
+  console.log("[proxy] NEXT_CRYPTO_API raw:", process.env.NEXT_CRYPTO_API);
+
+  const rawApi =
+    process.env.NEXT_CRYPTO_API ??
+    "https://kz89j9juql.execute-api.mx-central-1.amazonaws.com";
+
+  const apiHost = getApiHost(rawApi);
   if (!apiHost) return res.status(500).json({ error: "Missing NEXT_CRYPTO_API" });
 
-  const env = process.env.NEXT_PUBLIC_ENV || "dev"; // or prod
-  if (!apiHost) return res.status(500).json({ error: "Missing NEXT_NEXT_CRYPTO_API" });
-  console.log("[proxy] NEXT_CRYPTO_API:", process.env.NEXT_CRYPTO_API);
+  const env = process.env.NEXT_PUBLIC_ENV || "dev";
 
 
   const { resource, metric_name, coin, query } = req.query;
