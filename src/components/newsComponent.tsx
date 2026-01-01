@@ -67,7 +67,6 @@ function getSummary(item: NewsItemLike) {
 }
 
 function getDateRaw(item: NewsItemLike) {
-  // prefer summarized_at, fallback extracted_at, fallback created_at
   return item.summarized_at ?? item.extracted_at ?? item.created_at ?? "";
 }
 
@@ -85,110 +84,110 @@ function getClusterKey(item: NewsItemLike): string {
   return item.cluster_id || item.article_id || item.url || getHeadline(item);
 }
 
-const NewsComponent: FC<NewsComponentProps> = (props) => {
+// -------------------- Filters subcomponent --------------------
+const NewsFilters: FC<FiltersModeProps> = (props) => {
+  const { news, selectedCoin, selectedTopic, onSelectCoin, onSelectTopic, onClearCoin, onClearTopic } =
+    props;
+
+  const coinOptions = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const item of news ?? []) {
+      for (const c of getCoins(item)) {
+        counts.set(c, (counts.get(c) ?? 0) + 1);
+      }
+    }
+    return Array.from(counts.entries())
+      .sort((a, b) => b[1] - a[1])
+      .map(([coin, count]) => ({ coin, count }));
+  }, [news]);
+
+  const topicOptions = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const item of news ?? []) {
+      for (const t of getTopics(item)) {
+        counts.set(t, (counts.get(t) ?? 0) + 1);
+      }
+    }
+    return Array.from(counts.entries())
+      .sort((a, b) => b[1] - a[1])
+      .map(([topic, count]) => ({ topic, count }));
+  }, [news]);
+
+  return (
+    <div className={styles.filters}>
+      <div className={styles.filtersSection}>
+        <div className={styles.filtersHeader}>
+          <div className={styles.filtersTitle}>Coins</div>
+          {selectedCoin && (
+            <button className={styles.clearPill} type="button" onClick={onClearCoin}>
+              Clear
+            </button>
+          )}
+        </div>
+
+        {coinOptions.length === 0 ? (
+          <div className={styles.muted}>No coin tags yet.</div>
+        ) : (
+          <div className={styles.pills}>
+            {coinOptions.slice(0, 20).map(({ coin, count }) => {
+              const active = selectedCoin === coin;
+              return (
+                <button
+                  key={coin}
+                  type="button"
+                  className={`${styles.pillBtn} ${active ? styles.pillActive : ""}`}
+                  onClick={() => onSelectCoin(active ? null : coin)}
+                  title={`${count} stories`}
+                >
+                  {coin} <span className={styles.pillCount}>{count}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      <div className={styles.divider} />
+
+      <div className={styles.filtersSection}>
+        <div className={styles.filtersHeader}>
+          <div className={styles.filtersTitle}>Topics</div>
+          {selectedTopic && (
+            <button className={styles.clearPill} type="button" onClick={onClearTopic}>
+              Clear
+            </button>
+          )}
+        </div>
+
+        {topicOptions.length === 0 ? (
+          <div className={styles.muted}>No topics yet.</div>
+        ) : (
+          <div className={styles.pills}>
+            {topicOptions.slice(0, 20).map(({ topic, count }) => {
+              const active = selectedTopic === topic;
+              return (
+                <button
+                  key={topic}
+                  type="button"
+                  className={`${styles.pillBtn} ${active ? styles.pillActive : ""}`}
+                  onClick={() => onSelectTopic(active ? null : topic)}
+                  title={`${count} stories`}
+                >
+                  {topic} <span className={styles.pillCount}>{count}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// -------------------- Feed subcomponent --------------------
+const NewsFeed: FC<FeedModeProps> = (props) => {
   const { news } = props;
 
-  // ---------- FILTERS MODE (sidebar) ----------
-  if (props.mode === "filters") {
-    const { selectedCoin, selectedTopic, onSelectCoin, onSelectTopic, onClearCoin, onClearTopic } =
-      props;
-
-    const coinOptions = useMemo(() => {
-      const counts = new Map<string, number>();
-      for (const item of news ?? []) {
-        for (const c of getCoins(item)) {
-          counts.set(c, (counts.get(c) ?? 0) + 1);
-        }
-      }
-      return Array.from(counts.entries())
-        .sort((a, b) => b[1] - a[1])
-        .map(([coin, count]) => ({ coin, count }));
-    }, [news]);
-
-    const topicOptions = useMemo(() => {
-      const counts = new Map<string, number>();
-      for (const item of news ?? []) {
-        for (const t of getTopics(item)) {
-          counts.set(t, (counts.get(t) ?? 0) + 1);
-        }
-      }
-      return Array.from(counts.entries())
-        .sort((a, b) => b[1] - a[1])
-        .map(([topic, count]) => ({ topic, count }));
-    }, [news]);
-
-    return (
-      <div className={styles.filters}>
-        <div className={styles.filtersSection}>
-          <div className={styles.filtersHeader}>
-            <div className={styles.filtersTitle}>Coins</div>
-            {selectedCoin && (
-              <button className={styles.clearPill} type="button" onClick={onClearCoin}>
-                Clear
-              </button>
-            )}
-          </div>
-
-          {coinOptions.length === 0 ? (
-            <div className={styles.muted}>No coin tags yet.</div>
-          ) : (
-            <div className={styles.pills}>
-              {coinOptions.slice(0, 20).map(({ coin, count }) => {
-                const active = selectedCoin === coin;
-                return (
-                  <button
-                    key={coin}
-                    type="button"
-                    className={`${styles.pillBtn} ${active ? styles.pillActive : ""}`}
-                    onClick={() => onSelectCoin(active ? null : coin)}
-                    title={`${count} stories`}
-                  >
-                    {coin} <span className={styles.pillCount}>{count}</span>
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
-
-        <div className={styles.divider} />
-
-        <div className={styles.filtersSection}>
-          <div className={styles.filtersHeader}>
-            <div className={styles.filtersTitle}>Topics</div>
-            {selectedTopic && (
-              <button className={styles.clearPill} type="button" onClick={onClearTopic}>
-                Clear
-              </button>
-            )}
-          </div>
-
-          {topicOptions.length === 0 ? (
-            <div className={styles.muted}>No topics yet.</div>
-          ) : (
-            <div className={styles.pills}>
-              {topicOptions.slice(0, 20).map(({ topic, count }) => {
-                const active = selectedTopic === topic;
-                return (
-                  <button
-                    key={topic}
-                    type="button"
-                    className={`${styles.pillBtn} ${active ? styles.pillActive : ""}`}
-                    onClick={() => onSelectTopic(active ? null : topic)}
-                    title={`${count} stories`}
-                  >
-                    {topic} <span className={styles.pillCount}>{count}</span>
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  // ---------- FEED MODE (main list) ----------
   const query = props.query ?? "";
   const selectedCoin = props.selectedCoin ?? null;
   const selectedTopic = props.selectedTopic ?? null;
@@ -205,7 +204,6 @@ const NewsComponent: FC<NewsComponentProps> = (props) => {
       const coins = getCoins(item);
       const entities = Array.isArray(item.entities) ? item.entities.join(" ") : "";
 
-      // text search across title/summary/topics/coins/entities
       if (q) {
         const hay = normalizeText(
           `${headline} ${summary} ${topics.join(" ")} ${coins.join(" ")} ${entities}`
@@ -219,14 +217,12 @@ const NewsComponent: FC<NewsComponentProps> = (props) => {
       return true;
     });
 
-    // sort
     list.sort((a, b) => {
       const da = safeDate(getDateRaw(a))?.getTime() ?? 0;
       const db = safeDate(getDateRaw(b))?.getTime() ?? 0;
       return sortBy === "newest" ? db - da : da - db;
     });
 
-    // group by cluster_id (narrative) if enabled
     if (groupSimilar) {
       const groups = new Map<string, NewsItemLike[]>();
       for (const item of list) {
@@ -236,13 +232,12 @@ const NewsComponent: FC<NewsComponentProps> = (props) => {
         groups.set(k, arr);
       }
 
-      // representative = newest item in each group (list already sorted)
       const out: Array<NewsItemLike & { _clusterSize?: number }> = [];
-      for (const [_, items] of groups.entries()) {
+      for (const items of Array.from(groups.values())) {
         out.push({ ...items[0], _clusterSize: items.length });
       }
 
-      // keep ordering stable by date again
+
       out.sort((a, b) => {
         const da = safeDate(getDateRaw(a))?.getTime() ?? 0;
         const db = safeDate(getDateRaw(b))?.getTime() ?? 0;
@@ -255,9 +250,7 @@ const NewsComponent: FC<NewsComponentProps> = (props) => {
     return list;
   }, [news, query, selectedCoin, selectedTopic, sortBy, groupSimilar]);
 
-  if (filtered.length === 0) {
-    return <p className={styles.empty}>No matching news.</p>;
-  }
+  if (filtered.length === 0) return <p className={styles.empty}>No matching news.</p>;
 
   return (
     <div className={styles.container}>
@@ -284,7 +277,10 @@ const NewsComponent: FC<NewsComponentProps> = (props) => {
         const clusterSize = item._clusterSize ?? 1;
 
         return (
-          <article key={`${item.article_id ?? item.url ?? headline}-${index}`} className={styles.newsItem}>
+          <article
+            key={`${item.article_id ?? item.url ?? headline}-${index}`}
+            className={styles.newsItem}
+          >
             <div className={styles.headerRow}>
               <div className={styles.titleCol}>
                 <a
@@ -309,9 +305,7 @@ const NewsComponent: FC<NewsComponentProps> = (props) => {
                         {t}
                       </span>
                     ))}
-                    {clusterSize > 1 ? (
-                      <span className={styles.chipSoft}>Cluster ×{clusterSize}</span>
-                    ) : null}
+                    {clusterSize > 1 ? <span className={styles.chipSoft}>Cluster ×{clusterSize}</span> : null}
                   </div>
                 )}
               </div>
@@ -334,6 +328,12 @@ const NewsComponent: FC<NewsComponentProps> = (props) => {
       })}
     </div>
   );
+};
+
+// -------------------- Wrapper component (no hooks) --------------------
+const NewsComponent: FC<NewsComponentProps> = (props) => {
+  if (props.mode === "filters") return <NewsFilters {...props} />;
+  return <NewsFeed {...props} />;
 };
 
 export default NewsComponent;
