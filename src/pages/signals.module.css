@@ -1,12 +1,17 @@
+/* ===================== PAGE BACKDROP ===================== */
 .wrapper {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  background: url('/gatsbyt-bg-dark.png') no-repeat center center fixed;
-  background-size: cover;
-  background-blend-mode: overlay;
-  background-color: #13195c;
-  backdrop-filter: blur(4px);
+
+  /* keep your theme, but add nicer depth */
+  background:
+    radial-gradient(1200px 600px at 20% 10%, rgba(76, 110, 255, 0.18), transparent 60%),
+    radial-gradient(900px 500px at 80% 20%, rgba(0, 255, 204, 0.10), transparent 55%),
+    linear-gradient(180deg, rgba(9, 12, 40, 0.85), rgba(10, 12, 44, 0.92)),
+    url("/gatsbyt-bg-dark.png") center/cover no-repeat fixed;
+
+  color: white;
 }
 
 .contentWrapper {
@@ -14,254 +19,385 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  padding: 2rem 1rem 2.5rem;
 }
 
+/* ===================== MAIN GLASS PANEL ===================== */
 .container {
-  width: 90%;
-  max-width: 1000px;
-  min-height: 100vh;
+  width: 100%;
+  max-width: 1050px;
 
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  padding: 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  overflow-y: visible;
-  overflow-x: hidden;
-  backdrop-filter: blur(4px);
-}
+  border-radius: 18px;
+  padding: 1.75rem;
 
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.10),
+    rgba(255, 255, 255, 0.06)
+  );
 
+  border: 1px solid rgba(255, 255, 255, 0.14);
 
-/* Scrollbar styling */
-.container::-webkit-scrollbar {
-  width: 10px;
-}
-.container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-}
-.container::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 139, 0.5);
-}
-.container::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 56, 139, 0.8);
-}
+  box-shadow:
+    0 18px 60px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10);
 
-/* Content layout */
-.resultsSection {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding: 1rem;
-  color: white;
+  backdrop-filter: blur(10px);
 }
 
 .resultsHeader {
   text-align: center;
+  padding: 0.25rem 0 1.25rem;
 }
 
 .resultsTitle {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  margin: 0.25rem 0 0.5rem;
+  text-shadow: 0 6px 22px rgba(0, 0, 0, 0.55);
 }
 
 .resultsSubtitle {
-  font-size: 1.1rem;
-  color: #ccc;
+  margin: 0;
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.72);
 }
 
-.resultsContent {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px dashed rgba(255, 255, 255, 0.15);
-  padding: 2rem;
-}
-
-.placeholderBox {
-  text-align: center;
-  color: #aaaaaa;
-  font-style: italic;
-  font-size: 1.1rem;
-}
-
-/* Optional: Tooltip (still usable anywhere in the app) */
-.tooltipWrapper {
-  position: relative;
-  display: inline-block;
-}
-.infoIcon {
-  cursor: pointer;
-  color: #00bfff;
-  font-size: 18px;
-}
-.tooltipContent {
-  display: none;
-  position: absolute;
-  top: 120%;
-  left: 0;
-  background-color: #222;
-  color: white;
-  padding: 8px;
-  font-size: 12px;
-  width: 250px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  z-index: 10;
-  line-height: 1.4;
-}
-.tooltipWrapper:hover .tooltipContent {
-  display: block;
-}
-
-.cardGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
+/* ===================== SECTION CARD ===================== */
+.statsSection {
   margin-top: 1rem;
-}
-
-.card {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
   padding: 1rem;
-  text-align: center;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(2px);
-  transition: transform 0.2s ease;
+  border-radius: 14px;
+
+  background: rgba(10, 14, 50, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-.card:hover {
-  transform: translateY(-3px);
+.tableTitle {
+  margin: 0.25rem 0 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.92);
 }
 
-.card h4 {
-  font-size: 1rem;
-  color: #ffffff;
-  margin-bottom: 0.3rem;
+/* ===================== TABLE WRAPPER ===================== */
+.scrollableTable {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  overflow: hidden;
+
+  /* desktop behavior */
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: auto;
 }
 
-.card p {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #00ffcc;
+/* subtle scrollbars */
+.scrollableTable::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+.scrollableTable::-webkit-scrollbar-thumb {
+  background: rgba(90, 120, 255, 0.35);
+  border-radius: 10px;
+}
+.scrollableTable::-webkit-scrollbar-thumb:hover {
+  background: rgba(90, 120, 255, 0.55);
 }
 
-.coinWrapper {
+/* ===================== TABLE ===================== */
+.dataTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.95rem;
+  min-width: 760px; /* helps keep structure on mid screens */
+}
+
+.dataTable thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+
+  text-align: left;
+  padding: 0.95rem 1rem;
+
+  background: rgba(18, 22, 70, 0.92);
+  backdrop-filter: blur(8px);
+
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.dataTable tbody td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.dataTable tbody tr {
+  background: rgba(255, 255, 255, 0.03);
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+
+.dataTable tbody tr:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* nicer alignment for coin */
+.coinCell {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 0.65rem;
 }
 
 .coinIcon {
-  
-  width: 40px;
-  height: 40px;
-  object-fit: contain;   /* keep aspect ratio */
-  display: inline-block;
-  margin-right: 8px;
-  border-radius: 50%;    /* optional: makes them round */
-  background-color: #111; /* optional: visual frame for transparent PNGs */
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  object-fit: contain;
+
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.18),
+    rgba(0, 0, 0, 0.25) 70%
+  );
+
+  border: 1px solid rgba(255, 255, 255, 0.16);
+
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.35),
+    0 0 0 4px rgba(90, 120, 255, 0.12); /* outer ring */
 }
 
-/* ===================== NEW STYLES FOR DATA SECTIONS ===================== */
-
-.additionalData {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background-color: rgba(255, 255, 255, 0.06);
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  color: white;
+.badgeBuy {
+  box-shadow: 0 0 0 3px rgba(0, 230, 118, 0.12);
+}
+.badgeShort {
+  box-shadow: 0 0 0 3px rgba(255, 82, 82, 0.12);
 }
 
-.additionalData h3 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  padding-bottom: 0.5rem;
+.coinSymbol {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
 }
 
-/* ===================== TABLE STYLES ===================== */
-
-.dataTable {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 1.5rem;
-  color: white;
-  font-size: 0.95rem;
+.coinTicker {
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  color: rgba(255, 255, 255, 0.95);
 }
 
-.dataTable thead {
-  background-color: rgba(0, 0, 50, 0.4);
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 0.95rem;
+.coinPairHint {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.55);
 }
 
-.dataTable th, .dataTable td {
-  padding: 0.75rem 1rem;
-  text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+.headerPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+
+  background: rgba(90, 120, 255, 0.14);
+  border: 1px solid rgba(90, 120, 255, 0.25);
+
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 700;
+  font-size: 0.85rem;
+
+  margin-top: 0.75rem;
 }
-
-.dataTable th {
-  background: rgba(255, 255, 255, 0.1);
-  font-weight: 600;
-}
-
-
-.dataTable td {
-  font-size: 0.92rem;
-}
-
-/* ===================== SCROLLABLE TABLE ===================== */
-
-.scrollableTable {
-  max-height: 100vh;
-  overflow-y: auto;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
-  padding: 0.5rem;
-  overflow-x: auto;
-  margin-top: 1rem;
-}
-
-.scrollableTable::-webkit-scrollbar {
+.pillDot {
   width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(0, 255, 204, 0.9);
+  box-shadow: 0 0 0 3px rgba(0, 255, 204, 0.15);
 }
 
-.scrollableTable::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 139, 0.5);
-  border-radius: 10px;
+/* ===================== ACTION BADGES ===================== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 0.82rem;
+  letter-spacing: 0.35px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  text-transform: uppercase;
 }
 
-/* ===================== OPTIONAL ROI COLOR ===================== */
-
-.positive {
-  color: #00e676;
-  font-weight: bold;
+.badgeBuy {
+  background: rgba(0, 230, 118, 0.14);
+  color: rgba(0, 230, 118, 0.95);
 }
 
-.negative {
-  color: #ff5252;
-  font-weight: bold;
+.badgeShort {
+  background: rgba(255, 82, 82, 0.14);
+  color: rgba(255, 82, 82, 0.95);
 }
 
-.statsSection {
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  width: 100%;
-  max-width: 900px;
+/* Desktop/tablet: keep your current behavior */
+.scrollableTable {
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+
+/* old classes still okay if you use them elsewhere */
+.positive { color: #00e676; font-weight: bold; }
+.negative { color: #ff5252; font-weight: bold; }
+
+.mobileActionPill {
+  display: none;
+}
+
+
+/* ===================== MOBILE: TABLE -> CARDS ===================== */
+/* This is the key: keep semantic table, but render like stacked cards */
+@media (max-width: 640px) {
+  /* ✅ IMPORTANT: avoid nested vertical scrolling on mobile */
+  .scrollableTable {
+    max-height: none;
+    overflow: visible;     /* no inner vertical scroll */
+    overflow-x: hidden;    /* cards shouldn't need horizontal scroll */
+    border: none;
+    padding: 0;
+  }
+
+  /* Table becomes a card list */
+  .dataTable {
+    min-width: unset;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 1.6rem; /* bigger gap between cards */
+  }
+
+  .dataTable thead {
+    display: none;
+  }
+
+  /* Each row becomes a card */
+  .dataTable tbody tr {
+    display: block;
+    border-radius: 16px;
+    overflow: hidden;
+
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.075),
+      rgba(255, 255, 255, 0.035)
+    );
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    box-shadow:
+      0 16px 35px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+    /* ✅ reliable spacing even when border-spacing feels small on mobile */
+    margin-bottom: 1.4rem;
+  }
+
+  .dataTable tbody tr:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Optional: subtle glow separator between cards (premium feel) */
+  .dataTable tbody tr::after {
+    content: "";
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: -12px;
+    height: 12px;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(90, 120, 255, 0.18),
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+
+  .dataTable tbody tr:last-child::after {
+    display: none;
+  }
+
+  /* Each cell becomes a label/value row */
+  .dataTable tbody td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    padding: 0.95rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+
+    word-break: break-word;
+  }
+
+  .dataTable tbody td:last-child {
+    border-bottom: none;
+  }
+
+  /* label from data-label="Entry", etc */
+  .dataTable tbody td::before {
+    content: attr(data-label);
+    font-weight: 800;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.58);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    flex: 0 0 auto;
+  }
+
+  /* --- Coin row as card header --- */
+  .coinTd {
+    background: rgba(18, 22, 70, 0.55);
+  }
+
+  /* Don’t repeat “Coin” label in the header row */
+  .coinTd::before {
+    content: "";
+    display: none;
+  }
+
+  .coinCell {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 0.75rem;
+  }
+
+  /* Premium icon sizing for mobile */
+  .coinIcon {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* Make values align nicely */
+  .dataTable tbody td > *:last-child {
+    text-align: right;
+  }
+
+  .mobileActionPill {
+    margin-left: auto;
+    display: inline-flex;
+  }
+
+    .actionRow {
+    display: none !important;
+  }
+
 }
