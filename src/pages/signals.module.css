@@ -14,6 +14,8 @@
   color: white;
 }
 
+
+
 .contentWrapper {
   flex: 1;
   display: flex;
@@ -264,9 +266,164 @@
   display: none;
 }
 
+/* ---------- Controls bar ---------- */
+.controlsBar {
+  margin: 0.75rem 0 1rem;
+  padding: 0.9rem;
+  border-radius: 14px;
 
-/* ===================== MOBILE: TABLE -> CARDS ===================== */
-/* This is the key: keep semantic table, but render like stacked cards */
+  background: rgba(10, 14, 50, 0.30);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.controlsRow {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.controlsRow + .controlsRow {
+  margin-top: 0.75rem;
+}
+
+.searchWrap {
+  flex: 1 1 320px;
+  min-width: 220px;
+}
+
+.searchInput {
+  width: 100%;
+  height: 42px;
+  padding: 0 0.9rem;
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  color: rgba(255, 255, 255, 0.92);
+  outline: none;
+}
+
+.searchInput::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.searchInput:focus {
+  border-color: rgba(90, 120, 255, 0.40);
+  box-shadow: 0 0 0 4px rgba(90, 120, 255, 0.14);
+}
+
+.select {
+  height: 42px;
+  padding: 0 0.75rem;
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  color: rgba(255, 255, 255, 0.92);
+  outline: none;
+}
+
+.select:focus {
+  border-color: rgba(90, 120, 255, 0.40);
+  box-shadow: 0 0 0 4px rgba(90, 120, 255, 0.14);
+}
+
+.clearBtn {
+  height: 42px;
+  padding: 0 0.9rem;
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.clearBtn:hover {
+  background: rgba(255, 255, 255, 0.11);
+}
+
+/* ---------- Action pills ---------- */
+.pillGroup {
+  display: inline-flex;
+  gap: 0.5rem;
+}
+
+.pillButton {
+  height: 38px;
+  padding: 0 0.85rem;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.pillButton:hover {
+  background: rgba(255, 255, 255, 0.10);
+}
+
+.pillActive {
+  background: rgba(90, 120, 255, 0.18);
+  border-color: rgba(90, 120, 255, 0.35);
+  box-shadow: 0 0 0 4px rgba(90, 120, 255, 0.10);
+}
+
+/* ---------- Section header row ---------- */
+.sectionHeaderRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.countText {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.95rem;
+}
+
+/* ---------- Favorite star button ---------- */
+.starButton {
+  margin-left: auto;
+  height: 34px;
+  width: 34px;
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.starButton:hover {
+  background: rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.starActive {
+  color: rgba(255, 215, 0, 0.95);
+  border-color: rgba(255, 215, 0, 0.30);
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.10);
+}
+
+
+/* ===================== MOBILE: TABLE -> CARDS + CONTROLS ===================== */
+/* Keep semantic table, but render like stacked cards (and fix mobile controls layout) */
 @media (max-width: 640px) {
   /* ✅ IMPORTANT: avoid nested vertical scrolling on mobile */
   .scrollableTable {
@@ -277,12 +434,68 @@
     padding: 0;
   }
 
-  /* Table becomes a card list */
+  /* -------- Controls: make it compact + not "tall & empty" -------- */
+  .controlsBar {
+    padding: 0.85rem;
+  }
+
+  /* Use grid to avoid flex stretch weirdness */
+  .controlsRow {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+    margin-top: 0;
+    align-items: stretch;
+  }
+
+  /* remove the big desktop spacing between rows */
+  .controlsRow + .controlsRow {
+    margin-top: 0.65rem;
+  }
+
+  .searchWrap {
+    flex: unset;
+    min-width: unset;
+  }
+
+  .pillGroup {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-start;
+
+    overflow-x: auto; /* if it ever wraps, it scrolls horizontally */
+    padding-bottom: 0.25rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .pillGroup::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .select,
+  .clearBtn {
+    width: 100%;
+  }
+
+  .clearBtn {
+    height: 40px;
+  }
+
+  /* (Optional) Sticky controls = premium trading-app feel */
+  /* .controlsBar {
+    position: sticky;
+    top: 0.75rem;
+    z-index: 5;
+    backdrop-filter: blur(10px);
+  } */
+
+  /* -------- Table becomes a card list -------- */
   .dataTable {
     min-width: unset;
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0 1.6rem; /* bigger gap between cards */
+    border-spacing: 0 1.6rem; /* gap between cards */
   }
 
   .dataTable thead {
@@ -292,6 +505,8 @@
   /* Each row becomes a card */
   .dataTable tbody tr {
     display: block;
+    position: relative; /* needed for the ::after glow */
+
     border-radius: 16px;
     overflow: hidden;
 
@@ -307,7 +522,7 @@
       0 16px 35px rgba(0, 0, 0, 0.45),
       inset 0 1px 0 rgba(255, 255, 255, 0.08);
 
-    /* ✅ reliable spacing even when border-spacing feels small on mobile */
+    /* ✅ reliable spacing even if border-spacing feels small */
     margin-bottom: 1.4rem;
   }
 
@@ -315,7 +530,7 @@
     margin-bottom: 0;
   }
 
-  /* Optional: subtle glow separator between cards (premium feel) */
+  /* Optional: subtle glow separator between cards */
   .dataTable tbody tr::after {
     content: "";
     position: absolute;
@@ -344,7 +559,6 @@
 
     padding: 0.95rem 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.10);
-
     word-break: break-word;
   }
 
@@ -376,6 +590,8 @@
 
   .coinCell {
     width: 100%;
+    display: flex;
+    align-items: center;
     justify-content: flex-start;
     gap: 0.75rem;
   }
@@ -391,13 +607,18 @@
     text-align: right;
   }
 
+  /* Mobile-only action pill on the right side of the coin header */
   .mobileActionPill {
-    margin-left: auto;
     display: inline-flex;
+    margin-left: auto;
   }
 
-    .actionRow {
+  /* Hide desktop Action column on mobile */
+  .actionRow {
     display: none !important;
   }
 
+  .selectWrap {
+  width: 100%;
+}
 }
