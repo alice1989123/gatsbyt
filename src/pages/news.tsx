@@ -14,7 +14,13 @@ const NewsSortSelect = dynamic(() => import("@/components/NewsSortSelect"), {
   ssr: false,
 });
 
+const SORT_OPTIONS: SortOption[] = [
+  { label: "Newest", value: "newest" },
+  { label: "Oldest", value: "oldest" },
+];  
+
 const api = "/api/proxy";
+
 
 export type NewsItemDB = {
   article_id: string;
@@ -56,15 +62,13 @@ const NewsPage = () => {
   const [sortBy, setSortBy] = useState<"newest" | "oldest">("newest");
   const [groupSimilar, setGroupSimilar] = useState(true);
 
-  const sortOptions: SortOption[] = [
-    { label: "Newest", value: "newest" },
-    { label: "Oldest", value: "oldest" },
-  ];
 
-  const sortValue = useMemo(
-    () => sortOptions.find((o) => o.value === sortBy) ?? sortOptions[0],
-    [sortBy]
+
+ const sortValue = useMemo(
+  () => SORT_OPTIONS.find((o) => o.value === sortBy) ?? SORT_OPTIONS[0],
+  [sortBy]
   );
+
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -161,11 +165,12 @@ const NewsPage = () => {
 
                 <div className={styles.sortShell} aria-label="Sort">
                   <NewsSortSelect
-                    options={sortOptions}
-                    value={sortValue}
-                    onChange={(selected: SortOption) => setSortBy(selected.value)}
-                    width="100%"
-                  />
+                  options={SORT_OPTIONS}
+                  value={sortValue}
+                  onChange={(selected) => setSortBy(selected.value)}
+                  width="100%"
+                  usePortal
+                />
                 </div>
 
                 <button className={styles.ghostBtn} type="button" onClick={resetAll}>

@@ -121,6 +121,27 @@
   opacity: 0.92;
 }
 
+.sentChip {
+  text-transform: capitalize;
+  font-weight: 700;
+}
+
+/* color mood */
+.sent_bullish {
+  background: rgba(0, 255, 160, 0.14);
+  border-color: rgba(0, 255, 160, 0.28);
+}
+
+.sent_bearish {
+  background: rgba(255, 80, 120, 0.14);
+  border-color: rgba(255, 80, 120, 0.28);
+}
+
+.sent_neutral {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
 /* FILTERS (SIDEBAR) */
 .filters {
   display: flex;

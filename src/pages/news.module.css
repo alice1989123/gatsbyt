@@ -75,6 +75,8 @@
   opacity: 0.95;
 }
 
+
+
 .topbar {
   display: flex;
   gap: 0.8rem;
@@ -155,8 +157,8 @@
 .sortShell {
   width: 170px;
   min-width: 160px;
-  height: 48px;
 
+  padding: 2px;              /* tiny inner padding */
   display: flex;
   align-items: center;
 
@@ -165,8 +167,6 @@
   border: 1px solid rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(10px);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
-
-  /* critical: keeps the inner control from overflowing rounded corners */
   overflow: hidden;
 }
 
@@ -261,6 +261,16 @@
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
   animation: pulse 1.2s infinite ease-in-out;
+}
+
+.date {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem; /* gives you the missing space */
+}
+
+.time {
+  opacity: 0.9;
 }
 
 @keyframes pulse {

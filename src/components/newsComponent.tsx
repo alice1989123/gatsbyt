@@ -84,6 +84,8 @@ function getClusterKey(item: NewsItemLike): string {
   return item.cluster_id || item.article_id || item.url || getHeadline(item);
 }
 
+
+
 // -------------------- Filters subcomponent --------------------
 const NewsFilters: FC<FiltersModeProps> = (props) => {
   const { news, selectedCoin, selectedTopic, onSelectCoin, onSelectTopic, onClearCoin, onClearTopic } =
@@ -202,6 +204,11 @@ const NewsFeed: FC<FeedModeProps> = (props) => {
       const summary = getSummary(item);
       const topics = getTopics(item);
       const coins = getCoins(item);
+      const sentiment = (item.sentiment_label ?? "").toLowerCase().trim();
+      const sentimentText =
+        sentiment === "bullish" || sentiment === "bearish" || sentiment === "neutral"
+          ? sentiment
+          : "";
       const entities = Array.isArray(item.entities) ? item.entities.join(" ") : "";
 
       if (q) {
@@ -257,12 +264,22 @@ const NewsFeed: FC<FeedModeProps> = (props) => {
       {filtered.map((item: any, index: number) => {
         const headline = getHeadline(item);
         const summary = getSummary(item);
+        const sentiment = (item.sentiment_label ?? "").toLowerCase().trim();
 
+        const sentimentText =
+              sentiment === "bullish" || sentiment === "bearish" || sentiment === "neutral"
+                ? sentiment
+                : ""; 
         const d = safeDate(getDateRaw(item));
-        const dateText = d
-          ? d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" })
-          : "Unknown date";
-
+        const dateTimeText = d  
+        ? new Intl.DateTimeFormat(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          }).format(d)
+        : "Unknown date";
         const domain = (() => {
           if (!item.url) return "";
           try {
@@ -295,18 +312,29 @@ const NewsFeed: FC<FeedModeProps> = (props) => {
 
                 {(coins.length > 0 || topics.length > 0 || clusterSize > 1) && (
                   <div className={styles.chipsRow}>
-                    {coins.map((c: string) => (
-                      <span key={c} className={styles.chip}>
-                        {c}
-                      </span>
-                    ))}
-                    {topics.map((t: string) => (
-                      <span key={t} className={styles.chipSoft}>
-                        {t}
-                      </span>
-                    ))}
-                    {clusterSize > 1 ? <span className={styles.chipSoft}>Cluster ×{clusterSize}</span> : null}
-                  </div>
+                  {sentimentText ? (
+                    <span
+                      className={`${styles.chip} ${styles.sentChip} ${styles[`sent_${sentimentText}`] ?? ""}`}
+                      title={
+                        typeof item.sentiment_score === "number"
+                          ? `Sentiment score: ${item.sentiment_score}`
+                          : "Sentiment"
+                      }
+                    >
+                      {sentimentText}
+                    </span>
+                  ) : null}
+
+                  {coins.map((c: string) => (
+                    <span key={c} className={styles.chip}>{c}</span>
+                  ))}
+
+                  {topics.map((t: string) => (
+                    <span key={t} className={styles.chipSoft}>{t}</span>
+                  ))}
+
+                  {clusterSize > 1 ? <span className={styles.chipSoft}>Cluster ×{clusterSize}</span> : null}
+                </div>
                 )}
               </div>
 
@@ -320,9 +348,12 @@ const NewsFeed: FC<FeedModeProps> = (props) => {
             {summary ? <p className={styles.summary}>{summary}</p> : null}
 
             <div className={styles.metaRow}>
-              <span className={styles.date}>{dateText}</span>
-              {domain ? <span className={styles.domain}>{domain}</span> : <span />}
-            </div>
+           <span className={styles.date}>{dateTimeText}</span>
+
+              <div className={styles.metaRight}>        
+                {domain ? <span className={styles.domain}>{domain}</span> : null}
+              </div>
+          </div>
           </article>
         );
       })}
