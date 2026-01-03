@@ -2,8 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import styles from "./account.module.css";
 
 type SessionResponse = {
@@ -88,7 +86,6 @@ export default function AccountPage() {
         <title>Account | Gatsbyt</title>
       </Head>
 
-      <Header />
 
       <main className={styles.page}>
         <h1 className={styles.title}>Account</h1>
@@ -133,7 +130,6 @@ export default function AccountPage() {
         </div>
       </main>
 
-      <Footer />
     </div>
   );
 }

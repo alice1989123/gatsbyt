@@ -1,249 +1,370 @@
 .wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background: url('/gatsbyt-bg-dark.png') no-repeat center center fixed;
+  width: 100%;
+}
+
+/* Page background (consistent with On-Chain) */
+.page {
+  padding: 24px 16px;
+  background: url("/gatsbyt-bg-dark.png") no-repeat center center fixed;
   background-size: cover;
   background-blend-mode: overlay;
   background-color: #13195c;
-  backdrop-filter: blur(4px);
 }
 
-.contentWrapper {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+.content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.container {
-  width: 90%;
-  max-width: 1000px;
-  min-height: 100vh;
-
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  padding: 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  overflow-y: visible;
-  overflow-x: hidden;
-  backdrop-filter: blur(4px);
+/* Hero */
+.hero {
+  padding: 12px 8px 18px 8px;
+  text-align: center;
 }
 
-
-
-/* Scrollbar styling */
-.container::-webkit-scrollbar {
-  width: 10px;
-}
-.container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-}
-.container::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 139, 0.5);
-}
-.container::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 56, 139, 0.8);
+.title {
+  margin: 0;
+  font-size: 34px;
+  line-height: 1.15;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 0.2px;
 }
 
-/* Content layout */
-.resultsSection {
+.subtitle {
+  margin: 10px auto 0 auto;
+  max-width: 780px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 15px;
+}
+
+/* KPI cards (premium + mobile-friendly) */
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.kpiCard {
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 12, 28, 0.55);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(10px);
+}
+
+.kpiLabel {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 12px;
+}
+
+.kpiValue {
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+/* Section cards */
+.sectionCard {
+  margin-top: 14px;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(8, 12, 28, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+}
+
+.sectionHeader {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 1rem;
-  color: white;
+  gap: 4px;
+  margin-bottom: 12px;
 }
 
-.resultsHeader {
-  text-align: center;
+.sectionTitle {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 800;
+  font-size: 16px;
+   line-height: 1.1; 
 }
 
-.resultsTitle {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
+.sectionHint {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 13px;
+    line-height: 1.2;
 }
 
-.resultsSubtitle {
-  font-size: 1.1rem;
-  color: #ccc;
-}
-
-.resultsContent {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
+/* ✅ Mobile-friendly table: horizontal scroll only */
+.tableWrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px dashed rgba(255, 255, 255, 0.15);
-  padding: 2rem;
+  background: rgba(255, 255, 255, 0.03);
 }
 
-.placeholderBox {
-  text-align: center;
-  color: #aaaaaa;
-  font-style: italic;
-  font-size: 1.1rem;
-}
-
-/* Optional: Tooltip (still usable anywhere in the app) */
-.tooltipWrapper {
-  position: relative;
-  display: inline-block;
-}
-.infoIcon {
-  cursor: pointer;
-  color: #00bfff;
-  font-size: 18px;
-}
-.tooltipContent {
-  display: none;
-  position: absolute;
-  top: 120%;
-  left: 0;
-  background-color: #222;
-  color: white;
-  padding: 8px;
-  font-size: 12px;
-  width: 250px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  z-index: 10;
-  line-height: 1.4;
-}
-.tooltipWrapper:hover .tooltipContent {
-  display: block;
-}
-
-.cardGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
-  margin-top: 1rem;
-}
-
-.card {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 1rem;
-  text-align: center;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(2px);
-  transition: transform 0.2s ease;
-}
-
-.card:hover {
-  transform: translateY(-3px);
-}
-
-.card h4 {
-  font-size: 1rem;
-  color: #ffffff;
-  margin-bottom: 0.3rem;
-}
-
-.card p {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #00ffcc;
-}
-
-/* ===================== NEW STYLES FOR DATA SECTIONS ===================== */
-
-.additionalData {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background-color: rgba(255, 255, 255, 0.06);
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  color: white;
-}
-
-.additionalData h3 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  padding-bottom: 0.5rem;
-}
-
-/* ===================== TABLE STYLES ===================== */
-
+/* Table */
 .dataTable {
   width: 100%;
+  min-width: 780px; /* forces horizontal scroll on phones for multi-column tables */
   border-collapse: collapse;
-  margin-bottom: 1.5rem;
-  color: white;
-  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 13px;
 }
 
-.dataTable thead {
-  background-color: rgba(0, 0, 50, 0.4);
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-.dataTable th, .dataTable td {
-  padding: 0.75rem 1rem;
-  text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.dataTable th {
-  background: rgba(255, 255, 255, 0.1);
-  font-weight: 600;
-}
-
-
+.dataTable th,
 .dataTable td {
-  font-size: 0.92rem;
+  padding: 12px 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  white-space: nowrap;
 }
 
-/* ===================== SCROLLABLE TABLE ===================== */
-
-.scrollableTable {
-  max-height: 300px;
-  overflow-y: auto;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
-  padding: 0.5rem;
-  overflow-x: auto;
-  margin-top: 1rem;
+.dataTable thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: rgba(15, 20, 55, 0.92);
+  backdrop-filter: blur(8px);
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 800;
 }
 
-.scrollableTable::-webkit-scrollbar {
-  width: 8px;
+.dataTable tbody tr:hover {
+  background: rgba(255, 255, 255, 0.04);
 }
 
-.scrollableTable::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 139, 0.5);
-  border-radius: 10px;
+/* Align numeric columns */
+.right {
+  text-align: right;
 }
 
-/* ===================== OPTIONAL ROI COLOR ===================== */
-
-.positive {
-  color: #00e676;
-  font-weight: bold;
+/* Long model names */
+.ellipsis {
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.negative {
-  color: #ff5252;
-  font-weight: bold;
+/* ROI coloring */
+.pos {
+  color: rgba(0, 230, 118, 0.95);
+  font-weight: 800;
 }
 
-.statsSection {
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+.neg {
+  color: rgba(255, 82, 82, 0.95);
+  font-weight: 800;
+}
+
+/* Loading / error states */
+.stateBox {
+  margin-top: 14px;
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  background: rgba(8, 12, 28, 0.45);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.stateBoxError {
+  margin-top: 14px;
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 120, 120, 0.25);
+  background: rgba(255, 80, 80, 0.08);
+  color: rgba(255, 220, 220, 0.92);
+}
+
+.stateTitle {
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+
+.stateHint {
+  opacity: 0.85;
+  font-size: 13px;
+}
+
+.tableControls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex: 0 0 auto;
+  min-width: 0;          /* important in flex layouts */
+}
+
+/* 🔥 Glass search wrapper */
+.searchWrap {
+  position: relative;
+  height: 32px;
+  flex: 1 1 520px;       /* grows first */
+  min-width: 280px;
+}
+
+
+/* ✨ The input */
+.searchInput {
   width: 100%;
-  max-width: 900px;
+  height: 32px;
+  padding: 0 12px 0 34px; /* left room for icon */
+  border-radius: 12px;
+  outline: none;
+  color: rgba(255,255,255,0.92);
+  font-weight: 650;
+
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+
+  transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+}
+
+.searchInput::placeholder {
+  color: rgba(255,255,255,0.55);
+  font-weight: 600;
+}
+
+.searchInput:focus {
+  border-color: rgba(0,191,255,0.45);
+  box-shadow: 0 0 0 3px rgba(0,191,255,0.14), 0 10px 24px rgba(0,0,0,0.25);
+  background: rgba(255,255,255,0.08);
+}
+
+/* 🔍 icon */
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.7;
+  font-size: 15px;
+  pointer-events: none;
+}
+
+/* Optional: small "clear" button */
+.clearBtn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.85);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.clearBtn:hover {
+  background: rgba(255,255,255,0.10);
+}
+
+.sectionHeaderRow {
+  display: flex;
+  align-items: center;     /* instead of flex-end */
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;  
+}
+
+.sectionHeaderRow > div:first-child {
+  min-width: 260px;      /* prevents "Performance by Coin" from getting squeezed */
+  padding-right: 6px;
+}
+
+
+.coinCell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 24px;
+}
+
+/* Smaller + better aligned icons */
+.coinIcon {
+  width: 18px;           /* smaller than 22 */
+  height: 18px;
+  border-radius: 999px;
+  object-fit: cover;
+  background: rgba(255,255,255,0.08);
+  flex: 0 0 18px;
+  display: block;
+  transform: translateY(0.5px); /* tiny baseline nudge */
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.06);
+}
+
+.coinText {
+  line-height: 1;        /* match icon baseline better */
+  font-weight: 700;
+}
+
+
+
+/* Responsive */
+@media (max-width: 980px) {
+  .kpiGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .title {
+    font-size: 28px;
+  }
+
+  .kpiGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .ellipsis {
+    max-width: 200px;
+  }
+
+  /* Make the small 2-col stats table not force huge min-width */
+  .dataTable {
+    min-width: 640px;
+  }
+
+ .sectionHeaderRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  /* Controls become a 2-col grid */
+  .tableControls {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* two selects side-by-side */
+    gap: 10px;
+    align-items: center;
+  }
+
+  /* Search spans full width (row 1) */
+  .searchWrap {
+    grid-column: 1 / -1;
+    min-width: 0; /* IMPORTANT: prevents overflow */
+    height: 36px;
+  }
+
+  .searchInput {
+    height: 36px;
+  }
+
+  /* Give space between controls and table */
+  .sectionHeaderRow {
+    margin-bottom: 10px;
+  }
 }

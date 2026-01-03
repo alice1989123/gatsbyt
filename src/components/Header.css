@@ -3,11 +3,20 @@
   top: 0;
   z-index: 1000;
   width: 100%;
-  background: linear-gradient(90deg, #0f0c29, #302b63, #24243e);
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
 
+  background: linear-gradient(
+    90deg,
+    rgba(15, 12, 41, 0.92),
+    rgba(48, 43, 99, 0.86),
+    rgba(36, 36, 62, 0.92)
+  );
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(10px);
+
+  /* softer than before */
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.32);
+}
 .header-content {
   display: flex;
   justify-content: space-between;

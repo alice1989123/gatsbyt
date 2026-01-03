@@ -1,0 +1,75 @@
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(0, 224, 255, 0.10), transparent 40%),
+    radial-gradient(circle at 80% 10%, rgba(120, 100, 255, 0.12), transparent 45%),
+    linear-gradient(180deg, #070816 0%, #0a1026 45%, #060712 100%);
+}
+
+.page {
+  flex: 1;
+  padding: 32px 18px 44px 18px;
+}
+
+.container {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.title {
+  color: rgba(255, 255, 255, 0.96);
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  margin: 0 0 8px 0;
+}
+
+.meta {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 13px;
+  margin: 0 0 18px 0;
+}
+
+.card {
+  margin-top: 14px;
+  padding: 18px 18px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+  color: rgba(255, 255, 255, 0.86);
+  line-height: 1.65;
+  font-size: 14px;
+}
+
+.card h2 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.card ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.link {
+  color: rgba(0, 224, 255, 0.92);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 224, 255, 0.35);
+  padding-bottom: 1px;
+}
+
+.link:hover {
+  border-bottom-color: rgba(0, 224, 255, 0.75);
+}
+
+.small {
+  margin-top: 10px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.70);
+}

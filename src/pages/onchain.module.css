@@ -1,13 +1,12 @@
 .root {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: #13195c;
+  width: 100%;
 }
 
 /* Background stays on the page, but content is a clean column */
 .page {
-  flex: 1;
   padding: 24px 16px;
   background: url("/gatsbyt-bg-dark.png") no-repeat center center fixed;
   background-size: cover;

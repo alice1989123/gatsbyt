@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import styles from "./onchain.module.css";
 import EChartsReact from "echarts-for-react";
 import CustomSelect from "@/components/CustomSelect";
@@ -271,8 +269,6 @@ const OnChain = () => {
 
   return (
     <div className={styles.root}>
-      <Header />
-
       <main className={styles.page}>
         <div className={styles.content}>
           <header className={styles.hero}>
@@ -386,7 +382,6 @@ const OnChain = () => {
         </div>
       </main>
 
-      <Footer />
     </div>
   );
 };

@@ -2,6 +2,7 @@
 
 import React from "react";
 import "./Footer.css";
+import Link from "next/link";
 
 const Footer: React.FC = () => {
   const year = new Date().getFullYear();
@@ -15,15 +16,22 @@ const Footer: React.FC = () => {
             <div className="footer-brand-sub">
               Crypto forecasts, signals, and on-chain analytics.
             </div>
+
+            {/* ✅ add this */}
+            <div className="footer-support">
+              Support:{" "}
+              <a className="footer-support-link" href="mailto:support@gatsbyt.com">
+                support@gatsbyt.com
+              </a>
+            </div>
           </div>
 
           <nav className="footer-links" aria-label="Footer">
-            {/* Replace hrefs with your real routes when ready */}
-            <a className="footer-link" href="/methodology">Methodology</a>
-            <a className="footer-link" href="/data-sources">Data sources</a>
-            <a className="footer-link" href="/terms">Terms</a>
-            <a className="footer-link" href="/privacy">Privacy</a>
-            <a className="footer-link" href="/contact">Contact</a>
+            <Link className="footer-link" href="/methodology">Methodology</Link>
+            <Link className="footer-link" href="/data-sources">Data sources</Link>
+            <Link className="footer-link" href="/terms">Terms</Link>
+            <Link className="footer-link" href="/privacy">Privacy</Link>
+            <Link className="footer-link" href="/contact">Contact</Link>
           </nav>
         </div>
 

@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { FaEnvelope, FaUserCircle } from "react-icons/fa";
-import ContactModal from "./ContactModal";
 import "./Header.css";
 
 type SessionResponse = {
@@ -15,8 +14,6 @@ type SessionResponse = {
 const Header = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
-  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // user dropdown
@@ -116,15 +113,15 @@ const Header = () => {
 
           {/* Right */}
           <div className="header-right">
-            <button
-              onClick={() => setIsContactModalOpen(true)}
+            <Link
+              href="/contact"
               className="icon-btn"
               aria-label="Contact"
               title="Contact"
             >
               <FaEnvelope />
               <span className="icon-btn-label">Contact</span>
-            </button>
+            </Link>
 
             {/* Account / Sign in */}
             <div className="user-menu" ref={userMenuRef}>
@@ -187,9 +184,9 @@ const Header = () => {
             <Link href="/onchain" className="header-link" onClick={closeMobileMenu}>On-Chain</Link>
             <Link href="/news" className="header-link" onClick={closeMobileMenu}>News</Link>
 
-            <button onClick={() => { setIsContactModalOpen(true); closeMobileMenu(); }} className="header-contact">
+            <Link href="/contact" className="header-link" onClick={closeMobileMenu}>
               Contact
-            </button>
+            </Link>
 
             {showAuthedUI ? (
               <button onClick={logout} className="header-contact" style={{ marginTop: 8 }}>
@@ -204,7 +201,6 @@ const Header = () => {
         </div>
       </header>
 
-      {isContactModalOpen && <ContactModal onClose={() => setIsContactModalOpen(false)} />}
     </>
   );
 };

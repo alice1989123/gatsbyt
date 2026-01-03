@@ -1,12 +1,9 @@
 import Link from "next/link";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import styles from "./page.module.css";
+import styles from "./index.module.css";
 
 export default function HomePage() {
   return (
     <div className={styles.wrapper}>
-      <Header />
 
       <main className={styles.page}>
         {/* Hero */}
@@ -132,7 +129,6 @@ export default function HomePage() {
         </section>
       </main>
 
-      <Footer />
     </div>
   );
 }

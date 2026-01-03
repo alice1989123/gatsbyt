@@ -2,8 +2,6 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import NewsComponent from "../components/newsComponent";
 import styles from "./news.module.css";
 import "../app/globals.css";
@@ -114,7 +112,6 @@ const NewsPage = () => {
 
   return (
     <div className={styles.wrapper}>
-      <Header />
 
       <main className={styles.page}>
         <div className={styles.hero}>
@@ -229,7 +226,6 @@ const NewsPage = () => {
         </div>
       </main>
 
-      <Footer />
     </div>
   );
 };

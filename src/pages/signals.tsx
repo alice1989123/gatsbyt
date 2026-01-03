@@ -2,8 +2,6 @@
 
 import coins from "@/app/coins";
 import React, { useEffect, useMemo, useState } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import CustomSelect from "@/components/CustomSelect";
 import styles from "./signals.module.css";
 import "../app/globals.css";
@@ -291,7 +289,6 @@ const OpenSignalsPage = () => {
 
   return (
     <div className={styles.wrapper}>
-      <Header />
 
       <main className={styles.contentWrapper}>
         <section className={styles.container}>
@@ -514,7 +511,6 @@ const OpenSignalsPage = () => {
         </section>
       </main>
 
-      <Footer />
     </div>
   );
 };

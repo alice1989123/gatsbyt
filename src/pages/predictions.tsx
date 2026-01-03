@@ -4,8 +4,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import AssetPriceVisualizer from "../components/AssetPriceVisualizer";
 import coins from "../app/coins";
 import { Coin, PredictionMetadata } from "@/types/types";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 import CustomSelect from "../components/CustomSelect";
 import { FaTelegramPlane } from "react-icons/fa";
 import styles from "./predictions.module.css";
@@ -106,7 +104,6 @@ export default function PredictionsPage() {
 
   return (
     <div className={styles.layoutWrapper}>
-      <Header />
 
       {/* HERO */}
       <section className={styles.pageHero}>
@@ -327,7 +324,6 @@ export default function PredictionsPage() {
         <FaTelegramPlane />
       </a>
 
-      <Footer />
     </div>
   );
 }

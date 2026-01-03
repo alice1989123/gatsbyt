@@ -7,6 +7,11 @@ const PUBLIC_PATHS = [
   "/login",
   "/predictions",
   "/",
+  "/methodology",
+  "/data-sources",
+  "/terms",
+  "/privacy",
+  "/contact",
 ];
 
 function isPublicPath(pathname: string) {
