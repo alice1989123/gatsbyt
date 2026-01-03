@@ -5,7 +5,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import type { EChartsOption, SeriesOption } from "echarts";
 import { PriceData, Coin, PredictionMetadata } from "@/types/types";
-
+import { fetchWithAuthRedirect } from "@/lib/fetchWithAuthRedirect";
 const ReactECharts = dynamic(() => import("echarts-for-react"), { ssr: false });
 
 const api = "/api/proxy";
@@ -99,8 +99,10 @@ export default function AssetPriceVisualizer({
       onMetadata?.(null);
 
       try {
-        const res = await fetch(`${api}?resource=predictions&coin=${coin.symbol}`, {
-          headers: { "Content-Type": "application/json" },
+        const url = `${api}?resource=predictions&coin=${encodeURIComponent(coin.symbol)}`;
+
+        const res = await fetchWithAuthRedirect(url, {
+          method: "GET",
           signal: controller.signal,
         });
 
