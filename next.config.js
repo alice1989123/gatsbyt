@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
    experimental: {
-    appDir: true,
+    appDir: false,
   },
   env: {
   //   // Make these available in the built server bundle (pages/api)

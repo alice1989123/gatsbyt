@@ -3,44 +3,17 @@
   margin-top: auto;
   color: rgba(255, 255, 255, 0.9);
 
-  /* Same palette as header, but calmer */
-  background:
-    linear-gradient(90deg,
-      rgba(15, 12, 41, 0.78),
-      rgba(48, 43, 99, 0.72),
-      rgba(36, 36, 62, 0.78)
-    );
+  background: linear-gradient(
+    90deg,
+    rgba(15, 12, 41, 0.78),
+    rgba(48, 43, 99, 0.72),
+    rgba(36, 36, 62, 0.78)
+  );
 
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(10px);
-
-  /* softer than header glow */
   box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.35);
-}
 
-.footer-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 16px 16px 14px 16px;
-}
-
-/* ✅ tweak: more “header-like” alignment */
-.footer-top {
-  display: flex;
-  align-items: center;              /* was flex-start */
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.footer-brand-name {
-  font-weight: 800;
-  letter-spacing: 0.2px;
-  font-size: 14px;
-  text-transform: lowercase;
-}
-
-.footer {
   position: relative;
 }
 
@@ -55,30 +28,50 @@
   opacity: 0.6;
 }
 
-.footer-brand-sub {
+.footerInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 16px 14px 16px;
+}
+
+.footerTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footerBrandName {
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  font-size: 14px;
+  text-transform: lowercase;
+}
+
+.footerBrandSub {
   margin-top: 4px;
   font-size: 12px;
   color: rgba(255, 255, 255, 0.68);
-  max-width: 480px;                 /* was 420px */
+  max-width: 480px;
   line-height: 1.35;
 }
 
-.footer-links {
+.footerLinks {
   display: flex;
-  gap: 10px;                        /* slightly tighter */
+  gap: 10px;
   flex-wrap: wrap;
   justify-content: flex-end;
   align-items: center;
 }
 
-/* ✅ tweak: pill links to match header feel */
-.footer-link {
+.footerLink {
   font-size: 12px;
   color: rgba(255, 255, 255, 0.78);
   text-decoration: none;
 
   padding: 6px 10px;
-  border-radius: 999px;             /* pill */
+  border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.10);
   background: rgba(255, 255, 255, 0.02);
 
@@ -88,13 +81,13 @@
   transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
 }
 
-.footer-link:hover {
+.footerLink:hover {
   color: rgba(255, 255, 255, 0.95);
   border-color: rgba(255, 255, 255, 0.16);
   background: rgba(255, 255, 255, 0.05);
 }
 
-.footer-disclaimer {
+.footerDisclaimer {
   margin-top: 10px;
   font-size: 11px;
   line-height: 1.45;
@@ -102,33 +95,31 @@
   max-width: 900px;
 }
 
-.footer-bottom {
+.footerBottom {
   margin-top: 10px;
   font-size: 12px;
   color: rgba(255, 255, 255, 0.7);
 }
 
-/* ✅ support line (stays subtle) */
-.footer-support {
+.footerSupport {
   margin-top: 8px;
   font-size: 12px;
   color: rgba(255, 255, 255, 0.72);
 }
 
-.footer-support-link {
+.footerSupportLink {
   color: rgba(0, 224, 255, 0.92);
   text-decoration: none;
   border-bottom: 1px solid rgba(0, 224, 255, 0.35);
   padding-bottom: 1px;
 }
 
-.footer-support-link:hover {
+.footerSupportLink:hover {
   border-bottom-color: rgba(0, 224, 255, 0.7);
 }
 
-/* ✅ mobile: keep it clean */
 @media (max-width: 768px) {
-  .footer-links {
+  .footerLinks {
     justify-content: flex-start;
   }
 }

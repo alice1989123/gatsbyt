@@ -4,7 +4,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import NewsComponent from "../components/newsComponent";
 import styles from "./news.module.css";
-import "../app/globals.css";
 import dynamic from "next/dynamic";
 import type { SortOption } from "@/components/NewsSortSelect";
 

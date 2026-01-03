@@ -4,7 +4,6 @@ import coins from "@/app/coins";
 import React, { useEffect, useMemo, useState } from "react";
 import CustomSelect from "@/components/CustomSelect";
 import styles from "./signals.module.css";
-import "../app/globals.css";
 import { useSignalQuery } from "@/hooks/useSignalQuery";
 
 type Signal = {

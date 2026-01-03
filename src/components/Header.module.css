@@ -14,10 +14,10 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.10);
   backdrop-filter: blur(10px);
 
-  /* softer than before */
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.32);
 }
-.header-content {
+
+.headerContent {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -25,35 +25,36 @@
   max-width: 1400px;
   margin: 0 auto;
 
-  height: 64px;         /* ✅ controls header size */
-  padding: 0 1.5rem;    /* ✅ no vertical padding */
+  height: 64px;
+  padding: 0 1.5rem;
 }
 
-
-.header-left {
+.headerLeft {
   display: flex;
   align-items: center;
   gap: 2rem;
 }
 
-.header-logo {
+.headerLogo {
   display: flex;
   align-items: center;
   line-height: 0;
   padding-top: 5px;
 }
-.header-logo img {
-  height: 48px;   /* try 40–48 */
+
+/* Next/Image renders internal <img> — must be global-scoped */
+.headerLogo :global(img) {
+  height: 48px;
   width: auto;
   display: block;
 }
 
-.header-nav {
+.headerNav {
   display: flex;
   gap: 1.2rem;
 }
 
-.header-link {
+.headerLink {
   color: white;
   text-decoration: none;
   padding: 6px 12px;
@@ -62,24 +63,24 @@
   transition: background-color 0.3s;
 }
 
-.header-link.active {
+.active {
   border-bottom: 1px solid #00e0ff;
   background-color: #2c2c5d;
   font-weight: bold;
 }
 
-.header-link:hover {
+.headerLink:hover {
   background-color: #2c2c5d;
 }
 
-.header-right {
+.headerRight {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 
 /* --- Modern icon buttons (Contact / Account trigger) --- */
-.icon-btn {
+.iconBtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -99,23 +100,23 @@
     transform 0.1s ease;
 }
 
-.icon-btn svg {
+.iconBtn :global(svg) {
   width: 16px;
   height: 16px;
   opacity: 0.95;
 }
 
-.icon-btn:hover {
+.iconBtn:hover {
   background: rgba(0, 224, 255, 0.07);
   border-color: rgba(0, 224, 255, 0.35);
   box-shadow: 0 0 10px rgba(0, 224, 255, 0.15);
 }
 
-.icon-btn:active {
+.iconBtn:active {
   transform: translateY(1px);
 }
 
-.icon-btn-label {
+.iconBtnLabel {
   font-size: 13px;
   font-weight: 600;
 }
@@ -126,29 +127,32 @@
 }
 
 /* Keep old class if you still use it somewhere */
-.header-contact {
+.headerContact {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   height: 34px;
   padding: 0 12px;
+
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(0, 224, 255, 0.18);
   color: rgba(255, 255, 255, 0.92);
+
   border-radius: 12px;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
+
   transition: background-color 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
-.header-contact:hover {
+.headerContact:hover {
   background: rgba(0, 224, 255, 0.07);
   border-color: rgba(0, 224, 255, 0.35);
   box-shadow: 0 0 10px rgba(0, 224, 255, 0.15);
 }
 
-.menu-toggle {
+.menuToggle {
   display: none;
   background: none;
   border: none;
@@ -160,7 +164,7 @@
 }
 
 /* Mobile Menu */
-.header-nav-wrapper {
+.headerNavWrapper {
   display: none;
 }
 
@@ -168,13 +172,13 @@
    User dropdown (Account)
    ========================= */
 
-.user-menu {
+.userMenu {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.user-menu-dropdown {
+.userMenuDropdown {
   position: absolute;
   right: 0;
   top: calc(100% + 10px);
@@ -191,7 +195,7 @@
   backdrop-filter: blur(10px);
 }
 
-.user-menu-item {
+.userMenuItem {
   width: 100%;
   display: block;
 
@@ -211,33 +215,43 @@
   transition: background-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.user-menu-item:hover {
+.userMenuItem:hover {
   background-color: rgba(0, 224, 255, 0.08);
   box-shadow: 0 0 8px rgba(0, 224, 255, 0.18);
 }
 
-.user-menu-item.danger {
+.danger {
   color: #ffb4b4;
 }
 
-.user-menu-item.danger:hover {
+.danger:hover {
   background-color: rgba(255, 80, 80, 0.1);
   box-shadow: 0 0 10px rgba(255, 80, 80, 0.15);
 }
 
 /* Optional: small divider line between items */
-.user-menu-divider {
+.userMenuDivider {
   height: 1px;
   margin: 6px 0;
   background: rgba(255, 255, 255, 0.08);
 }
 
+/* Used to hide desktop nav on mobile */
+.desktopOnly {
+  display: flex;
+}
+
+/* Mobile menu open state */
+.open {
+  display: flex;
+}
+
 @media (max-width: 768px) {
-  .desktop-only {
+  .desktopOnly {
     display: none;
   }
 
-  .menu-toggle {
+  .menuToggle {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -248,7 +262,7 @@
     position: relative;
   }
 
-  .header-nav-wrapper {
+  .headerNavWrapper {
     display: none;
     position: absolute;
     top: 100%;
@@ -263,28 +277,24 @@
     border-radius: 0 0 12px 12px;
   }
 
-  .header-nav-wrapper.open {
-    display: flex;
-  }
-
-  .header-nav {
+  .headerNav {
     flex-direction: column;
     width: 100%;
   }
 
-  .header-link,
-  .header-contact {
+  .headerLink,
+  .headerContact {
     width: 100%;
     text-align: left;
   }
 
-  .menu-toggle svg {
+  .menuToggle :global(svg) {
     display: flex;
     width: 24px;
     height: 24px;
   }
 
-  .menu-toggle:hover {
+  .menuToggle:hover {
     background-color: rgba(0, 224, 255, 0.08);
     box-shadow: 0 0 6px rgba(0, 224, 255, 0.6);
     border: 1px solid #00e0ff;
@@ -292,16 +302,16 @@
   }
 
   /* icons only on mobile */
-  .icon-btn-label,
+  .iconBtnLabel,
   .chev {
     display: none;
   }
 
-  .icon-btn {
+  .iconBtn {
     padding: 0 10px;
   }
 
-  .user-menu-dropdown {
+  .userMenuDropdown {
     right: 0;
     left: auto;
     min-width: 180px;
