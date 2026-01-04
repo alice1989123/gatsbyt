@@ -6,6 +6,7 @@ import NewsComponent from "../components/newsComponent";
 import styles from "./news.module.css";
 import dynamic from "next/dynamic";
 import type { SortOption } from "@/components/NewsSortSelect";
+import { fetchWithAuthRedirect } from "@/lib/fetchWithAuthRedirect";
 
 const NewsSortSelect = dynamic(() => import("@/components/NewsSortSelect"), {
   ssr: false,
@@ -67,25 +68,50 @@ const NewsPage = () => {
   );
 
 
-  useEffect(() => {
-    const fetchNews = async () => {
+useEffect(() => {
+  const controller = new AbortController();
+  let alive = true;
+
+  const fetchNews = async () => {
       try {
-        const response = await fetch(`${api}?resource=news`, {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetchWithAuthRedirect(`${api}?resource=news`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
         });
 
+        // If unauth, wrapper will navigate away. Don't flash error UI.
+        if (response.status === 401 || response.status === 403) return;
+
+        if (!response.ok) {
+          const text = await response.text().catch(() => "");
+          throw new Error(`HTTP ${response.status} ${text.slice(0, 200)}`);
+        }
+
         const data = await response.json();
+        if (!alive) return;
+
         setNews(Array.isArray(data?.news) ? data.news : []);
-      } catch (e) {
-        setError(e as Error);
+      } catch (e: any) {
+        if (e?.name === "AbortError") return;
+        if (!alive) return;
+        setError(e instanceof Error ? e : new Error(String(e)));
       } finally {
-        setLoading(false);
+        if (alive) setLoading(false);
       }
     };
 
-    fetchNews();
-  }, []);
+  fetchNews();
+
+  return () => {
+    alive = false;
+    controller.abort();
+  };
+}, []);
+
 
   const resultsLabel = useMemo(() => {
     if (loading) return "Loading…";

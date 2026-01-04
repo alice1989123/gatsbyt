@@ -28,6 +28,24 @@ const Header = () => {
   const toggleUserMenu = () => setUserMenuOpen((prev) => !prev);
   const closeUserMenu = () => setUserMenuOpen(false);
 
+  const fetchSession = async () => {
+  try {
+    setSessionLoading(true);
+    const r = await fetch("/api/auth/session", {
+      method: "GET",
+      credentials: "include",
+      cache: "no-store",
+    });
+    const data: SessionResponse = r.ok ? await r.json() : { authenticated: false };
+    setSession(data);
+  } catch {
+    setSession({ authenticated: false });
+  } finally {
+    setSessionLoading(false);
+  }
+};
+
+
   useEffect(() => {
     function onDocClick(e: MouseEvent) {
       if (!userMenuRef.current) return;
@@ -37,26 +55,11 @@ const Header = () => {
     return () => document.removeEventListener("mousedown", onDocClick);
   }, []);
 
-  useEffect(() => {
-    let alive = true;
+useEffect(() => {
+  fetchSession();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [pathname, searchParams?.toString()]);
 
-    (async () => {
-      try {
-        setSessionLoading(true);
-        const r = await fetch("/api/auth/session", { credentials: "include" });
-        const data: SessionResponse = r.ok ? await r.json() : { authenticated: false };
-        if (alive) setSession(data);
-      } catch {
-        if (alive) setSession({ authenticated: false });
-      } finally {
-        if (alive) setSessionLoading(false);
-      }
-    })();
-
-    return () => {
-      alive = false;
-    };
-  }, []);
 
   function login() {
     const qs = searchParams?.toString();
