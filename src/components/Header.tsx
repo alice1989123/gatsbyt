@@ -29,37 +29,50 @@ const Header = () => {
   const closeUserMenu = () => setUserMenuOpen(false);
 
   const fetchSession = async () => {
-  try {
-    setSessionLoading(true);
-    const r = await fetch("/api/auth/session", {
-      method: "GET",
-      credentials: "include",
-      cache: "no-store",
-    });
-    const data: SessionResponse = r.ok ? await r.json() : { authenticated: false };
-    setSession(data);
-  } catch {
-    setSession({ authenticated: false });
-  } finally {
-    setSessionLoading(false);
-  }
-};
+    try {
+      setSessionLoading(true);
+      const r = await fetch("/api/auth/session", {
+        method: "GET",
+        credentials: "include",
+        cache: "no-store",
+      });
+      const data: SessionResponse = r.ok ? await r.json() : { authenticated: false };
+      setSession(data);
+    } catch {
+      setSession({ authenticated: false });
+    } finally {
+      setSessionLoading(false);
+    }
+  };
 
-
+  // Close dropdowns when clicking outside
   useEffect(() => {
     function onDocClick(e: MouseEvent) {
-      if (!userMenuRef.current) return;
-      if (!userMenuRef.current.contains(e.target as Node)) closeUserMenu();
+      const target = e.target as Node;
+
+      // close user dropdown
+      if (userMenuRef.current && !userMenuRef.current.contains(target)) {
+        closeUserMenu();
+      }
+
+      // close mobile menu when clicking outside the header
+      if (mobileMenuOpen) {
+        const headerEl = document.querySelector(`.${styles.header}`);
+        if (headerEl && !headerEl.contains(target)) {
+          closeMobileMenu();
+        }
+      }
     }
+
     document.addEventListener("mousedown", onDocClick);
     return () => document.removeEventListener("mousedown", onDocClick);
-  }, []);
+  }, [mobileMenuOpen, styles.header]);
 
-useEffect(() => {
-  fetchSession();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [pathname, searchParams?.toString()]);
-
+  // Refresh session when route/query changes (after Cognito redirect too)
+  useEffect(() => {
+    fetchSession();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, searchParams?.toString()]);
 
   function login() {
     const qs = searchParams?.toString();
@@ -153,7 +166,11 @@ useEffect(() => {
 
                 {userMenuOpen && (
                   <div className={styles.userMenuDropdown} role="menu">
-                    <Link className={`${styles.userMenuItem} ${styles.link}`} href="/account" onClick={closeUserMenu}>
+                    <Link
+                      className={`${styles.userMenuItem} ${styles.link}`}
+                      href="/account"
+                      onClick={closeUserMenu}
+                    >
                       Profile
                     </Link>
                     <button className={`${styles.userMenuItem} ${styles.danger}`} onClick={logout}>
@@ -176,8 +193,28 @@ useEffect(() => {
             )}
           </div>
 
-          <button className={styles.menuToggle} onClick={toggleMobileMenu} aria-label="Menu">
-            <svg width="24" height="24" viewBox="0 0 100 100" fill="none" stroke="#ffffff" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round">
+          <button
+            type="button"
+            className={styles.menuToggle}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleMobileMenu();
+            }}
+            aria-label="Menu"
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-nav"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 100 100"
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth="8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <line x1="20" y1="30" x2="80" y2="30" />
               <line x1="20" y1="50" x2="80" y2="50" />
               <line x1="20" y1="70" x2="80" y2="70" />
@@ -186,21 +223,42 @@ useEffect(() => {
         </div>
       </div>
 
-      <div className={`${styles.headerNavWrapper} ${mobileMenuOpen ? styles.open : ""}`}>
+      {/* ✅ IMPORTANT: add id="mobile-nav" so aria-controls works */}
+      <div
+        id="mobile-nav"
+        className={`${styles.headerNavWrapper} ${mobileMenuOpen ? styles.headerNavWrapperOpen : ""}`}
+      >
         <nav className={styles.headerNav}>
-          <Link href="/predictions" className={styles.headerLink} onClick={closeMobileMenu}>Forecast</Link>
-          <Link href="/signals" className={styles.headerLink} onClick={closeMobileMenu}>Signals</Link>
-          <Link href="/performance" className={styles.headerLink} onClick={closeMobileMenu}>Performance</Link>
-          <Link href="/onchain" className={styles.headerLink} onClick={closeMobileMenu}>On-Chain</Link>
-          <Link href="/news" className={styles.headerLink} onClick={closeMobileMenu}>News</Link>
-          <Link href="/contact" className={styles.headerLink} onClick={closeMobileMenu}>Contact</Link>
+          <Link href="/predictions" className={styles.headerLink} onClick={closeMobileMenu}>
+            Forecast
+          </Link>
+          <Link href="/signals" className={styles.headerLink} onClick={closeMobileMenu}>
+            Signals
+          </Link>
+          <Link href="/performance" className={styles.headerLink} onClick={closeMobileMenu}>
+            Performance
+          </Link>
+          <Link href="/onchain" className={styles.headerLink} onClick={closeMobileMenu}>
+            On-Chain
+          </Link>
+          <Link href="/news" className={styles.headerLink} onClick={closeMobileMenu}>
+            News
+          </Link>
+          <Link href="/contact" className={styles.headerLink} onClick={closeMobileMenu}>
+            Contact
+          </Link>
 
           {showAuthedUI ? (
             <button onClick={logout} className={styles.headerContact} style={{ marginTop: 8 }}>
               Log out
             </button>
           ) : (
-            <button onClick={login} className={styles.headerContact} style={{ marginTop: 8 }} disabled={sessionLoading}>
+            <button
+              onClick={login}
+              className={styles.headerContact}
+              style={{ marginTop: 8 }}
+              disabled={sessionLoading}
+            >
               {sessionLoading ? "…" : "Sign in"}
             </button>
           )}

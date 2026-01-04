@@ -1,5 +1,5 @@
 .header {
-  position: sticky;
+  position: relative;
   top: 0;
   z-index: 1000;
   width: 100%;
@@ -241,18 +241,18 @@
   display: flex;
 }
 
-/* Mobile menu open state */
-.open {
-  display: flex;
+/* Mobile Menu */
+.headerNavWrapper {
+  display: none;
 }
 
 @media (max-width: 768px) {
   .desktopOnly {
-    display: none;
+    display: none !important;
   }
 
   .menuToggle {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     border: 1px solid transparent;
@@ -262,24 +262,45 @@
     position: relative;
   }
 
+  /* ✅ Wrapper closed state */
   .headerNavWrapper {
-    display: none;
+    display: flex;              /* IMPORTANT: flex so flex-direction works */
+    flex-direction: column;
+
     position: absolute;
     top: 100%;
     left: 0;
     width: 100%;
+
     background: linear-gradient(to bottom, #0f0c29, #302b63);
     padding: 1rem;
-    z-index: 2000;
+    z-index: 9999;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-    flex-direction: column;
-    gap: 1rem;
     border-radius: 0 0 12px 12px;
+
+    max-height: 0;              /* IMPORTANT: baseline for animation */
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+
+    transition: max-height 180ms ease, opacity 180ms ease;
+  }
+
+  /* ✅ Wrapper open state (new class) */
+  .headerNavWrapperOpen {
+    max-height: 70vh;
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .headerNav {
+    display: flex;
     flex-direction: column;
-    width: 100%;
+    gap: 8px;
+    padding: 12px 16px;
+
+    background: #0b0f19;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .headerLink,
@@ -292,13 +313,6 @@
     display: flex;
     width: 24px;
     height: 24px;
-  }
-
-  .menuToggle:hover {
-    background-color: rgba(0, 224, 255, 0.08);
-    box-shadow: 0 0 6px rgba(0, 224, 255, 0.6);
-    border: 1px solid #00e0ff;
-    border-radius: 8px;
   }
 
   /* icons only on mobile */
