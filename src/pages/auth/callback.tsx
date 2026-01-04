@@ -35,7 +35,9 @@ export default function AuthCallback() {
 
       // ✅ redirect to where user wanted to go (cookie you already set: post_login_redirect)
       // If your server redirects after exchange, you can just router.replace("/")
-      router.replace("/account");
+      window.dispatchEvent(new Event("gatsbyt:session-updated"));
+      const next = typeof data?.next === "string" ? data.next : "/";
+      router.replace(next);
     })();
   }, [router.isReady, router.query.code, router]);
 

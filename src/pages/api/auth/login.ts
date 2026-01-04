@@ -9,12 +9,20 @@ function base64url(input: Buffer) {
     .replace(/=+$/, "");
 }
 
+function sanitizeNext(raw: unknown): string {
+  const s = typeof raw === "string" ? raw.trim() : "";
+  if (!s) return "/";
+  if (!s.startsWith("/")) return "/";
+  if (s.startsWith("//")) return "/";
+  if (s.includes("://")) return "/";
+  return s;
+}
+
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const domain = process.env.NEXT_PUBLIC_COGNITO_DOMAIN!;          // https://login.gatsbyt.com
   const clientId = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID!;     // SPA client id (NO secret)
   const redirectUri = process.env.NEXT_PUBLIC_COGNITO_REDIRECT_URI!; // http://localhost:3000/auth/callback
-  const next = (req.query.next as string) || "/";
-
+  const next = sanitizeNext(req.query.next);
   console.log("[login] redirecting to Cognito Hosted UI");
   console.log(domain, clientId, redirectUri);
   // PKCE
