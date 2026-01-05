@@ -21,7 +21,10 @@ export default function PredictionsPage() {
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
 
   // Controls (today: hourly only)
-  const supportedTimeframes = useMemo(() => new Set<Timeframe>(["1H"]), []);
+  const supportedTimeframes = useMemo(
+  () => new Set<Timeframe>(["1H", "4H",]),
+  []
+);
   const [timeframe, setTimeframe] = useState<Timeframe>("1H");
 
   // MAE toggle
@@ -279,10 +282,11 @@ export default function PredictionsPage() {
             </div>
 
             <AssetPriceVisualizer
-              coin={coin}
-              showMaeBand={showMaeBand}
-              onMetadata={setChartMeta}
-            />
+            coin={coin}
+            timeframe={timeframe}
+            showMaeBand={showMaeBand}
+            onMetadata={setChartMeta}
+          />
           </div>
 
           <div className={styles.explanationContainer}>

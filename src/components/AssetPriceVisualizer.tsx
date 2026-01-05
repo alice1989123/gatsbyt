@@ -23,12 +23,24 @@ const COLOR_POINTER = "rgba(255,255,255,0.22)";
 
 interface AssetPriceVisualizerProps {
   coin: Coin;
-
-  /** parent controls */
+  timeframe: "1H" | "4H" | "1D" | "1W";
   showMaeBand?: boolean;
-
-  /** optional: let parent read metadata (to enable/disable MAE button, show MAE value, etc.) */
   onMetadata?: (meta: PredictionMetadata | null) => void;
+}
+
+function timeframeToInterval(tf: "1H" | "4H" | "1D" | "1W"): string {
+  switch (tf) {
+    case "1H":
+      return "1h";
+    case "4H":
+      return "4h";
+    case "1D":
+      return "1d";
+    case "1W":
+      return "1w";
+    default:
+      return "1h";
+  }
 }
 
 function formatUsdAdaptive(x: number | null | undefined): string {
@@ -70,7 +82,8 @@ function parseToLocalLabelFromApiUtc(dateString: string) {
 }
 
 export default function AssetPriceVisualizer({
-  coin,
+   coin,
+  timeframe,
   showMaeBand = true,
   onMetadata,
 }: AssetPriceVisualizerProps) {
@@ -87,7 +100,7 @@ export default function AssetPriceVisualizer({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // fetch once per coin
+// fetch per coin + timeframe  
   useEffect(() => {
     let mounted = true;
     const controller = new AbortController();
@@ -99,8 +112,10 @@ export default function AssetPriceVisualizer({
       onMetadata?.(null);
 
       try {
-        const url = `${api}?resource=predictions&coin=${encodeURIComponent(coin.symbol)}`;
-
+        const interval = timeframeToInterval(timeframe);
+        const url = `${api}?resource=predictions&coin=${encodeURIComponent(
+          coin.symbol
+        )}&interval=${encodeURIComponent(interval)}`;
         const res = await fetchWithAuthRedirect(url, {
           method: "GET",
           signal: controller.signal,
@@ -132,7 +147,7 @@ export default function AssetPriceVisualizer({
       mounted = false;
       controller.abort();
     };
-  }, [coin.symbol, onMetadata]);
+  },  [coin.symbol, timeframe, onMetadata]);
 
   const xLabels = useMemo(() => prices.map((p) => parseToLocalLabelFromApiUtc(p.date)), [prices]);
 
