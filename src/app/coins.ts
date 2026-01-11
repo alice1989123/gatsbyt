@@ -27,7 +27,7 @@ const coins: Coin[] = [
   //{ name: "EOS - USDT", symbol: "EOSUSDT", coinpng: "/icons/eos.png" }, #TODO: fix missing data
   { name: "XTZ - USDT", symbol: "XTZUSDT", coinpng: "/icons/xtz.png" },
   { name: "NEO - USDT", symbol: "NEOUSDT", coinpng: "/icons/neo.png" },
-  { name: "MKR - USDT", symbol: "MKRUSDT", coinpng: "/icons/mkr.png" },
+  // { name: "MKR - USDT", symbol: "MKRUSDT", coinpng: "/icons/mkr.png" },
   { name: "AAVE - USDT", symbol: "AAVEUSDT", coinpng: "/icons/aave.png" },
   { name: "THETA - USDT", symbol: "THETAUSDT", coinpng: "/icons/theta.png" },
 ];
