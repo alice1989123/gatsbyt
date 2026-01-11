@@ -83,9 +83,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const env = process.env.NEXT_PUBLIC_ENV || "dev";
 
-  const { resource, metric_name, coin, query } = req.query;
+  const { resource, metric_name, coin, query , model_name , interval} = req.query;
 
   let path: string;
+
   if (resource === "news") {
     path = `/${env}/news`;
   } else if (resource === "on_chain_metrics") {
@@ -97,7 +98,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!coin || typeof coin !== "string") {
       return res.status(400).json({ error: "Bad coin" });
     }
-    path = `/${env}/predictions?coin=${encodeURIComponent(coin)}`;
+    path = `/${env}/predictions?coin=${encodeURIComponent(coin)}&model_name=${encodeURIComponent(model_name as string)}&interval=${encodeURIComponent(interval as string)}`;
+    console.log("path", path);
   } else if (resource === "predictions_results") {
     if (!query || typeof query !== "string") {
       return res.status(400).json({ error: "Bad query" });

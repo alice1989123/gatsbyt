@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import type { EChartsOption, SeriesOption } from "echarts";
 import { PriceData, Coin, PredictionMetadata } from "@/types/types";
 import { fetchWithAuthRedirect } from "@/lib/fetchWithAuthRedirect";
+
 const ReactECharts = dynamic(() => import("echarts-for-react"), { ssr: false });
 
 const api = "/api/proxy";
@@ -81,8 +82,20 @@ function parseToLocalLabelFromApiUtc(dateString: string) {
   return new Date(t).toLocaleString();
 }
 
+// Price can be a number OR an object like { source: "89400.0", parsedValue: 89400 }
+function getNumericPrice(p: any): number {
+  const v = p?.price;
+  if (typeof v === "number") return v;
+  if (typeof v === "string") return Number(v);
+  if (v && typeof v === "object") {
+    if (typeof v.parsedValue === "number") return v.parsedValue;
+    if (typeof v.source === "string") return Number(v.source);
+  }
+  return Number(v);
+}
+
 export default function AssetPriceVisualizer({
-   coin,
+  coin,
   timeframe,
   showMaeBand = true,
   onMetadata,
@@ -100,7 +113,7 @@ export default function AssetPriceVisualizer({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-// fetch per coin + timeframe  
+  // fetch per coin + timeframe
   useEffect(() => {
     let mounted = true;
     const controller = new AbortController();
@@ -113,9 +126,12 @@ export default function AssetPriceVisualizer({
 
       try {
         const interval = timeframeToInterval(timeframe);
-        const url = `${api}?resource=predictions&coin=${encodeURIComponent(
-          coin.symbol
-        )}&interval=${encodeURIComponent(interval)}`;
+        const url =
+        `${api}?resource=predictions` +
+        `&coin=${encodeURIComponent(coin.symbol)}` +
+        `&interval=${encodeURIComponent(interval)}` +
+        `&model_name=GRU`;
+
         const res = await fetchWithAuthRedirect(url, {
           method: "GET",
           signal: controller.signal,
@@ -131,7 +147,17 @@ export default function AssetPriceVisualizer({
 
         const normalized = [...list].sort((a, b) => parseApiUtcMs(a.date) - parseApiUtcMs(b.date));
 
-        const sliced = normalized.slice(0, pricesLength);
+        // Prefer "model window" (input + label) if available, otherwise last N points
+        const iw = Number((meta as any)?.input_width);
+        const lw = Number((meta as any)?.label_width ?? DEFAULT_HORIZON);
+        const wantModel = isFinite(iw) && iw > 0 && isFinite(lw) && lw > 0 ? iw + lw : NaN;
+
+        const want = isFinite(wantModel)
+          ? Math.min(normalized.length, Math.max(20, wantModel))
+          : Math.min(normalized.length, pricesLength);
+
+        // Always take the most recent chunk
+        const sliced = normalized.slice(-want);
 
         setPrices(sliced);
         setMetadata(meta);
@@ -147,49 +173,84 @@ export default function AssetPriceVisualizer({
       mounted = false;
       controller.abort();
     };
-  },  [coin.symbol, timeframe, onMetadata]);
+    // NOTE: intentionally NOT depending on onMetadata to avoid ref-churn re-fetch loops
+  }, [coin.symbol, timeframe]);
 
   const xLabels = useMemo(() => prices.map((p) => parseToLocalLabelFromApiUtc(p.date)), [prices]);
 
-  const priceValues = useMemo(
-    () => prices.map((p) => Number(p.price)).filter((v) => isFinite(v)),
-    [prices]
-  );
+  const numericPrices = useMemo(() => prices.map((p) => getNumericPrice(p)), [prices]);
 
   const [minPrice, maxPrice] = useMemo(() => {
-    if (priceValues.length === 0) return [0, 1];
-    const minV = Math.min(...priceValues);
-    const maxV = Math.max(...priceValues);
+    const vals = numericPrices.filter((v) => isFinite(v));
+    if (vals.length === 0) return [0, 1];
+    const minV = Math.min(...vals);
+    const maxV = Math.max(...vals);
     const pad = (maxV - minV) * 0.06 || maxV * 0.01 || 1;
     return [minV - pad, maxV + pad];
-  }, [priceValues]);
+  }, [numericPrices]);
 
-  // Use backend truth: label_width is horizon
-  const horizon = useMemo(() => {
-    const h = Number(metadata?.label_width ?? DEFAULT_HORIZON);
+  const labelWidth = useMemo(() => {
+    const h = Number((metadata as any)?.label_width ?? DEFAULT_HORIZON);
     if (!isFinite(h) || h <= 0) return DEFAULT_HORIZON;
     return Math.max(1, Math.min(h, Math.max(1, prices.length - 1)));
-  }, [metadata?.label_width, prices.length]);
+  }, [metadata, prices.length]);
 
+  const inputWidth = useMemo(() => {
+    const iw = Number((metadata as any)?.input_width);
+    return isFinite(iw) && iw > 0 ? iw : null;
+  }, [metadata]);
+
+  // Forecast start: if we have input_width and we sliced exactly iw+lw, start = iw
+  // Otherwise, fall back to "last labelWidth points are forecast"
   const forecastStartIndex = useMemo(() => {
     if (prices.length <= 1) return 0;
-    return Math.max(0, prices.length - horizon);
-  }, [prices.length, horizon]);
 
-  const mae = useMemo(() => {
-    const v = metadata?.mae;
-    return v != null && isFinite(v) ? Number(v) : null;
-  }, [metadata?.mae]);
+    if (inputWidth != null && prices.length >= inputWidth + labelWidth) {
+      return prices.length - labelWidth; // robust even if extra context sneaks in
+    }
+
+    if (inputWidth != null && inputWidth < prices.length) return inputWidth;
+
+    return Math.max(0, prices.length - labelWidth);
+  }, [prices.length, inputWidth, labelWidth]);
+
+  const maeGlobal = useMemo(() => {
+    const v = (metadata as any)?.mae;
+    const n = v != null ? Number(v) : NaN;
+    return isFinite(n) ? n : null;
+  }, [metadata]);
+
+  const maePerStep = useMemo(() => {
+    const arr = (metadata as any)?.mae_per_step;
+    if (!Array.isArray(arr)) return null;
+    const nums = arr.map((x: any) => Number(x));
+    return nums.every((n: number) => isFinite(n)) ? nums : null;
+  }, [metadata]);
+
+  const stepMaeAtIndex = (i: number): number | null => {
+    if (i < forecastStartIndex) return null;
+    const step = i - forecastStartIndex; // 0..labelWidth-1
+    if (maePerStep && step >= 0 && step < maePerStep.length) return maePerStep[step];
+    return maeGlobal; // fallback
+  };
 
   const lowerBand = useMemo(() => {
-    if (!mae) return null;
-    return prices.map((p, i) => (i >= forecastStartIndex ? Number(p.price) - mae : null));
-  }, [prices, mae, forecastStartIndex]);
+    if (!showMaeBand) return null;
+    return prices.map((_, i) => {
+      const m = stepMaeAtIndex(i);
+      if (m == null) return null;
+      return getNumericPrice(prices[i]) - m;
+    });
+  }, [prices, forecastStartIndex, maePerStep, maeGlobal, showMaeBand]);
 
   const upperMinusLower = useMemo(() => {
-    if (!mae) return null;
-    return prices.map((_, i) => (i >= forecastStartIndex ? 2 * mae : null));
-  }, [prices, mae, forecastStartIndex]);
+    if (!showMaeBand) return null;
+    return prices.map((_, i) => {
+      const m = stepMaeAtIndex(i);
+      if (m == null) return null;
+      return 2 * m;
+    });
+  }, [prices, forecastStartIndex, maePerStep, maeGlobal, showMaeBand]);
 
   const options: EChartsOption = useMemo(() => {
     if (prices.length === 0) {
@@ -204,11 +265,11 @@ export default function AssetPriceVisualizer({
       };
     }
 
-    const forecastLabel = xLabels[forecastStartIndex];
+    const forecastLabel = xLabels[Math.min(forecastStartIndex, xLabels.length - 1)];
     const series: SeriesOption[] = [];
 
-    // confidence band
-    if (showMaeBand && mae && lowerBand && upperMinusLower) {
+    // confidence band (stack trick)
+    if (showMaeBand && lowerBand && upperMinusLower) {
       series.push(
         {
           name: "LowerBand",
@@ -242,7 +303,7 @@ export default function AssetPriceVisualizer({
       smooth: true,
       symbol: "circle",
       symbolSize: 5,
-      data: prices.map((p, i) => (i < forecastStartIndex ? Number(p.price) : null)),
+      data: numericPrices.map((v, i) => (i < forecastStartIndex ? v : null)),
       lineStyle: { width: 2, color: COLOR_HIST },
       itemStyle: { color: COLOR_HIST },
       emphasis: { focus: "series" },
@@ -255,9 +316,9 @@ export default function AssetPriceVisualizer({
       smooth: true,
       symbol: "circle",
       symbolSize: 5,
-      data: prices.map((p, i) => {
-        if (i === forecastStartIndex - 1) return Number(p.price);
-        return i >= forecastStartIndex ? Number(p.price) : null;
+      data: numericPrices.map((v, i) => {
+        if (i === forecastStartIndex - 1) return v; // bridge point
+        return i >= forecastStartIndex ? v : null;
       }),
       lineStyle: { width: 2, color: COLOR_PRED },
       itemStyle: { color: COLOR_PRED },
@@ -301,17 +362,18 @@ export default function AssetPriceVisualizer({
           const histVal = hist?.data;
           const predVal = pred?.data;
 
-          const lines: string[] = [
-            `<div style="font-weight:900;margin-bottom:4px;">${axisValue}</div>`,
-          ];
+          const idx = params?.[0]?.dataIndex;
+          const stepMae = typeof idx === "number" ? stepMaeAtIndex(idx) : null;
+
+          const lines: string[] = [`<div style="font-weight:900;margin-bottom:4px;">${axisValue}</div>`];
 
           if (histVal != null) lines.push(`Historical: <b>${formatUsdAdaptive(histVal)}</b>`);
           if (predVal != null) lines.push(`Predicted: <b>${formatUsdAdaptive(predVal)}</b>`);
 
-          if (showMaeBand && mae && predVal != null) {
+          if (showMaeBand && predVal != null && stepMae != null) {
             lines.push(
-              `±MAE: <b>${formatUsdAdaptive(mae)}</b>`,
-              `Range: <b>${formatUsdAdaptive(predVal - mae)}</b> → <b>${formatUsdAdaptive(predVal + mae)}</b>`
+              `±MAE(step): <b>${formatUsdAdaptive(stepMae)}</b>`,
+              `Range: <b>${formatUsdAdaptive(predVal - stepMae)}</b> → <b>${formatUsdAdaptive(predVal + stepMae)}</b>`
             );
           }
 
@@ -323,7 +385,7 @@ export default function AssetPriceVisualizer({
         left: isMobile ? 44 : 60,
         right: 14,
         bottom: isMobile ? 58 : 46,
-        top: 22, // ✅ no overlay buttons inside chart anymore
+        top: 22,
         containLabel: true,
       },
 
@@ -382,11 +444,10 @@ export default function AssetPriceVisualizer({
     minPrice,
     maxPrice,
     forecastStartIndex,
-    horizon,
-    mae,
+    numericPrices,
+    showMaeBand,
     lowerBand,
     upperMinusLower,
-    showMaeBand,
   ]);
 
   return (
