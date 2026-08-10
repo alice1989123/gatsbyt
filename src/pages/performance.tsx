@@ -50,20 +50,32 @@ export default function PerformancePage() {
   const modelSummary = useSignalQuery("model_summary");
   const byCoin = useSignalQuery("by_coin");
   const outcomeSummary = useSignalQuery("outcome_summary");
+  const paperReadiness = useSignalQuery("paper_readiness");
+  const generatorFunnel = useSignalQuery("generator_funnel");
+  const generatorPerformance = useSignalQuery("generator_performance");
+  const rejectionSummary = useSignalQuery("rejection_summary");
 
   const isLoading =
     tradeStats.loading ||
     volumeStats.loading ||
     modelSummary.loading ||
     byCoin.loading ||
-    outcomeSummary.loading;
+    outcomeSummary.loading ||
+    paperReadiness.loading ||
+    generatorFunnel.loading ||
+    generatorPerformance.loading ||
+    rejectionSummary.loading;
 
   const isError =
     !!tradeStats.error ||
     !!volumeStats.error ||
     !!modelSummary.error ||
     !!byCoin.error ||
-    !!outcomeSummary.error;
+    !!outcomeSummary.error ||
+    !!paperReadiness.error ||
+    !!generatorFunnel.error ||
+    !!generatorPerformance.error ||
+    !!rejectionSummary.error;
 
   // Coin icon map (optional)
   const coinIconBySymbol = useMemo(() => {
@@ -169,6 +181,94 @@ export default function PerformancePage() {
                     <div className={styles.kpiValue}>{k.value}</div>
                   </div>
                 ))}
+              </section>
+
+              <section className={styles.sectionCard}>
+                <div className={styles.sectionHeaderRow}>
+                  <div>
+                    <h2 className={styles.sectionTitle}>Paper-Trading Readiness</h2>
+                    <div className={styles.sectionHint}>
+                      V2 signal cohort only, net of stored fees and slippage
+                    </div>
+                  </div>
+                  <span className={styles.statusPill}>{paperReadiness.data?.status ?? "UNKNOWN"}</span>
+                </div>
+                <div className={styles.kpiGrid}>
+                  <div className={styles.kpiCard}>
+                    <div className={styles.kpiLabel}>Closed Paper Trades</div>
+                    <div className={styles.kpiValue}>
+                      {formatNumber(Number(paperReadiness.data?.closed_paper_trades))}
+                    </div>
+                  </div>
+                  <div className={styles.kpiCard}>
+                    <div className={styles.kpiLabel}>Net Expectancy</div>
+                    <div className={styles.kpiValue}>
+                      {formatPercent(Number(paperReadiness.data?.net_expectancy_percent))}
+                    </div>
+                  </div>
+                  <div className={styles.kpiCard}>
+                    <div className={styles.kpiLabel}>Net Win Rate</div>
+                    <div className={styles.kpiValue}>
+                      {formatPercent(Number(paperReadiness.data?.net_win_rate_percent))}
+                    </div>
+                  </div>
+                  <div className={styles.kpiCard}>
+                    <div className={styles.kpiLabel}>Maximum Drawdown</div>
+                    <div className={styles.kpiValue}>
+                      {formatPercent(Number(paperReadiness.data?.maximum_drawdown_percent))}
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.readinessReason}>{paperReadiness.data?.reason}</div>
+              </section>
+
+              <section className={styles.sectionCard}>
+                <div className={styles.sectionHeader}>
+                  <h2 className={styles.sectionTitle}>Generator Funnel</h2>
+                  <div className={styles.sectionHint}>Candidates proposed, accepted, selected, and saved</div>
+                </div>
+                <div className={styles.tableWrap}>
+                  <table className={styles.dataTable}>
+                    <thead><tr><th>Generator</th><th className={styles.right}>Evaluations</th><th className={styles.right}>Candidates</th><th className={styles.right}>Accepted</th><th className={styles.right}>Selected</th><th className={styles.right}>Saved</th><th className={styles.right}>Pass Rate</th></tr></thead>
+                    <tbody>
+                      {(Array.isArray(generatorFunnel.data) ? generatorFunnel.data : []).map((item: any) => {
+                        const candidates = Number(item.raw_candidates);
+                        const accepted = Number(item.gate_accepted);
+                        const passRate = candidates > 0 ? (accepted / candidates) * 100 : 0;
+                        return <tr key={item.generator}><td className={styles.ellipsis} title={item.generator}>{item.generator}</td><td className={styles.right}>{formatNumber(Number(item.evaluations))}</td><td className={styles.right}>{formatNumber(candidates)}</td><td className={styles.right}>{formatNumber(accepted)}</td><td className={styles.right}>{formatNumber(Number(item.selected))}</td><td className={styles.right}>{formatNumber(Number(item.positions_saved))}</td><td className={styles.right}>{formatPercent(passRate)}</td></tr>;
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section className={styles.sectionCard}>
+                <div className={styles.sectionHeader}>
+                  <h2 className={styles.sectionTitle}>Generator Performance</h2>
+                  <div className={styles.sectionHint}>Closed paper positions after fees and slippage</div>
+                </div>
+                <div className={styles.tableWrap}>
+                  <table className={styles.dataTable}>
+                    <thead><tr><th>Generator</th><th className={styles.right}>Trades</th><th className={styles.right}>Expectancy</th><th className={styles.right}>Win Rate</th><th className={styles.right}>Profit Factor</th><th className={styles.right}>Compounded</th><th className={styles.right}>Drawdown</th></tr></thead>
+                    <tbody>
+                      {(Array.isArray(generatorPerformance.data) ? generatorPerformance.data : []).map((item: any) => <tr key={item.generator}><td className={styles.ellipsis} title={item.generator}>{item.generator}</td><td className={styles.right}>{formatNumber(Number(item.closed_paper_trades))}</td><td className={styles.right}>{formatPercent(Number(item.net_expectancy_percent))}</td><td className={styles.right}>{formatPercent(Number(item.net_win_rate_percent))}</td><td className={styles.right}>{item.profit_factor == null ? "∞" : Number(item.profit_factor).toFixed(3)}</td><td className={styles.right}>{formatPercent(Number(item.compounded_return_percent))}</td><td className={styles.right}>{formatPercent(Number(item.maximum_drawdown_percent))}</td></tr>)}
+                      {!Array.isArray(generatorPerformance.data) || generatorPerformance.data.length === 0 ? <tr><td colSpan={7} className={styles.emptyRow}>No V2 paper positions have closed yet.</td></tr> : null}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section className={styles.sectionCard}>
+                <div className={styles.sectionHeader}>
+                  <h2 className={styles.sectionTitle}>Gate Rejections</h2>
+                  <div className={styles.sectionHint}>Why candidate signals did not become paper positions</div>
+                </div>
+                <div className={styles.tableWrap}>
+                  <table className={styles.dataTable}>
+                    <thead><tr><th>Generator</th><th>Reason</th><th className={styles.right}>Total</th></tr></thead>
+                    <tbody>{(Array.isArray(rejectionSummary.data) ? rejectionSummary.data : []).map((item: any, index: number) => <tr key={`${item.generator}-${item.reason}-${index}`}><td className={styles.ellipsis}>{item.generator}</td><td>{item.reason}</td><td className={styles.right}>{formatNumber(Number(item.total))}</td></tr>)}</tbody>
+                  </table>
+                </div>
               </section>
 
               {/* Volume & Trade Stats */}
